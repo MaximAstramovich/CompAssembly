@@ -98,7 +98,7 @@
             // 
             // dgSuppliersList
             // 
-            this.dgSuppliersList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgSuppliersList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgSuppliersList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgSuppliersList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgSuppliersList.Location = new System.Drawing.Point(0, 28);

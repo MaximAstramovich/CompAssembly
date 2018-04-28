@@ -64,8 +64,11 @@ namespace ComputerAssembly
         {
             try
             {
-                OleDbCommand Com = new OleDbCommand();
                 Con.Open();
+                string qText = "SELECT * FROM Receipts WHERE IDR = @id";
+                OleDbCommand Com = new OleDbCommand();
+                Com.Parameters.AddWithValue("@id", this.idQuery);
+                Com.CommandText = qText;
                 OleDbDataReader reader = Com.ExecuteReader();
                 string IDSUP = "";
                 string IDCOM = "";

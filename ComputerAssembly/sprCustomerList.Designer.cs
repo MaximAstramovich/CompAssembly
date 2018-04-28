@@ -43,7 +43,7 @@
             // 
             // dgCustomerList
             // 
-            this.dgCustomerList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgCustomerList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgCustomerList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgCustomerList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgCustomerList.Location = new System.Drawing.Point(0, 28);

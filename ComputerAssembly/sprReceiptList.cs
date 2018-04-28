@@ -32,17 +32,18 @@ namespace ComputerAssembly
             {
                 dgReceiptList.Rows.Clear();
                 dgReceiptList.Columns.Clear();
-                dgReceiptList.Columns.Add("idsup", "ID поставщика");
-                dgReceiptList.Columns.Add("idcom", "ID компонента");
+                dgReceiptList.Columns.Add("firm", "Фирма-поставщик");
+                dgReceiptList.Columns.Add("name", "Название компонента");
                 dgReceiptList.Columns.Add("quality", "Количество");
+                dgReceiptList.Columns.Add("price", "Цена за штуку");
                 dgReceiptList.Columns.Add("rdate", "Дата поставки");
                 Con.Open();
-                string qText = "SELECT * FROM Receipts";
+                string qText = "SELECT Suppliers.Firm, Components.Nazv, Receipts.Quality, Receipts.Price, Receipts.ReceiptDate FROM Components INNER JOIN (Suppliers INNER JOIN Receipts ON Suppliers.IDSUP = Receipts.IDSUP) ON Components.IDCOM = Receipts.IDCOM;";
                 OleDbCommand Com = new OleDbCommand(qText, Con);
                 OleDbDataReader reader = Com.ExecuteReader();
                 while (reader.Read())
                 {
-                    dgReceiptList.Rows.Add(reader["IDSUP"], reader["IDCOM"], reader["Quality"], reader["ReceiptDate"]);
+                    dgReceiptList.Rows.Add(reader["Firm"], reader["Nazv"], reader["Quality"], reader["Price"], reader["ReceiptDate"]);
                 }
             }
             catch (Exception err)

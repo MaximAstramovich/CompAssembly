@@ -41,8 +41,12 @@ namespace ComputerAssembly
                 dgSuppliersList.Rows.Clear();
                 dgSuppliersList.Columns.Clear();
                 dgSuppliersList.Columns.Add("id", "Номер");
-                dgSuppliersList.Columns.Add("fio", "ФИО");
                 dgSuppliersList.Columns.Add("firm", "Фирма");
+                dgSuppliersList.Columns.Add("address", "Юридический адрес");
+                dgSuppliersList.Columns.Add("unn", "УНН");
+                dgSuppliersList.Columns.Add("checkacc", "Расчетный счет");
+                dgSuppliersList.Columns.Add("bank", "Код банка");
+                dgSuppliersList.Columns.Add("fio", "ФИО представителя");
                 dgSuppliersList.Columns.Add("pos", "Должность");
                 dgSuppliersList.Columns.Add("phone", "Телефон");
                 Con.Open();
@@ -51,7 +55,7 @@ namespace ComputerAssembly
                 OleDbDataReader reader = Com.ExecuteReader();
                 while (reader.Read())
                 {
-                    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["FIO"], reader["Firm"], reader["Position"], reader["PhoneNumber"]);
+                    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["Firm"], reader["Address"], reader["UNN"], reader["CheckingAccount"], reader["BankCode"], reader["FIO"], reader["Position"], reader["PhoneNumber"]);
                 }
             }
             catch (Exception err)
@@ -80,17 +84,21 @@ namespace ComputerAssembly
                 dgSuppliersList.Rows.Clear();
                 dgSuppliersList.Columns.Clear();
                 dgSuppliersList.Columns.Add("id", "Номер");
-                dgSuppliersList.Columns.Add("fio", "ФИО");
                 dgSuppliersList.Columns.Add("firm", "Фирма");
+                dgSuppliersList.Columns.Add("address", "Юридический адрес");
+                dgSuppliersList.Columns.Add("unn", "УНН");
+                dgSuppliersList.Columns.Add("checkacc", "Расчетный счет");
+                dgSuppliersList.Columns.Add("bank", "Код банка");
+                dgSuppliersList.Columns.Add("fio", "ФИО представителя");
                 dgSuppliersList.Columns.Add("pos", "Должность");
                 dgSuppliersList.Columns.Add("phone", "Телефон");
                 Con.Open();
-                string qText = "SELECT * FROM Suppliers where IDSUP Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Firm Like '%" + textBox1.Text + "%' OR Position Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
+                string qText = "SELECT * FROM Suppliers where IDSUP Like '%" + textBox1.Text + "%' OR Firm Like '%" + textBox1.Text + "%' OR Address Like '%" + textBox1.Text + "%' OR UNN Like '%" + textBox1.Text + "%' OR CheckingAccount Like '%" + textBox1.Text + "%' OR BankCode Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Position Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
                 OleDbCommand Com = new OleDbCommand(qText, Con);
                 OleDbDataReader reader = Com.ExecuteReader();
                 while (reader.Read())
                 {
-                    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["FIO"], reader["Firm"], reader["Position"], reader["PhoneNumber"]);
+                    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["Firm"], reader["Address"], reader["UNN"], reader["CheckingAccount"], reader["BankCode"], reader["FIO"], reader["Position"], reader["PhoneNumber"]);
                 }
             }
             catch (Exception err)

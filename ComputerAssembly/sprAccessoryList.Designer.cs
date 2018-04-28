@@ -43,7 +43,7 @@
             // 
             // dgComponentsList
             // 
-            this.dgComponentsList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgComponentsList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgComponentsList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgComponentsList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgComponentsList.Location = new System.Drawing.Point(0, 28);

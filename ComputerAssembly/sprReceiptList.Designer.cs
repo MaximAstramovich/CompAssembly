@@ -105,7 +105,7 @@
             // 
             // dgReceiptList
             // 
-            this.dgReceiptList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgReceiptList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgReceiptList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgReceiptList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgReceiptList.Location = new System.Drawing.Point(0, 28);
