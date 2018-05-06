@@ -128,3 +128,6 @@ D:\Учёба\Технологическая практика\!ПРОЕКТ\Comp
 D:\Учёба\Технологическая практика\!ПРОЕКТ\ComputerAssembly\obj\Debug\ComputerAssembly.sprReceiptOne.resources
 D:\Учёба\Технологическая практика\!ПРОЕКТ\ComputerAssembly\obj\Debug\ComputerAssembly.sprSuppliersList.resources
 D:\Учёба\Технологическая практика\!ПРОЕКТ\ComputerAssembly\obj\Debug\ComputerAssembly.sprSuppliersOne.resources
+D:\Projects\CompAssembly\ComputerAssembly\bin\Debug\ComputerAssembly.exe.config
+D:\Projects\CompAssembly\ComputerAssembly\obj\Debug\ComputerAssembly.exe
+D:\Projects\CompAssembly\ComputerAssembly\obj\Debug\ComputerAssembly.pdb

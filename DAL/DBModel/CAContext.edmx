@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CA_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CA_DB.dbo.Assembly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Assembly">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="IDCUS" Type="int" />
+          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="Num" Type="int" />
+          <Property Name="Summ" Type="int" />
+          <Property Name="Corpus" Type="int" />
+          <Property Name="Board" Type="int" />
+          <Property Name="CPU" Type="int" />
+          <Property Name="Graphic" Type="int" />
+          <Property Name="OZU" Type="int" />
+          <Property Name="HDD" Type="int" />
+          <Property Name="SSD" Type="int" />
+          <Property Name="Power" Type="int" />
+          <Property Name="DVD" Type="int" />
+          <Property Name="Audio" Type="int" />
+          <Property Name="Ice" Type="int" />
+          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" />
+          <Property Name="DateOfPayment" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Components">
+          <Key>
+            <PropertyRef Name="IDCOM" />
+          </Key>
+          <Property Name="IDCOM" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" />
+          <Property Name="Nazv" Type="nvarchar" MaxLength="255" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="Price" Type="int" />
+        </EntityType>
+        <EntityType Name="ComponentTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="IDCUS" />
+          </Key>
+          <Property Name="IDCUS" Type="int" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" MaxLength="255" />
+          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="PassportNo" Type="nvarchar" MaxLength="255" />
+          <Property Name="DateOfIssue" Type="datetime" />
+          <Property Name="Authority" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="PhoneNumber" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CA_DB.dbo.Order' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="NumberAssembly" Type="int" />
+          <Property Name="DateOfPayment" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Receipts">
+          <Key>
+            <PropertyRef Name="IDR" />
+          </Key>
+          <Property Name="IDR" Type="int" Nullable="false" />
+          <Property Name="IDSUP" Type="int" />
+          <Property Name="IDCOM" Type="int" />
+          <Property Name="Quality" Type="int" />
+          <Property Name="Price" Type="int" />
+          <Property Name="ReceiptDate" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CA_DB.dbo.Selling' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Selling">
+          <Key>
+            <PropertyRef Name="IDS" />
+          </Key>
+          <Property Name="IDS" Type="int" Nullable="false" />
+          <Property Name="IDCUS" Type="int" />
+          <Property Name="IDCOM" Type="int" />
+          <Property Name="Quality" Type="int" />
+          <Property Name="Price" Type="int" />
+          <Property Name="DateOfSale" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CA_DB.dbo.Stock' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="IDCOM" />
+          </Key>
+          <Property Name="IDCOM" Type="int" Nullable="false" />
+          <Property Name="InStock" Type="int" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="IDSUP" />
+          </Key>
+          <Property Name="IDSUP" Type="int" Nullable="false" />
+          <Property Name="FIO" Type="nvarchar" MaxLength="255" />
+          <Property Name="Firm" Type="nvarchar" MaxLength="255" />
+          <Property Name="Position" Type="nvarchar" MaxLength="255" />
+          <Property Name="PhoneNumber" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Assembly_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Assembly" Type="Self.Assembly" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="IDCUS" />
+            </Principal>
+            <Dependent Role="Assembly">
+              <PropertyRef Name="IDCUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Components_ComponentTypes">
+          <End Role="ComponentTypes" Type="Self.ComponentTypes" Multiplicity="0..1" />
+          <End Role="Components" Type="Self.Components" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComponentTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Components">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receipts_Components">
+          <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
+          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Components">
+              <PropertyRef Name="IDCOM" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="IDCOM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receipts_Suppliers">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="0..1" />
+          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="IDSUP" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="IDSUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selling_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Selling" Type="Self.Selling" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="IDCUS" />
+            </Principal>
+            <Dependent Role="Selling">
+              <PropertyRef Name="IDCUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stock_Components">
+          <End Role="Components" Type="Self.Components" Multiplicity="1" />
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Components">
+              <PropertyRef Name="IDCOM" />
+            </Principal>
+            <Dependent Role="Stock">
+              <PropertyRef Name="IDCOM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CA_DBModelStoreContainer">
+          <EntitySet Name="Components" EntityType="Self.Components" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComponentTypes" EntityType="Self.ComponentTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Receipts" EntityType="Self.Receipts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Assembly" EntityType="Self.Assembly" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Assembly].[IDCUS] AS [IDCUS], 
+    [Assembly].[OrderDate] AS [OrderDate], 
+    [Assembly].[Num] AS [Num], 
+    [Assembly].[Summ] AS [Summ], 
+    [Assembly].[Corpus] AS [Corpus], 
+    [Assembly].[Board] AS [Board], 
+    [Assembly].[CPU] AS [CPU], 
+    [Assembly].[Graphic] AS [Graphic], 
+    [Assembly].[OZU] AS [OZU], 
+    [Assembly].[HDD] AS [HDD], 
+    [Assembly].[SSD] AS [SSD], 
+    [Assembly].[Power] AS [Power], 
+    [Assembly].[DVD] AS [DVD], 
+    [Assembly].[Audio] AS [Audio], 
+    [Assembly].[Ice] AS [Ice], 
+    [Assembly].[Код] AS [Код], 
+    [Assembly].[Status] AS [Status], 
+    [Assembly].[DateOfPayment] AS [DateOfPayment]
+    FROM [dbo].[Assembly] AS [Assembly]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Order" EntityType="Self.Order" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Order].[Код] AS [Код], 
+    [Order].[NumberAssembly] AS [NumberAssembly], 
+    [Order].[DateOfPayment] AS [DateOfPayment]
+    FROM [dbo].[Order] AS [Order]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Selling" EntityType="Self.Selling" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Selling].[IDS] AS [IDS], 
+    [Selling].[IDCUS] AS [IDCUS], 
+    [Selling].[IDCOM] AS [IDCOM], 
+    [Selling].[Quality] AS [Quality], 
+    [Selling].[Price] AS [Price], 
+    [Selling].[DateOfSale] AS [DateOfSale]
+    FROM [dbo].[Selling] AS [Selling]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Stock" EntityType="Self.Stock" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Stock].[IDCOM] AS [IDCOM], 
+    [Stock].[InStock] AS [InStock]
+    FROM [dbo].[Stock] AS [Stock]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Assembly_Customers" Association="Self.FK_Assembly_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Assembly" EntitySet="Assembly" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Components_ComponentTypes" Association="Self.FK_Components_ComponentTypes">
+            <End Role="ComponentTypes" EntitySet="ComponentTypes" />
+            <End Role="Components" EntitySet="Components" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipts_Components" Association="Self.FK_Receipts_Components">
+            <End Role="Components" EntitySet="Components" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipts_Suppliers" Association="Self.FK_Receipts_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selling_Customers" Association="Self.FK_Selling_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Selling" EntitySet="Selling" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stock_Components" Association="Self.FK_Stock_Components">
+            <End Role="Components" EntitySet="Components" />
+            <End Role="Stock" EntitySet="Stock" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CA_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Components">
+          <Key>
+            <PropertyRef Name="IDCOM" />
+          </Key>
+          <Property Name="IDCOM" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Nazv" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Int32" />
+          <NavigationProperty Name="ComponentTypes" Relationship="Self.FK_Components_ComponentTypes" FromRole="Components" ToRole="ComponentTypes" />
+          <NavigationProperty Name="Receipts" Relationship="Self.FK_Receipts_Components" FromRole="Components" ToRole="Receipts" />
+          <NavigationProperty Name="Stock" Relationship="Self.FK_Stock_Components" FromRole="Components" ToRole="Stock" />
+        </EntityType>
+        <EntityType Name="ComponentTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Components" Relationship="Self.FK_Components_ComponentTypes" FromRole="ComponentTypes" ToRole="Components" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="IDCUS" />
+          </Key>
+          <Property Name="IDCUS" Type="Int32" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="PassportNo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfIssue" Type="DateTime" Precision="3" />
+          <Property Name="Authority" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="Int32" />
+          <NavigationProperty Name="Assembly" Relationship="Self.FK_Assembly_Customers" FromRole="Customers" ToRole="Assembly" />
+          <NavigationProperty Name="Selling" Relationship="Self.FK_Selling_Customers" FromRole="Customers" ToRole="Selling" />
+        </EntityType>
+        <EntityType Name="Receipts">
+          <Key>
+            <PropertyRef Name="IDR" />
+          </Key>
+          <Property Name="IDR" Type="Int32" Nullable="false" />
+          <Property Name="IDSUP" Type="Int32" />
+          <Property Name="IDCOM" Type="Int32" />
+          <Property Name="Quality" Type="Int32" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="ReceiptDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Components" Relationship="Self.FK_Receipts_Components" FromRole="Receipts" ToRole="Components" />
+          <NavigationProperty Name="Suppliers" Relationship="Self.FK_Receipts_Suppliers" FromRole="Receipts" ToRole="Suppliers" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="IDSUP" />
+          </Key>
+          <Property Name="IDSUP" Type="Int32" Nullable="false" />
+          <Property Name="FIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Firm" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="Int32" />
+          <NavigationProperty Name="Receipts" Relationship="Self.FK_Receipts_Suppliers" FromRole="Suppliers" ToRole="Receipts" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Assembly">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="IDCUS" Type="Int32" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="Num" Type="Int32" />
+          <Property Name="Summ" Type="Int32" />
+          <Property Name="Corpus" Type="Int32" />
+          <Property Name="Board" Type="Int32" />
+          <Property Name="CPU" Type="Int32" />
+          <Property Name="Graphic" Type="Int32" />
+          <Property Name="OZU" Type="Int32" />
+          <Property Name="HDD" Type="Int32" />
+          <Property Name="SSD" Type="Int32" />
+          <Property Name="Power" Type="Int32" />
+          <Property Name="DVD" Type="Int32" />
+          <Property Name="Audio" Type="Int32" />
+          <Property Name="Ice" Type="Int32" />
+          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="DateOfPayment" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Assembly_Customers" FromRole="Assembly" ToRole="Customers" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="NumberAssembly" Type="Int32" />
+          <Property Name="DateOfPayment" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Selling">
+          <Key>
+            <PropertyRef Name="IDS" />
+          </Key>
+          <Property Name="IDS" Type="Int32" Nullable="false" />
+          <Property Name="IDCUS" Type="Int32" />
+          <Property Name="IDCOM" Type="Int32" />
+          <Property Name="Quality" Type="Int32" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="DateOfSale" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Selling_Customers" FromRole="Selling" ToRole="Customers" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="IDCOM" />
+          </Key>
+          <Property Name="IDCOM" Type="Int32" Nullable="false" />
+          <Property Name="InStock" Type="Int32" />
+          <NavigationProperty Name="Components" Relationship="Self.FK_Stock_Components" FromRole="Stock" ToRole="Components" />
+        </EntityType>
+        <Association Name="FK_Components_ComponentTypes">
+          <End Role="ComponentTypes" Type="Self.ComponentTypes" Multiplicity="0..1" />
+          <End Role="Components" Type="Self.Components" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComponentTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Components">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receipts_Components">
+          <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
+          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Components">
+              <PropertyRef Name="IDCOM" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="IDCOM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stock_Components">
+          <End Role="Components" Type="Self.Components" Multiplicity="1" />
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Components">
+              <PropertyRef Name="IDCOM" />
+            </Principal>
+            <Dependent Role="Stock">
+              <PropertyRef Name="IDCOM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assembly_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Assembly" Type="Self.Assembly" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="IDCUS" />
+            </Principal>
+            <Dependent Role="Assembly">
+              <PropertyRef Name="IDCUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selling_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Selling" Type="Self.Selling" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="IDCUS" />
+            </Principal>
+            <Dependent Role="Selling">
+              <PropertyRef Name="IDCUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Receipts_Suppliers">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="0..1" />
+          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="IDSUP" />
+            </Principal>
+            <Dependent Role="Receipts">
+              <PropertyRef Name="IDSUP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CA_DBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Components" EntityType="Self.Components" />
+          <EntitySet Name="ComponentTypes" EntityType="Self.ComponentTypes" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" />
+          <EntitySet Name="Receipts" EntityType="Self.Receipts" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Assembly" EntityType="Self.Assembly" />
+          <EntitySet Name="Order" EntityType="Self.Order" />
+          <EntitySet Name="Selling" EntityType="Self.Selling" />
+          <EntitySet Name="Stock" EntityType="Self.Stock" />
+          <AssociationSet Name="FK_Components_ComponentTypes" Association="Self.FK_Components_ComponentTypes">
+            <End Role="ComponentTypes" EntitySet="ComponentTypes" />
+            <End Role="Components" EntitySet="Components" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipts_Components" Association="Self.FK_Receipts_Components">
+            <End Role="Components" EntitySet="Components" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stock_Components" Association="Self.FK_Stock_Components">
+            <End Role="Components" EntitySet="Components" />
+            <End Role="Stock" EntitySet="Stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assembly_Customers" Association="Self.FK_Assembly_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Assembly" EntitySet="Assembly" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selling_Customers" Association="Self.FK_Selling_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Selling" EntitySet="Selling" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipts_Suppliers" Association="Self.FK_Receipts_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CA_DBModelStoreContainer" CdmEntityContainer="CA_DBContext">
+          <EntitySetMapping Name="Components">
+            <EntityTypeMapping TypeName="CA_DBModel.Components">
+              <MappingFragment StoreEntitySet="Components">
+                <ScalarProperty Name="IDCOM" ColumnName="IDCOM" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Nazv" ColumnName="Nazv" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComponentTypes">
+            <EntityTypeMapping TypeName="CA_DBModel.ComponentTypes">
+              <MappingFragment StoreEntitySet="ComponentTypes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CA_DBModel.Customers">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="IDCUS" ColumnName="IDCUS" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="PassportNo" ColumnName="PassportNo" />
+                <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
+                <ScalarProperty Name="Authority" ColumnName="Authority" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipts">
+            <EntityTypeMapping TypeName="CA_DBModel.Receipts">
+              <MappingFragment StoreEntitySet="Receipts">
+                <ScalarProperty Name="IDR" ColumnName="IDR" />
+                <ScalarProperty Name="IDSUP" ColumnName="IDSUP" />
+                <ScalarProperty Name="IDCOM" ColumnName="IDCOM" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ReceiptDate" ColumnName="ReceiptDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="CA_DBModel.Suppliers">
+              <MappingFragment StoreEntitySet="Suppliers">
+                <ScalarProperty Name="IDSUP" ColumnName="IDSUP" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="Firm" ColumnName="Firm" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CA_DBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Assembly">
+            <EntityTypeMapping TypeName="CA_DBModel.Assembly">
+              <MappingFragment StoreEntitySet="Assembly">
+                <ScalarProperty Name="IDCUS" ColumnName="IDCUS" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Summ" ColumnName="Summ" />
+                <ScalarProperty Name="Corpus" ColumnName="Corpus" />
+                <ScalarProperty Name="Board" ColumnName="Board" />
+                <ScalarProperty Name="CPU" ColumnName="CPU" />
+                <ScalarProperty Name="Graphic" ColumnName="Graphic" />
+                <ScalarProperty Name="OZU" ColumnName="OZU" />
+                <ScalarProperty Name="HDD" ColumnName="HDD" />
+                <ScalarProperty Name="SSD" ColumnName="SSD" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="DVD" ColumnName="DVD" />
+                <ScalarProperty Name="Audio" ColumnName="Audio" />
+                <ScalarProperty Name="Ice" ColumnName="Ice" />
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="DateOfPayment" ColumnName="DateOfPayment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="CA_DBModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="NumberAssembly" ColumnName="NumberAssembly" />
+                <ScalarProperty Name="DateOfPayment" ColumnName="DateOfPayment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Selling">
+            <EntityTypeMapping TypeName="CA_DBModel.Selling">
+              <MappingFragment StoreEntitySet="Selling">
+                <ScalarProperty Name="IDS" ColumnName="IDS" />
+                <ScalarProperty Name="IDCUS" ColumnName="IDCUS" />
+                <ScalarProperty Name="IDCOM" ColumnName="IDCOM" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DateOfSale" ColumnName="DateOfSale" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stock">
+            <EntityTypeMapping TypeName="CA_DBModel.Stock">
+              <MappingFragment StoreEntitySet="Stock">
+                <ScalarProperty Name="IDCOM" ColumnName="IDCOM" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
