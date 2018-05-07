@@ -12,8 +12,6 @@ namespace DAL.Repository
         void Remove(T item);
         void Update(T item);
         K GetEntity(T source);
-        K GetEntityNameById(int id);
-        K GetEntityIDByName(string name);
         IEnumerable<T> Items { get; }
         void SaveChanges();
     }
