@@ -9,7 +9,7 @@ namespace DAL.Models
     class OrderModel
     {
         public int IdOrder { get; set; }
-        public int NumberAssembly { get; set; }
-        public System.DateTime DateOfPayment { get; set; }
+        public int? NumberAssembly { get; set; }
+        public System.DateTime? DateOfPayment { get; set; }
     }
 }

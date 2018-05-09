@@ -9,10 +9,10 @@ namespace DAL.Models
     class ReceiptsModel
     {
         public int IDR { get; set; }
-        public int IDSUP { get; set; }
-        public int IDCOM { get; set; }
-        public int Quality { get; set; }
-        public int Price { get; set; }
-        public System.DateTime ReceiptDate { get; set; }
+        public int? IDSUP { get; set; }
+        public int? IDCOM { get; set; }
+        public int? Quality { get; set; }
+        public int? Price { get; set; }
+        public System.DateTime? ReceiptDate { get; set; }
     }
 }

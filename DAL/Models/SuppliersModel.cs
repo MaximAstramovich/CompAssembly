@@ -12,6 +12,6 @@ namespace DAL.Models
         public string FIO { get; set; }
         public string Firm { get; set; }
         public string Position { get; set; }
-        public int PhoneNumber { get; set; }
+        public int? PhoneNumber { get; set; }
     }
 }

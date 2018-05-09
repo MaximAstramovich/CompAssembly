@@ -92,6 +92,10 @@
       <DependentUpon>CAContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\AbstractRepository.cs" />
+    <Compile Include="Repository\AssemblyRepository.cs" />
+    <Compile Include="Repository\ComponentsRepository.cs" />
+    <Compile Include="Repository\ComponentTypesRepository.cs" />
+    <Compile Include="Repository\CustomersRepository.cs" />
     <Compile Include="Repository\IModelRepository.cs" />
     <Compile Include="DBModel\Selling.cs">
       <DependentUpon>CAContext.tt</DependentUpon>
