@@ -109,6 +109,11 @@
     <Compile Include="DBModel\sysdiagrams.cs">
       <DependentUpon>CAContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repository\OrderRepository.cs" />
+    <Compile Include="Repository\ReceiptsRepository.cs" />
+    <Compile Include="Repository\SellingRepository.cs" />
+    <Compile Include="Repository\StockRepository.cs" />
+    <Compile Include="Repository\SuppliersRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -11,13 +11,13 @@ using System.Data.OleDb;
 
 namespace ComputerAssembly
 {
-    public partial class sprCustomerList : Form
+    public partial class sprCustomerList : BaseForm
     {
-        OleDbConnection Con = new OleDbConnection();
+        //OleDbConnection Con = new OleDbConnection();
         public sprCustomerList()
         {
             InitializeComponent();
-            Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
+            //Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
         }
 
         string Mode = "0";
@@ -42,22 +42,15 @@ namespace ComputerAssembly
                 dgCustomerList.Columns.Add("fio", "ФИО");
                 dgCustomerList.Columns.Add("address", "Адрес");
                 dgCustomerList.Columns.Add("phone", "Телефон");
-                Con.Open();
-                string qText = "SELECT * FROM Customers";
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = Com.ExecuteReader();
-                while (reader.Read())
+                var customersList = CustomersBusinessLayer.GetAllCustomersList();
+                foreach(var customer in customersList)
                 {
-                    dgCustomerList.Rows.Add(reader["IDCUS"], reader["FIO"], reader["Address"], reader["PhoneNumber"]);
+                    dgCustomerList.Rows.Add(customer.IDCUS, customer.FIO, customer.Address, customer.PhoneNumber);
                 }
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                Con.Close();
             }
         }
 
@@ -81,14 +74,14 @@ namespace ComputerAssembly
                 dgCustomerList.Columns.Add("fio", "ФИО");
                 dgCustomerList.Columns.Add("address", "Адрес");
                 dgCustomerList.Columns.Add("phone", "Телефон");
-                Con.Open();
-                string qText = "SELECT * FROM Customers where IDCUS Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Address Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = Com.ExecuteReader();
-                while (reader.Read())
-                {
-                    dgCustomerList.Rows.Add(reader["IDCUS"], reader["FIO"], reader["Address"], reader["PhoneNumber"]);
-                }
+                //Con.Open();
+                //string qText = "SELECT * FROM Customers where IDCUS Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Address Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
+                //OleDbCommand Com = new OleDbCommand(qText, Con);
+                //OleDbDataReader reader = Com.ExecuteReader();
+                //while (reader.Read())
+                //{
+                //    dgCustomerList.Rows.Add(reader["IDCUS"], reader["FIO"], reader["Address"], reader["PhoneNumber"]);
+                //}
             }
             catch (Exception err)
             {
@@ -96,7 +89,7 @@ namespace ComputerAssembly
             }
             finally
             {
-                Con.Close();
+                //Con.Close();
             }
         }
 
@@ -110,36 +103,36 @@ namespace ComputerAssembly
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dR = MessageBox.Show(
-                             "Вы действительно желаете удалить запись?",
-                             "Программа",
-                             MessageBoxButtons.OKCancel,
-                             MessageBoxIcon.Warning
-                         );
-            if (dR == DialogResult.OK)
-            {
-                string componentsId = Convert.ToString(dgCustomerList.CurrentRow.Cells[0].Value);
-                string qText = "DELETE FROM Customers WHERE IDCUS = @id";
-                OleDbCommand Com = new OleDbCommand();
-                Com.Parameters.AddWithValue("@id", componentsId);
-                Com.CommandText = qText;
-                Com.Connection = Con;
-                try
-                {
-                    Con.Open();
-                    Com.ExecuteNonQuery();
-                    Con.Close();
-                    loadCustomers();
-                }
-                catch (Exception err)
-                {
-                    MessageBox.Show(err.Message);
-                }
-                finally
-                {
-                    Con.Close();
-                }
-            }
+            //DialogResult dR = MessageBox.Show(
+            //                 "Вы действительно желаете удалить запись?",
+            //                 "Программа",
+            //                 MessageBoxButtons.OKCancel,
+            //                 MessageBoxIcon.Warning
+            //             );
+            //if (dR == DialogResult.OK)
+            //{
+            //    string componentsId = Convert.ToString(dgCustomerList.CurrentRow.Cells[0].Value);
+            //    string qText = "DELETE FROM Customers WHERE IDCUS = @id";
+            //    OleDbCommand Com = new OleDbCommand();
+            //    Com.Parameters.AddWithValue("@id", componentsId);
+            //    Com.CommandText = qText;
+            //    Com.Connection = Con;
+            //    try
+            //    {
+            //        Con.Open();
+            //        Com.ExecuteNonQuery();
+            //        Con.Close();
+            //        loadCustomers();
+            //    }
+            //    catch (Exception err)
+            //    {
+            //        MessageBox.Show(err.Message);
+            //    }
+            //    finally
+            //    {
+            //        Con.Close();
+            //    }
+            //}
         }
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)

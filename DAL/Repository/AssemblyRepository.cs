@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    class AssemblyRepository : AbstractRepository, IModelRepository<AssemblyModel, Assembly>
+    public class AssemblyRepository : AbstractRepository, IModelRepository<AssemblyModel, Assembly>
     {
         Assembly ToEntity(AssemblyModel source)
         {

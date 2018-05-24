@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    class OrderModel
+    public class OrderModel
     {
         public int IdOrder { get; set; }
         public int? NumberAssembly { get; set; }

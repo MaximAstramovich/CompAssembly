@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    class SellingRepository : AbstractRepository, IModelRepository<SellingModel, Selling>
+    public class SellingRepository : AbstractRepository, IModelRepository<SellingModel, Selling>
     {
         Selling ToEntity(SellingModel source)
         {

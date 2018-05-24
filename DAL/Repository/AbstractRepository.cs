@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    class AbstractRepository : IDisposable
+    public class AbstractRepository : IDisposable
     {
         protected CA_DBContext caContext;
         public AbstractRepository()

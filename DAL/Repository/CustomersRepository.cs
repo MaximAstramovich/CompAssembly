@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    class CustomersRepository : AbstractRepository, IModelRepository<CustomersModel, Customers>
+    public class CustomersRepository : AbstractRepository, IModelRepository<CustomersModel, Customers>
     {
         Customers ToEntity(CustomersModel source)
         {
@@ -19,7 +19,7 @@ namespace DAL.Repository
                 DateOfBirth = source.DateOfBirth,
                 DateOfIssue = source.DateOfIssue,
                 FIO = source.FIO,
-                IDCUS = source.IDCUS,
+                //IDCUS = source.IDCUS,
                 PassportNo = source.PassportNo,
                 PhoneNumber = source.PhoneNumber
             };
@@ -70,7 +70,7 @@ namespace DAL.Repository
                 entity.DateOfBirth = item.DateOfBirth;
                 entity.DateOfIssue = item.DateOfIssue;
                 entity.FIO = item.FIO;
-                entity.IDCUS = item.IDCUS;
+                //entity.IDCUS = item.IDCUS;
                 entity.PassportNo = item.PassportNo;
                 entity.PhoneNumber = item.PhoneNumber;
                 SaveChanges();

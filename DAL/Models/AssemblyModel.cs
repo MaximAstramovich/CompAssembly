@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    class AssemblyModel
+    public class AssemblyModel
     {
         public int? IDCUS { get; set; }
         public System.DateTime? OrderDate { get; set; }

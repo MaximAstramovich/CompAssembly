@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    class OrderRepository : AbstractRepository, IModelRepository<OrderModel, Order>
+    public class OrderRepository : AbstractRepository, IModelRepository<OrderModel, Order>
     {
         Order ToEntity(OrderModel source)
         {

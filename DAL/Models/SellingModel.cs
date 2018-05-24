@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    class SellingModel
+    public class SellingModel
     {
         public int IDS { get; set; }
         public int? IDCUS { get; set; }

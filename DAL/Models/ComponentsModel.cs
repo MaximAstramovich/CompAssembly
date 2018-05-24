@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    class ComponentsModel
+    public class ComponentsModel
     {
         public int IDCOM { get; set; }
         public int? Type { get; set; }
