@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9D4C9F33-00FE-4C35-8337-E7AF06C239F7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ComputerAssembly</RootNamespace>
+    <AssemblyName>ComputerAssembly</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyList.Designer.cs">
+      <DependentUpon>AssemblyList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyOne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssemblyOne.Designer.cs">
+      <DependentUpon>AssemblyOne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CrystalReportAccessory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReportAccessory.rpt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CrystalReportAssembly.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReportAssembly.rpt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CrystalReportCustomer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReportCustomer.rpt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSetAccessory.cs">
+      <DependentUpon>DataSetAccessory.xsd</DependentUpon>
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="DataSetAccessory.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetAccessory.xsd</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="DataSetAssembly.cs">
+      <DependentUpon>DataSetAssembly.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSetAssembly.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetAssembly.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSetCustomer.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetCustomer.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DBDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="FormReference.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReference.Designer.cs">
+      <DependentUpon>FormReference.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportAccessory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportAccessory.Designer.cs">
+      <DependentUpon>FormReportAccessory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportAssembly.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportAssembly.Designer.cs">
+      <DependentUpon>FormReportAssembly.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReportCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReportCustomer.Designer.cs">
+      <DependentUpon>FormReportCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mainForm.Designer.cs">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sprAccessoryList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprAccessoryList.Designer.cs">
+      <DependentUpon>sprAccessoryList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sprAccessoryOne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprAccessoryOne.Designer.cs">
+      <DependentUpon>sprAccessoryOne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sprSuppliersList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprSuppliersList.Designer.cs">
+      <DependentUpon>sprSuppliersList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sprSuppliersOne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprSuppliersOne.Designer.cs">
+      <DependentUpon>sprSuppliersOne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sprCustomerList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprCustomerList.Designer.cs">
+      <DependentUpon>sprCustomerList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sprCustomerOne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprCustomerOne.Designer.cs">
+      <DependentUpon>sprCustomerOne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sprReceiptList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprReceiptList.Designer.cs">
+      <DependentUpon>sprReceiptList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="sprReceiptOne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="sprReceiptOne.Designer.cs">
+      <DependentUpon>sprReceiptOne.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssemblyList.resx">
+      <DependentUpon>AssemblyList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssemblyOne.resx">
+      <DependentUpon>AssemblyOne.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReportAccessory.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReportAccessory.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReportAssembly.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReportAssembly.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReportCustomer.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReportCustomer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReference.resx">
+      <DependentUpon>FormReference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReportAccessory.resx">
+      <DependentUpon>FormReportAccessory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReportAssembly.resx">
+      <DependentUpon>FormReportAssembly.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormReportCustomer.resx">
+      <DependentUpon>FormReportCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mainForm.resx">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="sprAccessoryList.resx">
+      <DependentUpon>sprAccessoryList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sprAccessoryOne.resx">
+      <DependentUpon>sprAccessoryOne.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sprSuppliersList.resx">
+      <DependentUpon>sprSuppliersList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sprSuppliersOne.resx">
+      <DependentUpon>sprSuppliersOne.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sprCustomerList.resx">
+      <DependentUpon>sprCustomerList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sprCustomerOne.resx">
+      <DependentUpon>sprCustomerOne.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sprReceiptList.resx">
+      <DependentUpon>sprReceiptList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="sprReceiptOne.resx">
+      <DependentUpon>sprReceiptOne.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="DataSetAccessory.xsc">
+      <DependentUpon>DataSetAccessory.xsd</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataSetAccessory.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetAccessory.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataSetAccessory.xss">
+      <DependentUpon>DataSetAccessory.xsd</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="DataSetAssembly.xsc">
+      <DependentUpon>DataSetAssembly.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetAssembly.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetAssembly.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSetAssembly.xss">
+      <DependentUpon>DataSetAssembly.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetCustomer.xsc">
+      <DependentUpon>DataSetCustomer.xsd</DependentUpon>
+    </None>
+    <None Include="DataSetCustomer.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetCustomer.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataSetCustomer.xss">
+      <DependentUpon>DataSetCustomer.xsd</DependentUpon>
+    </None>
+    <None Include="DBDataSet.xsc">
+      <DependentUpon>DBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBDataSet.xss">
+      <DependentUpon>DBDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kwrite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkmark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\package-up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\find.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BL\BL.csproj">
+      <Project>{2d8caa64-e3c2-4932-b930-62d6dbbbb1f0}</Project>
+      <Name>BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{1e097312-da17-499f-b2e2-f7c644933b89}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="be278484ec1a4c91bf72a00e1f07c35a" Name="Diagram1">
+        <EntityTypeShape EntityType="CA_DBModel.Components" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.ComponentTypes" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.Customers" Width="1.5" PointX="7.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.Receipts" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.Suppliers" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.Assembly" Width="1.5" PointX="10" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.Order" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.Selling" Width="1.5" PointX="10" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CA_DBModel.Stock" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
+        <AssociationConnector Association="CA_DBModel.FK_Components_ComponentTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="CA_DBModel.FK_Receipts_Components" ManuallyRouted="false" />
+        <AssociationConnector Association="CA_DBModel.FK_Stock_Components" ManuallyRouted="false" />
+        <AssociationConnector Association="CA_DBModel.FK_Assembly_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="CA_DBModel.FK_Selling_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="CA_DBModel.FK_Receipts_Suppliers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1E097312-DA17-499F-B2E2-F7C644933B89}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\ComputerAssembly\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\ComputerAssembly\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DBModel\Assembly.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\CAContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CAContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\CAContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\CAContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CAContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\Components.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\ComponentTypes.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\Customers.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\Order.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AssemblyModel.cs" />
+    <Compile Include="Models\ComponentsModel.cs" />
+    <Compile Include="Models\ComponentTypesModel.cs" />
+    <Compile Include="Models\CustomersModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\ReceiptsModel.cs" />
+    <Compile Include="Models\SellingModel.cs" />
+    <Compile Include="Models\StockModel.cs" />
+    <Compile Include="Models\SuppliersModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DBModel\Receipts.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\AbstractRepository.cs" />
+    <Compile Include="Repository\AssemblyRepository.cs" />
+    <Compile Include="Repository\ComponentsRepository.cs" />
+    <Compile Include="Repository\ComponentTypesRepository.cs" />
+    <Compile Include="Repository\CustomersRepository.cs" />
+    <Compile Include="Repository\IModelRepository.cs" />
+    <Compile Include="DBModel\Selling.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\Stock.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\Suppliers.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBModel\sysdiagrams.cs">
+      <DependentUpon>CAContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\OrderRepository.cs" />
+    <Compile Include="Repository\ReceiptsRepository.cs" />
+    <Compile Include="Repository\SellingRepository.cs" />
+    <Compile Include="Repository\StockRepository.cs" />
+    <Compile Include="Repository\SuppliersRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="DBModel\CAContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CAContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DBModel\CAContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CAContext.edmx</DependentUpon>
+      <LastGenOutput>CAContext.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DBModel\CAContext.edmx.diagram">
+      <DependentUpon>CAContext.edmx</DependentUpon>
+    </None>
+    <None Include="DBModel\CAContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CAContext.edmx</DependentUpon>
+      <LastGenOutput>CAContext.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
