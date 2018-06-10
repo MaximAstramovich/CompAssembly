@@ -19,7 +19,7 @@ namespace DAL.Repository
                 DateOfBirth = source.DateOfBirth,
                 DateOfIssue = source.DateOfIssue,
                 FIO = source.FIO,
-                //IDCUS = source.IDCUS,
+                IdCustomer = source.IDCUS,
                 PassportNo = source.PassportNo,
                 PhoneNumber = source.PhoneNumber
             };
@@ -34,7 +34,7 @@ namespace DAL.Repository
                 DateOfBirth = source.DateOfBirth,
                 DateOfIssue = source.DateOfIssue,
                 FIO = source.FIO,
-                IDCUS = source.IDCUS,
+                IDCUS = source.IdCustomer,
                 PassportNo = source.PassportNo,
                 PhoneNumber = source.PhoneNumber
             };
@@ -48,7 +48,7 @@ namespace DAL.Repository
 
         public void Remove(CustomersModel item)
         {
-            var entity = this.caContext.Customers.FirstOrDefault(x => x.IDCUS == item.IDCUS);
+            var entity = this.caContext.Customers.FirstOrDefault(x => x.IdCustomer == item.IDCUS);
             if (entity != null)
             {
                 caContext.Customers.Remove(entity);
@@ -62,7 +62,7 @@ namespace DAL.Repository
 
         public void Update(CustomersModel item)
         {
-            var entity = this.caContext.Customers.FirstOrDefault(x => x.IDCUS == item.IDCUS);
+            var entity = this.caContext.Customers.FirstOrDefault(x => x.IdCustomer == item.IDCUS);
             if (entity != null)
             {
                 entity.Address = item.Address;
@@ -70,7 +70,6 @@ namespace DAL.Repository
                 entity.DateOfBirth = item.DateOfBirth;
                 entity.DateOfIssue = item.DateOfIssue;
                 entity.FIO = item.FIO;
-                //entity.IDCUS = item.IDCUS;
                 entity.PassportNo = item.PassportNo;
                 entity.PhoneNumber = item.PhoneNumber;
                 SaveChanges();
@@ -83,7 +82,7 @@ namespace DAL.Repository
 
         public Customers GetEntity(CustomersModel source)
         {
-            var entity = this.caContext.Customers.FirstOrDefault(x => x.IDCUS == source.IDCUS);
+            var entity = this.caContext.Customers.FirstOrDefault(x => x.IdCustomer == source.IDCUS);
             return entity;
         }
 
@@ -99,6 +98,18 @@ namespace DAL.Repository
 
                 return modelsList;
             }
+        }
+
+        public List<Assembly> GetAllAssembliesByCustomerId(int idCustomer)
+        {
+            var customer = caContext.Customers.Find(idCustomer);
+            return customer.Assembly.ToList();
+        }
+
+        public List<Selling> GetAllSellingsByCustomerId(int idCustomer)
+        {
+            var customer = caContext.Customers.Find(idCustomer);
+            return customer.Selling.ToList();
         }
 
         public void SaveChanges()

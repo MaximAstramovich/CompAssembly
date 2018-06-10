@@ -24,9 +24,15 @@ namespace BL
             customers.AddRange(customersRepository.Items);
             return customers;
         }
+        public Task<List<CustomersModel>> GetAllCustomersListAsync()
+        {
+            var customers = new List<CustomersModel>();
+            customers.AddRange(customersRepository.Items);
+            return Task.Factory.StartNew( () => customers);
+        }
 
         public void AddOrUpdateCustomer(string address, string authority, DateTime? dateOfBirth, 
-                                DateTime? dateOfIssue, string fio, //int idCus, 
+                                DateTime? dateOfIssue, string fio, 
                                 string passportNo, int? phoneNumber)
         {
             var customer = new CustomersModel();
@@ -35,7 +41,6 @@ namespace BL
             customer.DateOfBirth = dateOfBirth;
             customer.DateOfIssue = dateOfIssue;
             customer.FIO = fio;
-            //customer.IDCUS = idCus;
             customer.PassportNo = passportNo;
             customer.PhoneNumber = phoneNumber;
 

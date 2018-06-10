@@ -14,11 +14,11 @@ namespace DAL.DBModel
     
     public partial class Receipts
     {
-        public int IDR { get; set; }
-        public Nullable<int> IDSUP { get; set; }
-        public Nullable<int> IDCOM { get; set; }
+        public int IdReceipts { get; set; }
+        public Nullable<int> IdSuppliers { get; set; }
+        public Nullable<int> IdCom { get; set; }
         public Nullable<int> Quality { get; set; }
-        public Nullable<int> Price { get; set; }
+        public Nullable<decimal> Price { get; set; }
         public Nullable<System.DateTime> ReceiptDate { get; set; }
     
         public virtual Components Components { get; set; }

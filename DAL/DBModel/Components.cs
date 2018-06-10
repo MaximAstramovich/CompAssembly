@@ -19,14 +19,14 @@ namespace DAL.DBModel
             this.Receipts = new HashSet<Receipts>();
         }
     
-        public int IDCOM { get; set; }
+        public int IdCom { get; set; }
         public Nullable<int> Type { get; set; }
         public string Nazv { get; set; }
         public string Description { get; set; }
-        public Nullable<int> Price { get; set; }
+        public Nullable<decimal> Price { get; set; }
     
         public virtual ComponentTypes ComponentTypes { get; set; }
-        public virtual ICollection<Receipts> Receipts { get; set; }
         public virtual Stock Stock { get; set; }
+        public virtual ICollection<Receipts> Receipts { get; set; }
     }
 }

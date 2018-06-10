@@ -8,10 +8,11 @@ namespace DAL.Models
 {
     public class AssemblyModel
     {
+        public int IdAssembly { get; set; }
         public int? IDCUS { get; set; }
         public System.DateTime? OrderDate { get; set; }
         public int? Num { get; set; }
-        public int? Summ { get; set; }
+        public decimal? Summ { get; set; }
         public int? Corpus { get; set; }
         public int? Board { get; set; }
         public int? CPU { get; set; }
@@ -23,7 +24,6 @@ namespace DAL.Models
         public int? DVD { get; set; }
         public int? Audio { get; set; }
         public int? Ice { get; set; }
-        public int Code { get; set; }
         public int? Status { get; set; }
         public System.DateTime? DateOfPayment { get; set; }
     }

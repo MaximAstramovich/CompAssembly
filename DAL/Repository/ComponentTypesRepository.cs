@@ -14,7 +14,7 @@ namespace DAL.Repository
         {
             return new ComponentTypes()
             {
-                ID = source.ID,
+                IdComponentType = source.ID,
                 Type = source.Type
             };
         }
@@ -23,7 +23,7 @@ namespace DAL.Repository
         {
             return new ComponentTypesModel()
             {
-                ID = source.ID,
+                ID = source.IdComponentType,
                 Type = source.Type
             };
         }
@@ -36,7 +36,7 @@ namespace DAL.Repository
 
         public void Remove(ComponentTypesModel item)
         {
-            var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.ID == item.ID);
+            var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.IdComponentType == item.ID);
             if (entity != null)
             {
                 caContext.ComponentTypes.Remove(entity);
@@ -50,10 +50,10 @@ namespace DAL.Repository
 
         public void Update(ComponentTypesModel item)
         {
-            var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.ID == item.ID);
+            var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.IdComponentType == item.ID);
             if (entity != null)
             {
-                entity.ID = item.ID;
+                //entity.IdComponentType = item.ID;
                 entity.Type = item.Type;
                 SaveChanges();
             }
@@ -65,7 +65,7 @@ namespace DAL.Repository
 
         public ComponentTypes GetEntity(ComponentTypesModel source)
         {
-            var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.ID == source.ID);
+            var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.IdComponentType == source.ID);
             return entity;
         }
 
@@ -81,6 +81,12 @@ namespace DAL.Repository
 
                 return modelsList;
             }
+        }
+
+        public List<Components> GetAllComponentsByComponentTypeId(int idComponentType)
+        {
+            var componentType = caContext.ComponentTypes.Find(idComponentType);
+            return componentType.Components.ToList();
         }
 
         public void SaveChanges()

@@ -20,7 +20,7 @@ namespace DAL.DBModel
             this.Selling = new HashSet<Selling>();
         }
     
-        public int IDCUS { get; set; }
+        public int IdCustomer { get; set; }
         public string FIO { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string PassportNo { get; set; }

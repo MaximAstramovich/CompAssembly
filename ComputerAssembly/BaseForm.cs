@@ -14,10 +14,12 @@ namespace ComputerAssembly
     public partial class BaseForm : Form
     {
         public CustomersBLL CustomersBusinessLayer;
+        public SuppliersBLL SuppliersBusinessLayer;
         public BaseForm()
         {
             InitializeComponent();
             CustomersBusinessLayer = new CustomersBLL();
+            SuppliersBusinessLayer = new SuppliersBLL();
         }
     }
 }

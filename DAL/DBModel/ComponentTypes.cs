@@ -19,7 +19,7 @@ namespace DAL.DBModel
             this.Components = new HashSet<Components>();
         }
     
-        public int ID { get; set; }
+        public int IdComponentType { get; set; }
         public string Type { get; set; }
     
         public virtual ICollection<Components> Components { get; set; }

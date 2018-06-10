@@ -14,10 +14,11 @@ namespace DAL.DBModel
     
     public partial class Assembly
     {
-        public Nullable<int> IDCUS { get; set; }
+        public int IdAssembly { get; set; }
+        public Nullable<int> IdCus { get; set; }
         public Nullable<System.DateTime> OrderDate { get; set; }
         public Nullable<int> Num { get; set; }
-        public Nullable<int> Summ { get; set; }
+        public Nullable<decimal> Summ { get; set; }
         public Nullable<int> Corpus { get; set; }
         public Nullable<int> Board { get; set; }
         public Nullable<int> CPU { get; set; }
@@ -29,7 +30,6 @@ namespace DAL.DBModel
         public Nullable<int> DVD { get; set; }
         public Nullable<int> Audio { get; set; }
         public Nullable<int> Ice { get; set; }
-        public int Код { get; set; }
         public Nullable<int> Status { get; set; }
         public Nullable<System.DateTime> DateOfPayment { get; set; }
     

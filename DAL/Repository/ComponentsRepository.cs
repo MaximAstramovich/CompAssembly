@@ -15,7 +15,7 @@ namespace DAL.Repository
             return new Components()
             {
                 Description = source.Description,
-                IDCOM = source.IDCOM,
+                IdCom = source.IDCOM,
                 Nazv = source.Nazv,
                 Price = source.Price,
                 Type = source.Type
@@ -27,7 +27,7 @@ namespace DAL.Repository
             return new ComponentsModel()
             {
                 Description = source.Description,
-                IDCOM = source.IDCOM,
+                IDCOM = source.IdCom,
                 Nazv = source.Nazv,
                 Price = source.Price,
                 Type = source.Type
@@ -42,7 +42,7 @@ namespace DAL.Repository
 
         public void Remove(ComponentsModel item)
         {
-            var entity = this.caContext.Components.FirstOrDefault(x => x.IDCOM == item.IDCOM);
+            var entity = this.caContext.Components.FirstOrDefault(x => x.IdCom == item.IDCOM);
             if (entity != null)
             {
                 caContext.Components.Remove(entity);
@@ -56,11 +56,11 @@ namespace DAL.Repository
 
         public void Update(ComponentsModel item)
         {
-            var entity = this.caContext.Components.FirstOrDefault(x => x.IDCOM == item.IDCOM);
+            var entity = this.caContext.Components.FirstOrDefault(x => x.IdCom == item.IDCOM);
             if (entity != null)
             {
                 entity.Description = item.Description;
-                entity.IDCOM = item.IDCOM;
+                //entity.IdCom = item.IDCOM;
                 entity.Nazv = item.Nazv;
                 entity.Price = item.Price;
                 entity.Type = item.Type;
@@ -74,7 +74,7 @@ namespace DAL.Repository
 
         public Components GetEntity(ComponentsModel source)
         {
-            var entity = this.caContext.Components.FirstOrDefault(x => x.IDCOM == source.IDCOM);
+            var entity = this.caContext.Components.FirstOrDefault(x => x.IdCom == source.IDCOM);
             return entity;
         }
 
@@ -90,6 +90,12 @@ namespace DAL.Repository
 
                 return modelsList;
             }
+        }
+
+        public List<Receipts> GetAllReceiptsByComponentId(int idCom)
+        {
+            var component = caContext.Components.Find(idCom);
+            return component.Receipts.ToList();
         }
 
         public void SaveChanges()

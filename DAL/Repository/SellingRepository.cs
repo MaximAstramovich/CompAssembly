@@ -14,9 +14,9 @@ namespace DAL.Repository
         {
             return new Selling()
             {
-                IDS = source.IDS,
-                IDCOM = source.IDCOM,
-                IDCUS = source.IDCUS,
+                IdSelling = source.IDS,
+                IdCom = source.IDCOM,
+                IdCustomer = source.IDCUS,
                 Price = source.Price,
                 Quality = source.Quality,
                 DateOfSale = source.DateOfSale
@@ -27,9 +27,9 @@ namespace DAL.Repository
         {
             return new SellingModel()
             {
-                IDS = source.IDS,
-                IDCOM = source.IDCOM,
-                IDCUS = source.IDCUS,
+                IDS = source.IdSelling,
+                IDCOM = source.IdCom,
+                IDCUS = source.IdCustomer,
                 Price = source.Price,
                 Quality = source.Quality,
                 DateOfSale = source.DateOfSale
@@ -44,7 +44,7 @@ namespace DAL.Repository
 
         public void Remove(SellingModel item)
         {
-            var entity = this.caContext.Selling.FirstOrDefault(x => x.IDS == item.IDS);
+            var entity = this.caContext.Selling.FirstOrDefault(x => x.IdSelling == item.IDS);
             if (entity != null)
             {
                 caContext.Selling.Remove(entity);
@@ -58,12 +58,11 @@ namespace DAL.Repository
 
         public void Update(SellingModel item)
         {
-            var entity = this.caContext.Selling.FirstOrDefault(x => x.IDS == item.IDS);
+            var entity = this.caContext.Selling.FirstOrDefault(x => x.IdSelling == item.IDS);
             if (entity != null)
             {
-                entity.IDS = item.IDS;
-                entity.IDCOM = item.IDCOM;
-                entity.IDCUS = item.IDCUS;
+                entity.IdCom = item.IDCOM;
+                entity.IdCustomer = item.IDCUS;
                 entity.Price = item.Price;
                 entity.Quality = item.Quality;
                 entity.DateOfSale = item.DateOfSale;
@@ -77,7 +76,7 @@ namespace DAL.Repository
 
         public Selling GetEntity(SellingModel source)
         {
-            var entity = this.caContext.Selling.FirstOrDefault(x => x.IDS == source.IDS);
+            var entity = this.caContext.Selling.FirstOrDefault(x => x.IdSelling == source.IDS);
             return entity;
         }
 
@@ -93,6 +92,11 @@ namespace DAL.Repository
 
                 return modelsList;
             }
+        }
+
+        public Customers GetCustomerBySellingId(int idSelling)
+        {
+            return caContext.Selling.Find(idSelling).Customers;
         }
 
         public void SaveChanges()

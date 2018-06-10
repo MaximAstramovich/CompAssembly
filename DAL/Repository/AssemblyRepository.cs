@@ -23,15 +23,15 @@ namespace DAL.Repository
                 Graphic = source.Graphic,
                 HDD = source.HDD,
                 Ice = source.Ice,
-                IDCUS = source.IDCUS,
+                IdCus = source.IDCUS,
                 Num = source.Num,
                 OrderDate = source.OrderDate,
                 OZU = source.OZU,
                 Power = source.Power,
                 SSD = source.SSD,
                 Status = source.Status,
-                Summ = source.Summ,
-                Код = source.Code
+                Summ = source.Summ, 
+                IdAssembly = source.IdAssembly
             };
         }
 
@@ -48,7 +48,7 @@ namespace DAL.Repository
                 Graphic = source.Graphic,
                 HDD = source.HDD,
                 Ice = source.Ice,
-                IDCUS = source.IDCUS,
+                IDCUS = source.IdCus,
                 Num = source.Num,
                 OrderDate = source.OrderDate,
                 OZU = source.OZU,
@@ -56,7 +56,7 @@ namespace DAL.Repository
                 SSD = source.SSD,
                 Status = source.Status,
                 Summ = source.Summ,
-                Code = source.Код
+                IdAssembly = source.IdAssembly
             };
         }
         public void Add(AssemblyModel item)
@@ -68,7 +68,7 @@ namespace DAL.Repository
 
         public void Remove(AssemblyModel item)
         {
-            var entity = this.caContext.Assembly.FirstOrDefault(x => x.IDCUS == item.IDCUS);
+            var entity = this.caContext.Assembly.FirstOrDefault(x => x.IdAssembly == item.IdAssembly);
             if (entity != null)
             {
                 caContext.Assembly.Remove(entity);
@@ -82,7 +82,7 @@ namespace DAL.Repository
 
         public void Update(AssemblyModel item)
         {
-            var entity = this.caContext.Assembly.FirstOrDefault(x => x.IDCUS == item.IDCUS);
+            var entity = this.caContext.Assembly.FirstOrDefault(x => x.IdAssembly == item.IdAssembly);
             if (entity != null)
             {
                 entity.Audio = item.Audio;
@@ -94,7 +94,7 @@ namespace DAL.Repository
                 entity.Graphic = item.Graphic;
                 entity.HDD = item.HDD;
                 entity.Ice = item.Ice;
-                entity.IDCUS = item.IDCUS;
+                entity.IdCus = item.IDCUS;
                 entity.Num = item.Num;
                 entity.OrderDate = item.OrderDate;
                 entity.OZU = item.OZU;
@@ -102,7 +102,6 @@ namespace DAL.Repository
                 entity.SSD = item.SSD;
                 entity.Status = item.Status;
                 entity.Summ = item.Summ;
-                entity.Код = item.Code;
                 SaveChanges();
             }
             else
@@ -113,7 +112,7 @@ namespace DAL.Repository
 
         public Assembly GetEntity(AssemblyModel source)
         {
-            var entity = this.caContext.Assembly.FirstOrDefault(x => x.IDCUS == source.IDCUS);
+            var entity = this.caContext.Assembly.FirstOrDefault(x => x.IdAssembly == source.IdAssembly);
             return entity;
         }
 

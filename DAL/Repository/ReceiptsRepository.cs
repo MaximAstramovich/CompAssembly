@@ -14,9 +14,9 @@ namespace DAL.Repository
         {
             return new Receipts()
             {
-                 IDR = source.IDR,
-                 IDCOM = source.IDCOM,
-                 IDSUP = source.IDSUP,
+                 IdReceipts = source.IDR,
+                 IdCom = source.IDCOM,
+                 IdSuppliers = source.IDSUP,
                  Price = source.Price,
                  Quality = source.Quality,
                  ReceiptDate = source.ReceiptDate
@@ -27,9 +27,9 @@ namespace DAL.Repository
         {
             return new ReceiptsModel()
             {
-                IDR = source.IDR,
-                IDCOM = source.IDCOM,
-                IDSUP = source.IDSUP,
+                IDR = source.IdReceipts,
+                IDCOM = source.IdCom,
+                IDSUP = source.IdSuppliers,
                 Price = source.Price,
                 Quality = source.Quality,
                 ReceiptDate = source.ReceiptDate
@@ -44,7 +44,7 @@ namespace DAL.Repository
 
         public void Remove(ReceiptsModel item)
         {
-            var entity = this.caContext.Receipts.FirstOrDefault(x => x.IDR == item.IDR);
+            var entity = this.caContext.Receipts.FirstOrDefault(x => x.IdReceipts == item.IDR);
             if (entity != null)
             {
                 caContext.Receipts.Remove(entity);
@@ -58,12 +58,12 @@ namespace DAL.Repository
 
         public void Update(ReceiptsModel item)
         {
-            var entity = this.caContext.Receipts.FirstOrDefault(x => x.IDR == item.IDR);
+            var entity = this.caContext.Receipts.FirstOrDefault(x => x.IdReceipts == item.IDR);
             if (entity != null)
             {
-                entity.IDR = item.IDR;
-                entity.IDCOM = item.IDCOM;
-                entity.IDSUP = item.IDSUP;
+                //entity.IdReceipts = item.IDR;
+                entity.IdCom = item.IDCOM;
+                entity.IdSuppliers = item.IDSUP;
                 entity.Price = item.Price;
                 entity.Quality = item.Quality;
                 entity.ReceiptDate = item.ReceiptDate;
@@ -77,7 +77,7 @@ namespace DAL.Repository
 
         public Receipts GetEntity(ReceiptsModel source)
         {
-            var entity = this.caContext.Receipts.FirstOrDefault(x => x.IDR == source.IDR);
+            var entity = this.caContext.Receipts.FirstOrDefault(x => x.IdReceipts == source.IDR);
             return entity;
         }
 
@@ -93,6 +93,16 @@ namespace DAL.Repository
 
                 return modelsList;
             }
+        }
+
+        public Components GetComponentByReceiptId(int idReceipt)
+        {
+            return caContext.Receipts.Find(idReceipt).Components;
+        }
+
+        public Suppliers GetSupplierByReceiptId(int idReceipt)
+        {
+            return caContext.Receipts.Find(idReceipt).Suppliers;
         }
 
         public void SaveChanges()

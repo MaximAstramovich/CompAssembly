@@ -19,9 +19,13 @@ namespace DAL.DBModel
             this.Receipts = new HashSet<Receipts>();
         }
     
-        public int IDSUP { get; set; }
-        public string FIO { get; set; }
+        public int IdSuppliers { get; set; }
         public string Firm { get; set; }
+        public string Address { get; set; }
+        public Nullable<int> UNN { get; set; }
+        public Nullable<int> CheckingAccount { get; set; }
+        public string BankCode { get; set; }
+        public string FIO { get; set; }
         public string Position { get; set; }
         public Nullable<int> PhoneNumber { get; set; }
     

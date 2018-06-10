@@ -26,13 +26,13 @@ namespace ComputerAssembly
             set { Mode = value; }
         }
 
-        private void sprCustomerList_Load(object sender, EventArgs e)
+        private async void sprCustomerList_Load(object sender, EventArgs e)
         {
-            loadCustomers();
             tablProp();
+            await loadCustomers();
         }
 
-        public void loadCustomers()
+        public async Task loadCustomers()
         {
             try
             {
@@ -42,10 +42,13 @@ namespace ComputerAssembly
                 dgCustomerList.Columns.Add("fio", "ФИО");
                 dgCustomerList.Columns.Add("address", "Адрес");
                 dgCustomerList.Columns.Add("phone", "Телефон");
-                var customersList = CustomersBusinessLayer.GetAllCustomersList();
-                foreach(var customer in customersList)
+                var customersList = await CustomersBusinessLayer.GetAllCustomersListAsync();
+                if (customersList.Count != 0)
                 {
-                    dgCustomerList.Rows.Add(customer.IDCUS, customer.FIO, customer.Address, customer.PhoneNumber);
+                    foreach (var customer in customersList)
+                    {
+                        dgCustomerList.Rows.Add(customer.IDCUS, customer.FIO, customer.Address, customer.PhoneNumber);
+                    }
                 }
             }
             catch (Exception err)

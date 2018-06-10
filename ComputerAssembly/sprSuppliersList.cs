@@ -11,13 +11,13 @@ using System.Data.OleDb;
 
 namespace ComputerAssembly
 {
-    public partial class sprSuppliersList : Form
+    public partial class sprSuppliersList : BaseForm
     {
-        OleDbConnection Con = new OleDbConnection();
+        //OleDbConnection Con = new OleDbConnection();
         public sprSuppliersList()
         {
             InitializeComponent();
-            Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
+            //Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
         }
 
         string Mode = "0";
@@ -49,22 +49,16 @@ namespace ComputerAssembly
                 dgSuppliersList.Columns.Add("fio", "ФИО представителя");
                 dgSuppliersList.Columns.Add("pos", "Должность");
                 dgSuppliersList.Columns.Add("phone", "Телефон");
-                Con.Open();
-                string qText = "SELECT * FROM Suppliers";
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = Com.ExecuteReader();
-                while (reader.Read())
+
+                var suppliersList = SuppliersBusinessLayer.GetAllSuppliersList();
+                foreach (var supplier in suppliersList)
                 {
-                    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["Firm"], reader["Address"], reader["UNN"], reader["CheckingAccount"], reader["BankCode"], reader["FIO"], reader["Position"], reader["PhoneNumber"]);
+                    //dgSuppliersList.Rows.Add(supplier.IDSUP, customer.FIO, customer.Address, customer.PhoneNumber);
                 }
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                Con.Close();
             }
         }
 
@@ -92,23 +86,23 @@ namespace ComputerAssembly
                 dgSuppliersList.Columns.Add("fio", "ФИО представителя");
                 dgSuppliersList.Columns.Add("pos", "Должность");
                 dgSuppliersList.Columns.Add("phone", "Телефон");
-                Con.Open();
-                string qText = "SELECT * FROM Suppliers where IDSUP Like '%" + textBox1.Text + "%' OR Firm Like '%" + textBox1.Text + "%' OR Address Like '%" + textBox1.Text + "%' OR UNN Like '%" + textBox1.Text + "%' OR CheckingAccount Like '%" + textBox1.Text + "%' OR BankCode Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Position Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = Com.ExecuteReader();
-                while (reader.Read())
-                {
-                    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["Firm"], reader["Address"], reader["UNN"], reader["CheckingAccount"], reader["BankCode"], reader["FIO"], reader["Position"], reader["PhoneNumber"]);
-                }
+                //Con.Open();
+                //string qText = "SELECT * FROM Suppliers where IDSUP Like '%" + textBox1.Text + "%' OR Firm Like '%" + textBox1.Text + "%' OR Address Like '%" + textBox1.Text + "%' OR UNN Like '%" + textBox1.Text + "%' OR CheckingAccount Like '%" + textBox1.Text + "%' OR BankCode Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Position Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
+                //OleDbCommand Com = new OleDbCommand(qText, Con);
+                //OleDbDataReader reader = Com.ExecuteReader();
+                //while (reader.Read())
+                //{
+                //    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["Firm"], reader["Address"], reader["UNN"], reader["CheckingAccount"], reader["BankCode"], reader["FIO"], reader["Position"], reader["PhoneNumber"]);
+                //}
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
             }
-            finally
-            {
-                Con.Close();
-            }
+            //finally
+            //{
+            //    Con.Close();
+            //}
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -129,27 +123,27 @@ namespace ComputerAssembly
                          );
             if (dR == DialogResult.OK)
             {
-                string suppliersId = Convert.ToString(dgSuppliersList.CurrentRow.Cells[0].Value);
-                string qText = "DELETE FROM Suppliers WHERE IDSUP = @id";
-                OleDbCommand Com = new OleDbCommand();
-                Com.Parameters.AddWithValue("@id", suppliersId);
-                Com.CommandText = qText;
-                Com.Connection = Con;
+                //string suppliersId = Convert.ToString(dgSuppliersList.CurrentRow.Cells[0].Value);
+                //string qText = "DELETE FROM Suppliers WHERE IDSUP = @id";
+                //OleDbCommand Com = new OleDbCommand();
+                //Com.Parameters.AddWithValue("@id", suppliersId);
+                //Com.CommandText = qText;
+                //Com.Connection = Con;
                 try
                 {
-                    Con.Open();
-                    Com.ExecuteNonQuery();
-                    Con.Close();
-                    loadSuppliers();
+                    //Con.Open();
+                    //Com.ExecuteNonQuery();
+                    //Con.Close();
+                    //loadSuppliers();
                 }
                 catch (Exception err)
                 {
                     MessageBox.Show(err.Message);
                 }
-                finally
-                {
-                    Con.Close();
-                }
+                //finally
+                //{
+                //    Con.Close();
+                //}
             }
         }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1218bfa858fc4c59b6735670a1d53936" Name="Diagram1">
+        <EntityTypeShape EntityType="NewCADBModel.Components" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewCADBModel.ComponentTypes" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewCADBModel.Customers" Width="1.5" PointX="5.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewCADBModel.Receipts" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewCADBModel.Selling" Width="1.5" PointX="8" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewCADBModel.Stock" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewCADBModel.Suppliers" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NewCADBModel.Assembly" Width="1.5" PointX="8" PointY="8.375" IsExpanded="true" />
+        <AssociationConnector Association="NewCADBModel.FK_Components_ComponentTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="NewCADBModel.FK_Components_Stock" ManuallyRouted="false" />
+        <AssociationConnector Association="NewCADBModel.FK_Receipts_Components" ManuallyRouted="false" />
+        <AssociationConnector Association="NewCADBModel.FK_Assembly_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewCADBModel.FK_Selling_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="NewCADBModel.FK_Receipts_Suppliers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

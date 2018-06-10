@@ -12,6 +12,6 @@ namespace DAL.Models
         public int? Type { get; set; }
         public string Nazv { get; set; }
         public string Description { get; set; }
-        public int? Price { get; set; }
+        public decimal? Price { get; set; }
     }
 }

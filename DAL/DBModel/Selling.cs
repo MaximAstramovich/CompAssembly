@@ -14,11 +14,11 @@ namespace DAL.DBModel
     
     public partial class Selling
     {
-        public int IDS { get; set; }
-        public Nullable<int> IDCUS { get; set; }
-        public Nullable<int> IDCOM { get; set; }
+        public int IdSelling { get; set; }
+        public Nullable<int> IdCustomer { get; set; }
+        public Nullable<int> IdCom { get; set; }
         public Nullable<int> Quality { get; set; }
-        public Nullable<int> Price { get; set; }
+        public Nullable<decimal> Price { get; set; }
         public string DateOfSale { get; set; }
     
         public virtual Customers Customers { get; set; }

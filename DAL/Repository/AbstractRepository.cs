@@ -9,10 +9,10 @@ namespace DAL.Repository
 {
     public class AbstractRepository : IDisposable
     {
-        protected CA_DBContext caContext;
+        protected NewCADBContext caContext;
         public AbstractRepository()
         {
-            caContext = new CA_DBContext();
+            caContext = new NewCADBContext();
         }
 
         public void Dispose()

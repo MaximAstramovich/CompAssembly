@@ -12,7 +12,7 @@ namespace DAL.Models
         public int? IDCUS { get; set; }
         public int? IDCOM { get; set; }
         public int? Quality { get; set; }
-        public int? Price { get; set; }
+        public decimal? Price { get; set; }
         public string DateOfSale { get; set; }
     }
 }

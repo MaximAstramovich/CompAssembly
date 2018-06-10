@@ -14,11 +14,15 @@ namespace DAL.Repository
         {
             return new Suppliers()
             {
+                Address = source.Address,
+                BankCode = source.BankCode,
+                CheckingAccount = source.CheckingAccount,
                 FIO = source.FIO,
-                IDSUP = source.IDSUP,
                 Firm = source.Firm,
+                IdSuppliers = source.IdSuppliers,
                 PhoneNumber = source.PhoneNumber,
-                Position = source.Position
+                Position = source.Position,
+                UNN = source.UNN
             };
         }
 
@@ -26,11 +30,15 @@ namespace DAL.Repository
         {
             return new SuppliersModel()
             {
+                Address = source.Address,
+                BankCode = source.BankCode,
+                CheckingAccount = source.CheckingAccount,
                 FIO = source.FIO,
-                IDSUP = source.IDSUP,
                 Firm = source.Firm,
+                IdSuppliers = source.IdSuppliers,
                 PhoneNumber = source.PhoneNumber,
-                Position = source.Position
+                Position = source.Position,
+                UNN = source.UNN
             };
         }
         public void Add(SuppliersModel item)
@@ -42,7 +50,7 @@ namespace DAL.Repository
 
         public void Remove(SuppliersModel item)
         {
-            var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IDSUP == item.IDSUP);
+            var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IdSuppliers == item.IdSuppliers);
             if (entity != null)
             {
                 caContext.Suppliers.Remove(entity);
@@ -54,16 +62,20 @@ namespace DAL.Repository
             }
         }
 
-        public void Update(SuppliersModel item)
+        public void Update(SuppliersModel source)
         {
-            var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IDSUP == item.IDSUP);
+            var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IdSuppliers == source.IdSuppliers);
             if (entity != null)
             {
-                entity.IDSUP = item.IDSUP;
-                entity.FIO = item.FIO;
-                entity.Firm = item.Firm;
-                entity.PhoneNumber = item.PhoneNumber;
-                entity.Position = item.Position;
+                entity.Address = source.Address;
+                entity.BankCode = source.BankCode;
+                entity.CheckingAccount = source.CheckingAccount;
+                entity.FIO = source.FIO;
+                entity.Firm = source.Firm;
+                entity.IdSuppliers = source.IdSuppliers;
+                entity.PhoneNumber = source.PhoneNumber;
+                entity.Position = source.Position;
+                entity.UNN = source.UNN;
                 SaveChanges();
             }
             else
@@ -74,7 +86,7 @@ namespace DAL.Repository
 
         public Suppliers GetEntity(SuppliersModel source)
         {
-            var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IDSUP == source.IDSUP);
+            var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IdSuppliers == source.IdSuppliers);
             return entity;
         }
 
@@ -90,6 +102,12 @@ namespace DAL.Repository
 
                 return modelsList;
             }
+        }
+
+        public List<Receipts> GetAllReceiptsBySupplierId(int idSupplier)
+        {
+            var supplier = caContext.Suppliers.Find(idSupplier);
+            return supplier.Receipts.ToList();
         }
 
         public void SaveChanges()
