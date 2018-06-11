@@ -26,9 +26,7 @@ namespace BL
         }
         public Task<List<CustomersModel>> GetAllCustomersListAsync()
         {
-            var customers = new List<CustomersModel>();
-            customers.AddRange(customersRepository.Items);
-            return Task.Factory.StartNew( () => customers);
+            return Task<List<CustomersModel>>.Factory.StartNew(() => GetAllCustomersList());
         }
 
         public CustomersModel FindCustomerById(int idCustomer)

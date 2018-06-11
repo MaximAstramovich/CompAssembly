@@ -25,6 +25,11 @@ namespace BL
             return customers;
         }
 
+        public void Remove(int idSupplier)
+        {
+            suppliersRepository.Remove(idSupplier);
+        }
+
         public void AddOrUpdateSupplier(string address, string bankCode, int checkingAccount, 
                                         string fio, string firm, int? phoneNumber, 
                                         string position, int unn)

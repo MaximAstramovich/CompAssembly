@@ -102,21 +102,44 @@ namespace DAL.Repository
                 var modelsList = new List<ReceiptsModel>();
                 foreach (var entity in caContext.Receipts.Select(x => x))
                 {
-                    modelsList.Add(ToObject(entity));
+                    var receipt = ToObject(entity);
+                    receipt.Supplier = GetSupplierByReceiptId(receipt.IDR);
+                    receipt.Component = GetComponentByReceiptId(receipt.IDR);
+                    modelsList.Add(receipt);
                 }
 
                 return modelsList;
             }
         }
 
-        public Components GetComponentByReceiptId(int idReceipt)
+        public ComponentsModel GetComponentByReceiptId(int idReceipt)
         {
-            return caContext.Receipts.Find(idReceipt).Components;
+            var component = caContext.Receipts.Find(idReceipt).Components;
+            return new ComponentsModel()
+            {
+                Description = component.Description,
+                IDCOM = component.IdCom,
+                Nazv = component.Nazv,
+                Price = component.Price,
+                Type = component.Type
+            };
         }
 
-        public Suppliers GetSupplierByReceiptId(int idReceipt)
+        public SuppliersModel GetSupplierByReceiptId(int idReceipt)
         {
-            return caContext.Receipts.Find(idReceipt).Suppliers;
+            var supplier = caContext.Receipts.Find(idReceipt).Suppliers;
+            return new SuppliersModel()
+            {
+                Address = supplier.Address,
+                BankCode = supplier.BankCode,
+                CheckingAccount = supplier.CheckingAccount,
+                FIO = supplier.FIO,
+                Firm = supplier.Firm,
+                IdSuppliers = supplier.IdSuppliers,
+                PhoneNumber = supplier.PhoneNumber,
+                Position = supplier.Position,
+                UNN = supplier.UNN
+            };
         }
 
         public void SaveChanges()

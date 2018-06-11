@@ -14,5 +14,7 @@ namespace DAL.Models
         public int? Quality { get; set; }
         public decimal? Price { get; set; }
         public System.DateTime? ReceiptDate { get; set; }
+        public SuppliersModel Supplier { get; set; }
+        public ComponentsModel Component { get; set; }
     }
 }

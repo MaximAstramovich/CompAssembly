@@ -15,11 +15,13 @@ namespace ComputerAssembly
     {
         public CustomersBLL CustomersBusinessLayer;
         public SuppliersBLL SuppliersBusinessLayer;
+        public ReceiptsBLL ReceiptsBusinessLayer;
         public BaseForm()
         {
             InitializeComponent();
             CustomersBusinessLayer = new CustomersBLL();
             SuppliersBusinessLayer = new SuppliersBLL();
+            ReceiptsBusinessLayer = new ReceiptsBLL();
         }
     }
 }
