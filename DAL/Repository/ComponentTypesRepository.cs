@@ -27,7 +27,7 @@ namespace DAL.Repository
                 Type = source.Type
             };
         }
-        public void Add(ComponentTypesModel item)
+        public void Add(ComponentTypesModel item, bool isIdIncluded = false)
         {
             var entity = this.ToEntity(item);
             caContext.ComponentTypes.Add(entity);
@@ -37,6 +37,20 @@ namespace DAL.Repository
         public void Remove(ComponentTypesModel item)
         {
             var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.IdComponentType == item.ID);
+            if (entity != null)
+            {
+                caContext.ComponentTypes.Remove(entity);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect argument!!!");
+            }
+        }
+
+        public void Remove(int id)
+        {
+            var entity = this.caContext.ComponentTypes.FirstOrDefault(x => x.IdComponentType == id);
             if (entity != null)
             {
                 caContext.ComponentTypes.Remove(entity);

@@ -31,7 +31,17 @@ namespace BL
             return Task.Factory.StartNew( () => customers);
         }
 
-        public void AddOrUpdateCustomer(string address, string authority, DateTime? dateOfBirth, 
+        public CustomersModel FindCustomerById(int idCustomer)
+        {
+            return customersRepository.Items.FirstOrDefault(x => x.IDCUS == idCustomer);
+        }
+
+        public void Remove(int idCustomer)
+        {
+            customersRepository.Remove(idCustomer);
+        }
+
+        public void AddOrUpdateCustomer(int idCustomer, string address, string authority, DateTime? dateOfBirth, 
                                 DateTime? dateOfIssue, string fio, 
                                 string passportNo, int? phoneNumber)
         {
@@ -43,15 +53,16 @@ namespace BL
             customer.FIO = fio;
             customer.PassportNo = passportNo;
             customer.PhoneNumber = phoneNumber;
+            customer.IDCUS = idCustomer;
 
-            var flag = customersRepository.Items.Contains(customer);
+            var flag = customersRepository.Items.Any(x => x.IDCUS == customer.IDCUS);
             if (flag)
             {
                 customersRepository.Update(customer);
             }
             else
             {
-                customersRepository.Add(customer);
+                customersRepository.Add(customer, true);
             }
         }
     }

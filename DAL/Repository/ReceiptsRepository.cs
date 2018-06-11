@@ -35,7 +35,7 @@ namespace DAL.Repository
                 ReceiptDate = source.ReceiptDate
             };
         }
-        public void Add(ReceiptsModel item)
+        public void Add(ReceiptsModel item, bool isIdIncluded = false)
         {
             var entity = this.ToEntity(item);
             caContext.Receipts.Add(entity);
@@ -45,6 +45,20 @@ namespace DAL.Repository
         public void Remove(ReceiptsModel item)
         {
             var entity = this.caContext.Receipts.FirstOrDefault(x => x.IdReceipts == item.IDR);
+            if (entity != null)
+            {
+                caContext.Receipts.Remove(entity);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect argument!!!");
+            }
+        }
+
+        public void Remove(int id)
+        {
+            var entity = this.caContext.Receipts.FirstOrDefault(x => x.IdReceipts == id);
             if (entity != null)
             {
                 caContext.Receipts.Remove(entity);

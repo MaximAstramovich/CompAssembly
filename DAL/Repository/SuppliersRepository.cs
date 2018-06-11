@@ -41,7 +41,7 @@ namespace DAL.Repository
                 UNN = source.UNN
             };
         }
-        public void Add(SuppliersModel item)
+        public void Add(SuppliersModel item, bool isIdIncluded = false)
         {
             var entity = this.ToEntity(item);
             caContext.Suppliers.Add(entity);
@@ -51,6 +51,20 @@ namespace DAL.Repository
         public void Remove(SuppliersModel item)
         {
             var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IdSuppliers == item.IdSuppliers);
+            if (entity != null)
+            {
+                caContext.Suppliers.Remove(entity);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect argument!!!");
+            }
+        }
+
+        public void Remove(int id)
+        {
+            var entity = this.caContext.Suppliers.FirstOrDefault(x => x.IdSuppliers == id);
             if (entity != null)
             {
                 caContext.Suppliers.Remove(entity);

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using DAL.DBModel;
+using DAL.Models;
 
 namespace ComputerAssembly
 {
@@ -136,6 +138,17 @@ namespace ComputerAssembly
             //        Con.Close();
             //    }
             //}
+
+            DialogResult dR = MessageBox.Show(
+                             "Вы действительно желаете удалить запись?",
+                             "Программа",
+                             MessageBoxButtons.OKCancel,
+                             MessageBoxIcon.Warning
+                         );
+            if (dR == DialogResult.OK)
+            {
+                CustomersBusinessLayer.Remove((int)dgCustomerList.CurrentRow.Cells[0].Value);
+            }
         }
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -147,9 +160,9 @@ namespace ComputerAssembly
             sprCustomerOne.ShowDialog();
         }
 
-        private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            loadCustomers();
+            await loadCustomers();
         }
 
         private void отменаToolStripMenuItem_Click(object sender, EventArgs e)

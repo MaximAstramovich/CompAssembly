@@ -35,7 +35,7 @@ namespace DAL.Repository
                 DateOfSale = source.DateOfSale
             };
         }
-        public void Add(SellingModel item)
+        public void Add(SellingModel item, bool isIdIncluded = false)
         {
             var entity = this.ToEntity(item);
             caContext.Selling.Add(entity);
@@ -45,6 +45,20 @@ namespace DAL.Repository
         public void Remove(SellingModel item)
         {
             var entity = this.caContext.Selling.FirstOrDefault(x => x.IdSelling == item.IDS);
+            if (entity != null)
+            {
+                caContext.Selling.Remove(entity);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect argument!!!");
+            }
+        }
+
+        public void Remove(int id)
+        {
+            var entity = this.caContext.Selling.FirstOrDefault(x => x.IdSelling == id);
             if (entity != null)
             {
                 caContext.Selling.Remove(entity);

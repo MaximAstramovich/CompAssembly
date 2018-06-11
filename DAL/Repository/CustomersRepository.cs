@@ -10,19 +10,35 @@ namespace DAL.Repository
 {
     public class CustomersRepository : AbstractRepository, IModelRepository<CustomersModel, Customers>
     {
-        Customers ToEntity(CustomersModel source)
+        Customers ToEntity(CustomersModel source, bool isIdIncluded = false)
         {
-            return new Customers()
+            if (!isIdIncluded)
             {
-                Address = source.Address,
-                Authority = source.Authority,
-                DateOfBirth = source.DateOfBirth,
-                DateOfIssue = source.DateOfIssue,
-                FIO = source.FIO,
-                IdCustomer = source.IDCUS,
-                PassportNo = source.PassportNo,
-                PhoneNumber = source.PhoneNumber
-            };
+                return new Customers()
+                {
+                    Address = source.Address,
+                    Authority = source.Authority,
+                    DateOfBirth = source.DateOfBirth,
+                    DateOfIssue = source.DateOfIssue,
+                    FIO = source.FIO,
+                    IdCustomer = source.IDCUS,
+                    PassportNo = source.PassportNo,
+                    PhoneNumber = source.PhoneNumber
+                };
+            }
+            else
+            {
+                return new Customers()
+                {
+                    Address = source.Address,
+                    Authority = source.Authority,
+                    DateOfBirth = source.DateOfBirth,
+                    DateOfIssue = source.DateOfIssue,
+                    FIO = source.FIO,
+                    PassportNo = source.PassportNo,
+                    PhoneNumber = source.PhoneNumber
+                };
+            }
         }
 
         CustomersModel ToObject(Customers source)
@@ -39,9 +55,9 @@ namespace DAL.Repository
                 PhoneNumber = source.PhoneNumber
             };
         }
-        public void Add(CustomersModel item)
+        public void Add(CustomersModel item, bool isIdIncluded = false)
         {
-            var entity = this.ToEntity(item);
+            var entity = this.ToEntity(item, isIdIncluded);
             caContext.Customers.Add(entity);
             SaveChanges();
         }
@@ -49,6 +65,19 @@ namespace DAL.Repository
         public void Remove(CustomersModel item)
         {
             var entity = this.caContext.Customers.FirstOrDefault(x => x.IdCustomer == item.IDCUS);
+            if (entity != null)
+            {
+                caContext.Customers.Remove(entity);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect argument!!!");
+            }
+        }
+        public void Remove(int id)
+        {
+            var entity = this.caContext.Customers.FirstOrDefault(x => x.IdCustomer == id);
             if (entity != null)
             {
                 caContext.Customers.Remove(entity);

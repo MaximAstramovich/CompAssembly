@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using DAL.DBModel;
+using DAL.Models;
 
 namespace ComputerAssembly
 {
@@ -111,6 +113,14 @@ namespace ComputerAssembly
                 //        tbAddress.Text = reader["Address"].ToString();
                 //        tbPhoneNumber.Text = reader["PhoneNumber"].ToString();
                 //    }
+                var customer = CustomersBusinessLayer.FindCustomerById(int.Parse(id));
+                tbFIO.Text = customer.FIO;
+                dtDateOfBirth.Text = customer.DateOfBirth.ToString();
+                tbPassportNo.Text = customer.PassportNo;
+                dtDateOfIssue.Text = customer.DateOfIssue.ToString();
+                tbAuthority.Text = customer.Authority;
+                tbAddress.Text = customer.Address;
+                tbPhoneNumber.Text = customer.PhoneNumber.ToString();
             }
             catch (Exception err) {
                 MessageBox.Show(err.Message);
@@ -131,10 +141,23 @@ namespace ComputerAssembly
                 //else if (this.typeQuery == "edit"){
                 //    string text = "UPDATE Customers SET FIO = @fio, DateOfBirth = @birth, PassportNo = @passNum, DateOfIssue = @dateOfl, Authority = @auth, Address = @adress, PhoneNumber = @phone WHERE IDCUS = " + this.id;
                 //    saveCustomer(text);
-                //}               
-                CustomersBusinessLayer.AddOrUpdateCustomer(tbAddress.Text, tbAuthority.Text, Convert.ToDateTime(dtDateOfBirth.Text),
-                                                           Convert.ToDateTime(dtDateOfIssue.Text), tbFIO.Text, 
-                                                           tbPassportNo.Text, Convert.ToInt32(tbPhoneNumber.Text));
+                //}       
+                var phone = 1234567;
+                var isPhone = int.TryParse(tbPhoneNumber.Text, out phone);
+                int idCustomer = 0;
+                var flag = int.TryParse(id, out idCustomer);
+                if (flag)
+                {
+                    CustomersBusinessLayer.AddOrUpdateCustomer(idCustomer, tbAddress.Text, tbAuthority.Text, Convert.ToDateTime(dtDateOfBirth.Text),
+                                                               Convert.ToDateTime(dtDateOfIssue.Text), tbFIO.Text,
+                                                               tbPassportNo.Text, phone);
+                }
+                else
+                {
+                    CustomersBusinessLayer.AddOrUpdateCustomer(idCustomer, tbAddress.Text, tbAuthority.Text, Convert.ToDateTime(dtDateOfBirth.Text),
+                                                               Convert.ToDateTime(dtDateOfIssue.Text), tbFIO.Text,
+                                                               tbPassportNo.Text, phone);
+                }
                 this.Close();
             }
             else
