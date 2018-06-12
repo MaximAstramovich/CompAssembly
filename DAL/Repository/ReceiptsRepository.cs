@@ -38,7 +38,12 @@ namespace DAL.Repository
         public void Add(ReceiptsModel item, bool isIdIncluded = false)
         {
             var entity = this.ToEntity(item);
+            var stockEntity = caContext.Components.Find(item.IDCOM).Stock;
             caContext.Receipts.Add(entity);
+            if (stockEntity != null)
+            {
+                stockEntity.InStock = item.Quality;
+            }
             SaveChanges();
         }
 
@@ -73,6 +78,7 @@ namespace DAL.Repository
         public void Update(ReceiptsModel item)
         {
             var entity = this.caContext.Receipts.FirstOrDefault(x => x.IdReceipts == item.IDR);
+            var stockEntity = caContext.Receipts.Find(item.IDR).Components.Stock;
             if (entity != null)
             {
                 //entity.IdReceipts = item.IDR;
@@ -80,6 +86,10 @@ namespace DAL.Repository
                 entity.IdSuppliers = item.IDSUP;
                 entity.Price = item.Price;
                 entity.Quality = item.Quality;
+                if (stockEntity != null)
+                {
+                    stockEntity.InStock = item.Quality;
+                }
                 entity.ReceiptDate = item.ReceiptDate;
                 SaveChanges();
             }
@@ -105,6 +115,7 @@ namespace DAL.Repository
                     var receipt = ToObject(entity);
                     receipt.Supplier = GetSupplierByReceiptId(receipt.IDR);
                     receipt.Component = GetComponentByReceiptId(receipt.IDR);
+                    receipt.Quality = receipt.Component.Stock.InStock;
                     modelsList.Add(receipt);
                 }
 
@@ -115,13 +126,19 @@ namespace DAL.Repository
         public ComponentsModel GetComponentByReceiptId(int idReceipt)
         {
             var component = caContext.Receipts.Find(idReceipt).Components;
+            var stock = caContext.Receipts.Find(idReceipt).Components.Stock;
             return new ComponentsModel()
             {
                 Description = component.Description,
                 IDCOM = component.IdCom,
                 Nazv = component.Nazv,
                 Price = component.Price,
-                Type = component.Type
+                Type = component.Type,
+                Stock = new StockModel
+                {
+                    IDCOM = stock.IdCom,
+                    InStock = stock.InStock
+                }
             };
         }
 

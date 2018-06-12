@@ -13,5 +13,9 @@ namespace DAL.Models
         public string Nazv { get; set; }
         public string Description { get; set; }
         public decimal? Price { get; set; }
+
+        public virtual ComponentTypesModel ComponentTypes { get; set; }
+        public virtual StockModel Stock { get; set; }
+        public virtual List<ReceiptsModel> Receipts { get; set; }
     }
 }

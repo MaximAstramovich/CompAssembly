@@ -108,27 +108,7 @@ namespace ComputerAssembly
                          );
             if (dR == DialogResult.OK)
             {
-                //string receiptsId = Convert.ToString(dgReceiptList.CurrentRow.Cells[0].Value);
-                //string qText = "DELETE FROM Receipts WHERE IDR = @id";
-                //OleDbCommand Com = new OleDbCommand();
-                //Com.Parameters.AddWithValue("@id", receiptsId);
-                //Com.CommandText = qText;
-                //Com.Connection = Con;
-                //try
-                //{
-                //    Con.Open();
-                //    Com.ExecuteNonQuery();
-                //    Con.Close();
-                //    loadReceipts();
-                //}
-                //catch (Exception err)
-                //{
-                //    MessageBox.Show(err.Message);
-                //}
-                //finally
-                //{
-                //    Con.Close();
-                //}
+                ReceiptsBusinessLayer.Remove((int)dgReceiptList.CurrentRow.Cells[0].Value);
             }
         }
 
@@ -136,6 +116,7 @@ namespace ComputerAssembly
         {
             sprReceiptOne sprReceiptOne = new sprReceiptOne();
             sprReceiptOne.type = "edit";
+            sprReceiptOne.IdReceipt = (int)dgReceiptList.CurrentRow.Cells[0].Value;
             sprReceiptOne.id = dgReceiptList.CurrentRow.Cells[0].Value.ToString();
             sprReceiptOne.Text = dgReceiptList.CurrentRow.Cells[1].Value.ToString();
             sprReceiptOne.ShowDialog();

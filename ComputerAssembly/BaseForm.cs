@@ -16,12 +16,14 @@ namespace ComputerAssembly
         public CustomersBLL CustomersBusinessLayer;
         public SuppliersBLL SuppliersBusinessLayer;
         public ReceiptsBLL ReceiptsBusinessLayer;
+        public ComponentsBLL ComponentsBusinessLayer;
         public BaseForm()
         {
             InitializeComponent();
             CustomersBusinessLayer = new CustomersBLL();
             SuppliersBusinessLayer = new SuppliersBLL();
             ReceiptsBusinessLayer = new ReceiptsBLL();
+            ComponentsBusinessLayer = new ComponentsBLL();
         }
     }
 }

@@ -108,37 +108,6 @@ namespace ComputerAssembly
 
         private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //DialogResult dR = MessageBox.Show(
-            //                 "Вы действительно желаете удалить запись?",
-            //                 "Программа",
-            //                 MessageBoxButtons.OKCancel,
-            //                 MessageBoxIcon.Warning
-            //             );
-            //if (dR == DialogResult.OK)
-            //{
-            //    string componentsId = Convert.ToString(dgCustomerList.CurrentRow.Cells[0].Value);
-            //    string qText = "DELETE FROM Customers WHERE IDCUS = @id";
-            //    OleDbCommand Com = new OleDbCommand();
-            //    Com.Parameters.AddWithValue("@id", componentsId);
-            //    Com.CommandText = qText;
-            //    Com.Connection = Con;
-            //    try
-            //    {
-            //        Con.Open();
-            //        Com.ExecuteNonQuery();
-            //        Con.Close();
-            //        loadCustomers();
-            //    }
-            //    catch (Exception err)
-            //    {
-            //        MessageBox.Show(err.Message);
-            //    }
-            //    finally
-            //    {
-            //        Con.Close();
-            //    }
-            //}
-
             DialogResult dR = MessageBox.Show(
                              "Вы действительно желаете удалить запись?",
                              "Программа",

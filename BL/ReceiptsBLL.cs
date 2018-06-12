@@ -29,7 +29,7 @@ namespace BL
             return Task<List<ReceiptsModel>>.Factory.StartNew(() => GetAllReceiptsList());
         }
 
-        public ReceiptsModel FindCustomerById(int idReceipt)
+        public ReceiptsModel FindReceiptById(int idReceipt)
         {
             return receiptsRepository.Items.FirstOrDefault(x => x.IDR == idReceipt);
         }
@@ -39,7 +39,7 @@ namespace BL
             receiptsRepository.Remove(idReceipt);
         }
 
-        public void AddOrUpdateCustomer(int idReceipt, int idComponent, int idSupplier,
+        public void AddOrUpdateReceipt(int idReceipt, int idComponent, int idSupplier,
             decimal price, int count, string date)
         {
             var receiptDate = DateTime.Today;

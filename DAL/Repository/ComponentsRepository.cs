@@ -99,17 +99,55 @@ namespace DAL.Repository
                 var modelsList = new List<ComponentsModel>();
                 foreach (var entity in caContext.Components.Select(x => x))
                 {
-                    modelsList.Add(ToObject(entity));
+                    var component = ToObject(entity);
+                    component.ComponentTypes = GetComponentTypeByComponentId(component.IDCOM);
+                    component.Stock = GetStockByComponentId(component.IDCOM);
+                    component.Receipts = GetAllReceiptsByComponentId(component.IDCOM);
+                    modelsList.Add(component);
                 }
 
                 return modelsList;
             }
         }
 
-        public List<Receipts> GetAllReceiptsByComponentId(int idCom)
+        public List<ReceiptsModel> GetAllReceiptsByComponentId(int idCom)
         {
-            var component = caContext.Components.Find(idCom);
-            return component.Receipts.ToList();
+            var source = caContext.Components.Find(idCom).Receipts.Where(x => x.IdCom == idCom);
+            List<ReceiptsModel> receiptsList = new List<ReceiptsModel>();
+            foreach (var item in source)
+            {
+                var receipt = new ReceiptsModel()
+                {
+                    IDR = item.IdReceipts,
+                    IDCOM = item.IdCom,
+                    IDSUP = item.IdSuppliers,
+                    Price = item.Price,
+                    Quality = item.Quality,
+                    ReceiptDate = item.ReceiptDate
+                };
+                receiptsList.Add(receipt);
+            }
+            return receiptsList;
+        }
+
+        public ComponentTypesModel GetComponentTypeByComponentId(int idCom)
+        {
+            var componentType = caContext.Components.Find(idCom).ComponentTypes;
+            return new ComponentTypesModel()
+            {
+                ID = componentType.IdComponentType,
+                Type = componentType.Type
+            };
+        }
+
+        public StockModel GetStockByComponentId(int idCom)
+        {
+            var stock = caContext.Components.Find(idCom).Stock;
+            return new StockModel()
+            {
+                IDCOM = stock.IdCom,
+                InStock = stock.InStock
+            };
         }
 
         public void SaveChanges()

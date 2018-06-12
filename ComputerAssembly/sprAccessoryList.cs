@@ -11,13 +11,13 @@ using System.Data.OleDb;
 
 namespace ComputerAssembly
 {
-    public partial class sprAccessoryList : Form
+    public partial class sprAccessoryList : BaseForm
     {
-        OleDbConnection Con = new OleDbConnection();
+        //OleDbConnection Con = new OleDbConnection();
         public sprAccessoryList()
         {
             InitializeComponent();
-            Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
+            //Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
         }
 
         string Mode = "0";
@@ -27,13 +27,13 @@ namespace ComputerAssembly
             set { Mode = value; }
         }
 
-        private void sprAccessoryList_Load(object sender, EventArgs e)
+        private async void sprAccessoryList_Load(object sender, EventArgs e)
         {
-            loadComponents();
+            await loadComponents();
             tablProp();
         }
 
-        public void loadComponents() {
+        public async Task loadComponents() {
             dgComponentsList.Rows.Clear();
             dgComponentsList.Columns.Clear();
             dgComponentsList.Columns.Add("id", "Номер");
@@ -43,23 +43,31 @@ namespace ComputerAssembly
             dgComponentsList.Columns.Add("price", "Стоимость");
             try
             {
-                Con.Open();
-                string qText = "SELECT c.*, ct.Type as typeName FROM Components c LEFT JOIN ComponentTypes ct ON c.Type = ct.ID";
-                OleDbCommand cmd = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                //Con.Open();
+                //string qText = "SELECT c.*, ct.Type as typeName FROM Components c LEFT JOIN ComponentTypes ct ON c.Type = ct.ID";
+                //OleDbCommand cmd = new OleDbCommand(qText, Con);
+                //OleDbDataReader reader = cmd.ExecuteReader();
+                //while (reader.Read())
+                //{
+                //    dgComponentsList.Rows.Add(reader["IDCOM"], reader["typeName"], reader["Nazv"], reader["Description"], reader["Price"]);
+                //}
+                var componentsList = await ComponentsBusinessLayer.GetAllReceiptsListAsync();
+                if (componentsList != null)
                 {
-                    dgComponentsList.Rows.Add(reader["IDCOM"], reader["typeName"], reader["Nazv"], reader["Description"], reader["Price"]);
+                    foreach (var component in componentsList)
+                    {
+                        dgComponentsList.Rows.Add(component.IDCOM, component.ComponentTypes.Type, component.Nazv, component.Description, component.Price);
+                    }
                 }
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
             }
-            finally
-            {
-                Con.Close();
-            }       
+            //finally
+            //{
+            //    Con.Close();
+            //}       
         }
 
         public void tablProp()
@@ -104,27 +112,27 @@ namespace ComputerAssembly
                          );
             if (dR == DialogResult.OK)
             {
-                string componentsId = Convert.ToString(dgComponentsList.CurrentRow.Cells[0].Value);
-                string qText = "DELETE FROM Components WHERE IDCOM = @id";
-                OleDbCommand Com = new OleDbCommand();
-                Com.Parameters.AddWithValue("@id", componentsId);
-                Com.CommandText = qText;
-                Com.Connection = Con;
+                //string componentsId = Convert.ToString(dgComponentsList.CurrentRow.Cells[0].Value);
+                //string qText = "DELETE FROM Components WHERE IDCOM = @id";
+                //OleDbCommand Com = new OleDbCommand();
+                //Com.Parameters.AddWithValue("@id", componentsId);
+                //Com.CommandText = qText;
+                //Com.Connection = Con;
                 try
                 {
-                    Con.Open();
-                    Com.ExecuteNonQuery();
-                    Con.Close();
-                    loadComponents();
+                    //Con.Open();
+                    //Com.ExecuteNonQuery();
+                    //Con.Close();
+                    //loadComponents();
                 }
                 catch (Exception err)
                 {
                     MessageBox.Show(err.Message);
                 }
-                finally
-                {
-                    Con.Close();
-                }
+                //finally
+                //{
+                //    Con.Close();
+                //}
             }
         }
 
@@ -141,9 +149,9 @@ namespace ComputerAssembly
             sprAccessoryOneForm.ShowDialog();
         }
 
-        private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            loadComponents();
+            await loadComponents();
         }
 
         private void отменаToolStripMenuItem_Click(object sender, EventArgs e)
@@ -158,7 +166,10 @@ namespace ComputerAssembly
                 sprReceiptOne main = this.Owner as sprReceiptOne;
                 if (main != null)
                 {
-                    main.Accessory = dgComponentsList.CurrentRow.Cells[2].Value.ToString();
+                    var component = ComponentsBusinessLayer.FindComponentById((int)dgComponentsList.CurrentRow.Cells[0].Value);
+                    //main.Accessory = dgComponentsList.CurrentRow.Cells[2].Value.ToString();
+                    main.SetCurrentComponent = component;
+                    main.UpdateComponentField();
                     this.Close();
                 }
             }

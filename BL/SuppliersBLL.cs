@@ -20,9 +20,14 @@ namespace BL
 
         public List<SuppliersModel> GetAllSuppliersList()
         {
-            var customers = new List<SuppliersModel>();
-            customers.AddRange(suppliersRepository.Items);
-            return customers;
+            var suppliers = new List<SuppliersModel>();
+            suppliers.AddRange(suppliersRepository.Items);
+            return suppliers;
+        }
+
+        public SuppliersModel FindSupplierById(int idSupplier)
+        {
+            return suppliersRepository.Items.FirstOrDefault(x => x.IdSuppliers == idSupplier);
         }
 
         public void Remove(int idSupplier)

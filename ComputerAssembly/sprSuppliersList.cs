@@ -53,7 +53,8 @@ namespace ComputerAssembly
                 var suppliersList = SuppliersBusinessLayer.GetAllSuppliersList();
                 foreach (var supplier in suppliersList)
                 {
-                    //dgSuppliersList.Rows.Add(supplier.IDSUP, customer.FIO, customer.Address, customer.PhoneNumber);
+                    dgSuppliersList.Rows.Add(supplier.IdSuppliers, supplier.Firm, supplier.Address, supplier.UNN,
+                        supplier.CheckingAccount, supplier.BankCode, supplier.FIO, supplier.Position, supplier.PhoneNumber);
                 }
             }
             catch (Exception err)
@@ -173,7 +174,10 @@ namespace ComputerAssembly
                 sprReceiptOne main = this.Owner as sprReceiptOne;
                 if (main != null)
                 {
-                    main.Suppliers = dgSuppliersList.CurrentRow.Cells[1].Value.ToString();
+                    var supplier = SuppliersBusinessLayer.FindSupplierById((int)dgSuppliersList.CurrentRow.Cells[0].Value);
+                    //main.Suppliers = dgSuppliersList.CurrentRow.Cells[1].Value.ToString();
+                    main.SetCurrentSupplier = supplier;
+                    main.UpdateSupplierFioField();
                     this.Close();
                 }
             }
