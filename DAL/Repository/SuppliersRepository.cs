@@ -111,17 +111,33 @@ namespace DAL.Repository
                 var modelsList = new List<SuppliersModel>();
                 foreach (var entity in caContext.Suppliers.Select(x => x))
                 {
-                    modelsList.Add(ToObject(entity));
+                    var supplier = ToObject(entity);
+                    supplier.Receipts = GetAllReceiptsBySupplierId(supplier.IdSuppliers);
+                    modelsList.Add(supplier);
                 }
 
                 return modelsList;
             }
         }
 
-        public List<Receipts> GetAllReceiptsBySupplierId(int idSupplier)
+        public List<ReceiptsModel> GetAllReceiptsBySupplierId(int idSupplier)
         {
-            var supplier = caContext.Suppliers.Find(idSupplier);
-            return supplier.Receipts.ToList();
+            var source = caContext.Suppliers.Find(idSupplier).Receipts.Where(x => x.IdSuppliers == idSupplier);
+            List<ReceiptsModel> receiptsList = new List<ReceiptsModel>();
+            foreach (var item in source)
+            {
+                var receipt = new ReceiptsModel()
+                {
+                    IDR = item.IdReceipts,
+                    IDCOM = item.IdCom,
+                    IDSUP = item.IdSuppliers,
+                    Price = item.Price,
+                    Quality = item.Quality,
+                    ReceiptDate = item.ReceiptDate
+                };
+                receiptsList.Add(receipt);
+            }
+            return receiptsList;
         }
 
         public void SaveChanges()

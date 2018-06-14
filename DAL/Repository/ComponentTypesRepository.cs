@@ -90,17 +90,32 @@ namespace DAL.Repository
                 var modelsList = new List<ComponentTypesModel>();
                 foreach (var entity in caContext.ComponentTypes.Select(x => x))
                 {
-                    modelsList.Add(ToObject(entity));
+                    var component = ToObject(entity);
+                    component.Components = GetAllComponentsByComponentTypeId(component.ID);
+                    modelsList.Add(component);
                 }
 
                 return modelsList;
             }
         }
 
-        public List<Components> GetAllComponentsByComponentTypeId(int idComponentType)
+        public List<ComponentsModel> GetAllComponentsByComponentTypeId(int idComponentType)
         {
-            var componentType = caContext.ComponentTypes.Find(idComponentType);
-            return componentType.Components.ToList();
+            var componentTypes = caContext.ComponentTypes.Find(idComponentType).Components;
+            List<ComponentsModel> componentsList = new List<ComponentsModel>();
+            foreach (var item in componentTypes)
+            {
+                var component = new ComponentsModel()
+                {
+                    Description = item.Description,
+                    IDCOM = item.IdCom,
+                    Nazv = item.Nazv,
+                    Price = item.Price,
+                    Type = item.Type
+                };
+                componentsList.Add(component);
+            }
+            return componentsList;
         }
 
         public void SaveChanges()

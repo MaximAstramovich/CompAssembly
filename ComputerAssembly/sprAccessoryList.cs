@@ -13,11 +13,9 @@ namespace ComputerAssembly
 {
     public partial class sprAccessoryList : BaseForm
     {
-        //OleDbConnection Con = new OleDbConnection();
         public sprAccessoryList()
         {
             InitializeComponent();
-            //Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
         }
 
         string Mode = "0";
@@ -43,15 +41,7 @@ namespace ComputerAssembly
             dgComponentsList.Columns.Add("price", "Стоимость");
             try
             {
-                //Con.Open();
-                //string qText = "SELECT c.*, ct.Type as typeName FROM Components c LEFT JOIN ComponentTypes ct ON c.Type = ct.ID";
-                //OleDbCommand cmd = new OleDbCommand(qText, Con);
-                //OleDbDataReader reader = cmd.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    dgComponentsList.Rows.Add(reader["IDCOM"], reader["typeName"], reader["Nazv"], reader["Description"], reader["Price"]);
-                //}
-                var componentsList = await ComponentsBusinessLayer.GetAllReceiptsListAsync();
+                var componentsList = await ComponentsBusinessLayer.GetAllComponentsListAsync();
                 if (componentsList != null)
                 {
                     foreach (var component in componentsList)
@@ -63,11 +53,7 @@ namespace ComputerAssembly
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-            }
-            //finally
-            //{
-            //    Con.Close();
-            //}       
+            }     
         }
 
         public void tablProp()
@@ -112,27 +98,14 @@ namespace ComputerAssembly
                          );
             if (dR == DialogResult.OK)
             {
-                //string componentsId = Convert.ToString(dgComponentsList.CurrentRow.Cells[0].Value);
-                //string qText = "DELETE FROM Components WHERE IDCOM = @id";
-                //OleDbCommand Com = new OleDbCommand();
-                //Com.Parameters.AddWithValue("@id", componentsId);
-                //Com.CommandText = qText;
-                //Com.Connection = Con;
                 try
                 {
-                    //Con.Open();
-                    //Com.ExecuteNonQuery();
-                    //Con.Close();
-                    //loadComponents();
+                    ComponentsBusinessLayer.Remove((int)dgComponentsList.CurrentRow.Cells[0].Value);
                 }
                 catch (Exception err)
                 {
                     MessageBox.Show(err.Message);
                 }
-                //finally
-                //{
-                //    Con.Close();
-                //}
             }
         }
 
@@ -142,16 +115,13 @@ namespace ComputerAssembly
             sprAccessoryOneForm.type = "edit";
             sprAccessoryOneForm.id = dgComponentsList.CurrentRow.Cells[0].Value.ToString();
             sprAccessoryOneForm.Text = dgComponentsList.CurrentRow.Cells[2].Value.ToString();
-            sprAccessoryOneForm.tBoxName = dgComponentsList.CurrentRow.Cells[2].Value.ToString();
-            sprAccessoryOneForm.tBoxType = dgComponentsList.CurrentRow.Cells[1].Value.ToString();
-            sprAccessoryOneForm.tBoxDescription = dgComponentsList.CurrentRow.Cells[3].Value.ToString();
-            sprAccessoryOneForm.tBoxPrice = dgComponentsList.CurrentRow.Cells[4].Value.ToString();
             sprAccessoryOneForm.ShowDialog();
         }
 
         private async void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             await loadComponents();
+            tablProp();
         }
 
         private void отменаToolStripMenuItem_Click(object sender, EventArgs e)
@@ -167,7 +137,6 @@ namespace ComputerAssembly
                 if (main != null)
                 {
                     var component = ComponentsBusinessLayer.FindComponentById((int)dgComponentsList.CurrentRow.Cells[0].Value);
-                    //main.Accessory = dgComponentsList.CurrentRow.Cells[2].Value.ToString();
                     main.SetCurrentComponent = component;
                     main.UpdateComponentField();
                     this.Close();

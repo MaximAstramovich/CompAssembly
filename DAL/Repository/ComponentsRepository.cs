@@ -10,16 +10,29 @@ namespace DAL.Repository
 {
     public class ComponentsRepository : AbstractRepository, IModelRepository<ComponentsModel, Components>
     {
-        Components ToEntity(ComponentsModel source)
+        Components ToEntity(ComponentsModel source, bool isIdIncluded = true)
         {
-            return new Components()
+            if (isIdIncluded)
             {
-                Description = source.Description,
-                IdCom = source.IDCOM,
-                Nazv = source.Nazv,
-                Price = source.Price,
-                Type = source.Type
-            };
+                return new Components()
+                {
+                    Description = source.Description,
+                    IdCom = source.IDCOM,
+                    Nazv = source.Nazv,
+                    Price = source.Price,
+                    Type = source.Type
+                };
+            }
+            else
+            {
+                return new Components()
+                {
+                    Description = source.Description,
+                    Nazv = source.Nazv,
+                    Price = source.Price,
+                    Type = source.Type
+                };
+            }
         }
 
         ComponentsModel ToObject(Components source)
@@ -35,7 +48,7 @@ namespace DAL.Repository
         }
         public void Add(ComponentsModel item, bool isIdIncluded = false)
         {
-            var entity = this.ToEntity(item);
+            var entity = this.ToEntity(item, isIdIncluded);
             caContext.Components.Add(entity);
             SaveChanges();
         }
@@ -74,7 +87,7 @@ namespace DAL.Repository
             if (entity != null)
             {
                 entity.Description = item.Description;
-                //entity.IdCom = item.IDCOM;
+                entity.IdCom = item.IDCOM;
                 entity.Nazv = item.Nazv;
                 entity.Price = item.Price;
                 entity.Type = item.Type;

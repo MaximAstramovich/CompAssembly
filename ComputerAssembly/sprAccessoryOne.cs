@@ -8,22 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using DAL.Models;
 
 namespace ComputerAssembly
 {
-    public partial class sprAccessoryOne : Form
+    public partial class sprAccessoryOne : BaseForm
     {
-        OleDbConnection Con = new OleDbConnection();
-
         public sprAccessoryOne()
         {
             InitializeComponent();
-            Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
+            _componentTypesList = new List<ComponentTypesModel>();
         }
 
         string typeQuery;
         string idQuery;
         string Mode;
+        ComponentsModel _currentComponent;
+        List<ComponentTypesModel> _componentTypesList;
 
         public string type {
             set {
@@ -67,60 +68,44 @@ namespace ComputerAssembly
             get { return Mode; }
         }
 
-        private void sprAccessoryOne_Load(object sender, EventArgs e)
+        private async void sprAccessoryOne_Load(object sender, EventArgs e)
         {
-            if (this.Mode == "1") {
-                tbName.ReadOnly = true;
-                tbPrice.ReadOnly = true;
-                rtbDescription.ReadOnly = true;
-                сохранитьToolStripMenuItem.Visible = false;
-            }
-
-            string qText = "SELECT ct.Type FROM ComponentTypes ct ORDER BY ct.Type";
             try {
-                Con.Open();
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = Com.ExecuteReader();               
-                while (reader.Read()) {
-                    cbType.Items.Add(reader["Type"]);
+                await LoadComponentTypesList();
+                if (this.typeQuery == "edit")
+                {
+                    loadElement();
                 }
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
             }
-            finally {
-                Con.Close();
+        }
+
+        private void loadElement()
+        {
+            try
+            {
+                _currentComponent = ComponentsBusinessLayer.FindComponentById(int.Parse(id));
+                tbName.Text = _currentComponent.Nazv;
+                tbPrice.Text = _currentComponent.Price.Value.ToString();
+                rtbDescription.Text = _currentComponent.Description;
+                cbType.SelectedItem = _componentTypesList.Find(x => x.ID == _currentComponent.Type).Type;
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
             }
         }
 
-        private int getTypeId(string id)
+        private async Task LoadComponentTypesList()
         {
-            string qText = "SELECT ct.ID FROM ComponentTypes ct WHERE ct.Type = @id";
-            OleDbCommand Com = new OleDbCommand();
-            Com.Parameters.AddWithValue("@id", id);
-            Com.CommandText = qText;
-            Com.Connection = Con;
-            int elementId = (Int32)Com.ExecuteScalar();
-            return elementId;
-        }
-
-        private void saveComponents(string text)
-        {
-            Con.Open();
-            string qText = text;
-            OleDbCommand Com = new OleDbCommand();
-            Com.Parameters.AddWithValue("type", getTypeId(cbType.Text));
-            Com.Parameters.AddWithValue("naim", tbName.Text);
-            Com.Parameters.AddWithValue("description", rtbDescription.Text);
-            Com.Parameters.AddWithValue("price", tbPrice.Text);
-            Com.CommandText = qText;
-            Com.Connection = Con;
-            Com.ExecuteNonQuery();
-            Con.Close();
-            this.Close();
-            sprAccessoryList sprAccessoryList = new sprAccessoryList();
-            sprAccessoryList.loadComponents();
+            _componentTypesList.AddRange(await ComponentsBusinessLayer.GetAllComponentTypesListAsync());
+            foreach (var type in _componentTypesList)
+            {
+                cbType.Items.Add(type.Type);
+            }
         }
 
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -129,15 +114,23 @@ namespace ComputerAssembly
                 {
                     MessageBox.Show("Заполните необходимые поля");
                 }
-                else {
-                    if (typeQuery == "add") {
-                        string text = "INSERT INTO Components (Type, Nazv, Description, Price) VALUES (@type, @naim, @description, @price)";
-                        saveComponents(text);
+                else 
+                {
+                    decimal price = 0;
+                    var isPrice = decimal.TryParse(tbPrice.Text, out price);
+                    int idComponent = 0;
+                    int type = 0;
+                    type = _componentTypesList.FirstOrDefault(x => x.Type == cbType.SelectedItem.ToString()).ID;
+                    var flag = int.TryParse(id, out idComponent);
+                    if (flag)
+                    {
+                        ComponentsBusinessLayer.AddOrUpdateComponent(idComponent, rtbDescription.Text, price, type, tbName.Text);
                     }
-                    else if (typeQuery == "edit") { 
-                        string text = "UPDATE Components SET Type = @type, Nazv = @naim, Description = @description, Price = @price WHERE IDCOM = " + this.id;
-                        saveComponents(text);
+                    else
+                    {
+                        ComponentsBusinessLayer.AddOrUpdateComponent(idComponent, rtbDescription.Text, price, type, tbName.Text);
                     }
+                    this.Close();
                 }
         }
 

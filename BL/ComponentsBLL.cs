@@ -12,10 +12,12 @@ namespace BL
     public class ComponentsBLL
     {
         private IModelRepository<ComponentsModel, Components> componentsRepository;
+        private IModelRepository<ComponentTypesModel, ComponentTypes> componentTypesRepository;
 
         public ComponentsBLL()
         {
             componentsRepository = new ComponentsRepository();
+            componentTypesRepository = new ComponentTypesRepository();
         }
 
         public List<ComponentsModel> GetAllComponentsList()
@@ -24,9 +26,21 @@ namespace BL
             components.AddRange(componentsRepository.Items);
             return components;
         }
-        public Task<List<ComponentsModel>> GetAllReceiptsListAsync()
+        public Task<List<ComponentsModel>> GetAllComponentsListAsync()
         {
             return Task<List<ComponentsModel>>.Factory.StartNew(() => GetAllComponentsList());
+        }
+
+        public List<ComponentTypesModel> GetAllComponentTypesList()
+        {
+            var componentTypes = new List<ComponentTypesModel>();
+            componentTypes.AddRange(componentTypesRepository.Items);
+            return componentTypes;
+        }
+
+        public Task<List<ComponentTypesModel>> GetAllComponentTypesListAsync()
+        {
+            return Task<List<ComponentTypesModel>>.Factory.StartNew(() => GetAllComponentTypesList());
         }
 
         public ComponentsModel FindComponentById(int idComponent)
@@ -56,7 +70,7 @@ namespace BL
             }
             else
             {
-                componentsRepository.Add(component, true);
+                componentsRepository.Add(component, false);
             }
         }
     }

@@ -13,11 +13,9 @@ namespace ComputerAssembly
 {
     public partial class sprSuppliersList : BaseForm
     {
-        //OleDbConnection Con = new OleDbConnection();
         public sprSuppliersList()
         {
             InitializeComponent();
-            //Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
         }
 
         string Mode = "0";
@@ -28,13 +26,13 @@ namespace ComputerAssembly
         }
 
 
-        private void sprSuppliersList_Load(object sender, EventArgs e)
+        private async void sprSuppliersList_Load(object sender, EventArgs e)
         {
-            loadSuppliers();
+            await loadSuppliers();
             tablProp();
         }
 
-        public void loadSuppliers()
+        public async Task loadSuppliers()
         {
             try
             {
@@ -50,7 +48,7 @@ namespace ComputerAssembly
                 dgSuppliersList.Columns.Add("pos", "Должность");
                 dgSuppliersList.Columns.Add("phone", "Телефон");
 
-                var suppliersList = SuppliersBusinessLayer.GetAllSuppliersList();
+                var suppliersList = await SuppliersBusinessLayer.GetAllSuppliersListAsync();
                 foreach (var supplier in suppliersList)
                 {
                     dgSuppliersList.Rows.Add(supplier.IdSuppliers, supplier.Firm, supplier.Address, supplier.UNN,
@@ -100,10 +98,6 @@ namespace ComputerAssembly
             {
                 MessageBox.Show(err.Message);
             }
-            //finally
-            //{
-            //    Con.Close();
-            //}
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -124,27 +118,14 @@ namespace ComputerAssembly
                          );
             if (dR == DialogResult.OK)
             {
-                //string suppliersId = Convert.ToString(dgSuppliersList.CurrentRow.Cells[0].Value);
-                //string qText = "DELETE FROM Suppliers WHERE IDSUP = @id";
-                //OleDbCommand Com = new OleDbCommand();
-                //Com.Parameters.AddWithValue("@id", suppliersId);
-                //Com.CommandText = qText;
-                //Com.Connection = Con;
                 try
                 {
-                    //Con.Open();
-                    //Com.ExecuteNonQuery();
-                    //Con.Close();
-                    //loadSuppliers();
+                    SuppliersBusinessLayer.Remove((int)dgSuppliersList.CurrentRow.Cells[0].Value);
                 }
                 catch (Exception err)
                 {
                     MessageBox.Show(err.Message);
                 }
-                //finally
-                //{
-                //    Con.Close();
-                //}
             }
         }
 
@@ -157,9 +138,10 @@ namespace ComputerAssembly
             sprSuppliersOne.ShowDialog();
         }
 
-        private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            loadSuppliers();
+            await loadSuppliers();
+            tablProp();
         }
 
         private void отменаToolStripMenuItem_Click(object sender, EventArgs e)
@@ -175,7 +157,6 @@ namespace ComputerAssembly
                 if (main != null)
                 {
                     var supplier = SuppliersBusinessLayer.FindSupplierById((int)dgSuppliersList.CurrentRow.Cells[0].Value);
-                    //main.Suppliers = dgSuppliersList.CurrentRow.Cells[1].Value.ToString();
                     main.SetCurrentSupplier = supplier;
                     main.UpdateSupplierFioField();
                     this.Close();

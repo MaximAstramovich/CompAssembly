@@ -24,6 +24,10 @@ namespace BL
             suppliers.AddRange(suppliersRepository.Items);
             return suppliers;
         }
+        public Task<List<SuppliersModel>> GetAllSuppliersListAsync()
+        {
+            return Task<List<SuppliersModel>>.Factory.StartNew(() => GetAllSuppliersList());
+        }
 
         public SuppliersModel FindSupplierById(int idSupplier)
         {
@@ -35,9 +39,9 @@ namespace BL
             suppliersRepository.Remove(idSupplier);
         }
 
-        public void AddOrUpdateSupplier(string address, string bankCode, int checkingAccount, 
+        public void AddOrUpdateSupplier(int idSupplier, string address, string bankCode, int? checkingAccount, 
                                         string fio, string firm, int? phoneNumber, 
-                                        string position, int unn)
+                                        string position, int? unn)
         {
             var supplier = new SuppliersModel();
             supplier.Address = address;
@@ -48,8 +52,9 @@ namespace BL
             supplier.PhoneNumber = phoneNumber;
             supplier.Position = position;
             supplier.UNN = unn;
+            supplier.IdSuppliers = idSupplier;
 
-            var flag = suppliersRepository.Items.Contains(supplier);
+            var flag = suppliersRepository.Items.Any(x => x.IdSuppliers == idSupplier);
             if (flag)
             {
                 suppliersRepository.Update(supplier);
