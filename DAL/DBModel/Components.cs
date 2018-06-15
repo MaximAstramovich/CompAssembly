@@ -26,7 +26,7 @@ namespace DAL.DBModel
         public Nullable<decimal> Price { get; set; }
     
         public virtual ComponentTypes ComponentTypes { get; set; }
-        public virtual Stock Stock { get; set; }
         public virtual ICollection<Receipts> Receipts { get; set; }
+        public virtual Stock Stock { get; set; }
     }
 }

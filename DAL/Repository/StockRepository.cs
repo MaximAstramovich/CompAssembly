@@ -14,7 +14,7 @@ namespace DAL.Repository
         {
             return new Stock()
             {
-                IdCom = source.IDCOM,
+                IdStock = source.IdStock,
                 InStock = source.InStock
             };
         }
@@ -23,7 +23,7 @@ namespace DAL.Repository
         {
             return new StockModel()
             {
-                IDCOM = source.IdCom,
+                IdStock = source.IdStock,
                 InStock = source.InStock
             };
         }
@@ -36,7 +36,7 @@ namespace DAL.Repository
 
         public void Remove(StockModel item)
         {
-            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdCom == item.IDCOM);
+            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdStock == item.IdStock);
             if (entity != null)
             {
                 caContext.Stock.Remove(entity);
@@ -50,7 +50,7 @@ namespace DAL.Repository
 
         public void Remove(int id)
         {
-            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdCom == id);
+            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdStock == id);
             if (entity != null)
             {
                 caContext.Stock.Remove(entity);
@@ -64,7 +64,7 @@ namespace DAL.Repository
 
         public void Update(StockModel item)
         {
-            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdCom == item.IDCOM);
+            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdStock == item.IdStock);
             if (entity != null)
             {
                 //entity.IdCom = item.IDCOM;
@@ -79,7 +79,7 @@ namespace DAL.Repository
 
         public Stock GetEntity(StockModel source)
         {
-            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdCom == source.IDCOM);
+            var entity = this.caContext.Stock.FirstOrDefault(x => x.IdStock == source.IdStock);
             return entity;
         }
 

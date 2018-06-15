@@ -14,7 +14,7 @@ namespace DAL.DBModel
     
     public partial class Stock
     {
-        public int IdCom { get; set; }
+        public int IdStock { get; set; }
         public Nullable<int> InStock { get; set; }
     
         public virtual Components Components { get; set; }

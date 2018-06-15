@@ -136,7 +136,7 @@ namespace DAL.Repository
                 Type = component.Type,
                 Stock = new StockModel
                 {
-                    IDCOM = stock.IdCom,
+                    IdStock = stock.IdStock,
                     InStock = stock.InStock
                 }
             };

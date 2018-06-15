@@ -15,11 +15,9 @@ namespace ComputerAssembly
 {
     public partial class sprCustomerList : BaseForm
     {
-        //OleDbConnection Con = new OleDbConnection();
         public sprCustomerList()
         {
             InitializeComponent();
-            //Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
         }
 
         string Mode = "0";
@@ -34,24 +32,39 @@ namespace ComputerAssembly
             await loadCustomers();
         }
 
+        DataTable currentDataTable = new DataTable();
         public async Task loadCustomers()
         {
             try
             {
-                dgCustomerList.Rows.Clear();
-                dgCustomerList.Columns.Clear();
-                dgCustomerList.Columns.Add("id", "Номер");
-                dgCustomerList.Columns.Add("fio", "ФИО");
-                dgCustomerList.Columns.Add("address", "Адрес");
-                dgCustomerList.Columns.Add("phone", "Телефон");
+                currentDataTable.Rows.Clear();
+                currentDataTable.Columns.Clear();
+                currentDataTable.Columns.Add("Номер", typeof(int));
+                currentDataTable.Columns.Add("ФИО", typeof(string));
+                currentDataTable.Columns.Add("Адрес", typeof(string));
+                currentDataTable.Columns.Add("Телефон", typeof(int));
                 var customersList = await CustomersBusinessLayer.GetAllCustomersListAsync();
                 if (customersList.Count != 0)
                 {
                     foreach (var customer in customersList)
                     {
-                        dgCustomerList.Rows.Add(customer.IDCUS, customer.FIO, customer.Address, customer.PhoneNumber);
+                        currentDataTable.Rows.Add(customer.IDCUS, customer.FIO, customer.Address, customer.PhoneNumber);
                     }
                 }
+                DataColumn dcRowString = currentDataTable.Columns.Add("_RowString", typeof(string));
+                foreach (DataRow dataRow in currentDataTable.Rows)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < currentDataTable.Columns.Count - 1; i++)
+                    {
+                        sb.Append(dataRow[i].ToString());
+                        sb.Append("\t");
+                    }
+                    dataRow[dcRowString] = sb.ToString();
+                }
+
+                dgCustomerList.DataSource = currentDataTable;
+                dgCustomerList.Columns["_RowString"].Visible = false;
             }
             catch (Exception err)
             {
@@ -71,30 +84,23 @@ namespace ComputerAssembly
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string searchValue = textBox1.Text;
+
+            dgCustomerList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             try
             {
-                dgCustomerList.Rows.Clear();
-                dgCustomerList.Columns.Clear();
-                dgCustomerList.Columns.Add("id", "Номер");
-                dgCustomerList.Columns.Add("fio", "ФИО");
-                dgCustomerList.Columns.Add("address", "Адрес");
-                dgCustomerList.Columns.Add("phone", "Телефон");
-                //Con.Open();
-                //string qText = "SELECT * FROM Customers where IDCUS Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Address Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
-                //OleDbCommand Com = new OleDbCommand(qText, Con);
-                //OleDbDataReader reader = Com.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    dgCustomerList.Rows.Add(reader["IDCUS"], reader["FIO"], reader["Address"], reader["PhoneNumber"]);
-                //}
+                foreach (DataGridViewRow row in dgCustomerList.Rows)
+                {
+                    if (row.Cells[2].Value.ToString().Contains(searchValue))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
             }
-            catch (Exception err)
+            catch (Exception exc)
             {
-                MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                //Con.Close();
+                MessageBox.Show(exc.Message);
             }
         }
 
@@ -150,6 +156,11 @@ namespace ComputerAssembly
                     this.Close();
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            currentDataTable.DefaultView.RowFilter = string.Format("[_RowString] LIKE '%{0}%'", textBox1.Text);
         }
     }
 }

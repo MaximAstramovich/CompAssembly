@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NewCADBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NewCADBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Assembly">
@@ -34,7 +34,7 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <Key>
             <PropertyRef Name="IdCom" />
           </Key>
-          <Property Name="IdCom" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdCom" Type="int" Nullable="false" />
           <Property Name="Type" Type="int" />
           <Property Name="Nazv" Type="nvarchar" MaxLength="255" />
           <Property Name="Description" Type="nvarchar" MaxLength="255" />
@@ -84,9 +84,9 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
         </EntityType>
         <EntityType Name="Stock">
           <Key>
-            <PropertyRef Name="IdCom" />
+            <PropertyRef Name="IdStock" />
           </Key>
-          <Property Name="IdCom" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdStock" Type="int" Nullable="false" />
           <Property Name="InStock" Type="int" />
         </EntityType>
         <EntityType Name="Suppliers">
@@ -127,18 +127,6 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Components_Stock">
-          <End Role="Stock" Type="Self.Stock" Multiplicity="1" />
-          <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Stock">
-              <PropertyRef Name="IdCom" />
-            </Principal>
-            <Dependent Role="Components">
-              <PropertyRef Name="IdCom" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Receipts_Components">
           <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
           <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
@@ -172,6 +160,18 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
             </Principal>
             <Dependent Role="Selling">
               <PropertyRef Name="IdCustomer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stock_Components">
+          <End Role="Components" Type="Self.Components" Multiplicity="1" />
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Components">
+              <PropertyRef Name="IdCom" />
+            </Principal>
+            <Dependent Role="Stock">
+              <PropertyRef Name="IdStock" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -213,10 +213,6 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
             <End Role="ComponentTypes" EntitySet="ComponentTypes" />
             <End Role="Components" EntitySet="Components" />
           </AssociationSet>
-          <AssociationSet Name="FK_Components_Stock" Association="Self.FK_Components_Stock">
-            <End Role="Stock" EntitySet="Stock" />
-            <End Role="Components" EntitySet="Components" />
-          </AssociationSet>
           <AssociationSet Name="FK_Receipts_Components" Association="Self.FK_Receipts_Components">
             <End Role="Components" EntitySet="Components" />
             <End Role="Receipts" EntitySet="Receipts" />
@@ -229,24 +225,61 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Selling" EntitySet="Selling" />
           </AssociationSet>
+          <AssociationSet Name="FK_Stock_Components" Association="Self.FK_Stock_Components">
+            <End Role="Components" EntitySet="Components" />
+            <End Role="Stock" EntitySet="Stock" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NewCADBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="NewCADBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Components" EntityType="NewCADBModel.Components" />
+          <EntitySet Name="ComponentTypes" EntityType="NewCADBModel.ComponentTypes" />
+          <EntitySet Name="Customers" EntityType="NewCADBModel.Customers" />
+          <EntitySet Name="Receipts" EntityType="NewCADBModel.Receipts" />
+          <EntitySet Name="Selling" EntityType="NewCADBModel.Selling" />
+          <EntitySet Name="Stock" EntityType="NewCADBModel.Stock" />
+          <EntitySet Name="Suppliers" EntityType="NewCADBModel.Suppliers" />
+          <EntitySet Name="Assembly" EntityType="NewCADBModel.Assembly" />
+          <AssociationSet Name="FK_Components_ComponentTypes" Association="NewCADBModel.FK_Components_ComponentTypes">
+            <End Role="ComponentTypes" EntitySet="ComponentTypes" />
+            <End Role="Components" EntitySet="Components" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipts_Components" Association="NewCADBModel.FK_Receipts_Components">
+            <End Role="Components" EntitySet="Components" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stock_Components" Association="NewCADBModel.FK_Stock_Components">
+            <End Role="Components" EntitySet="Components" />
+            <End Role="Stock" EntitySet="Stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assembly_Customers" Association="NewCADBModel.FK_Assembly_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Assembly" EntitySet="Assembly" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selling_Customers" Association="NewCADBModel.FK_Selling_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Selling" EntitySet="Selling" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Receipts_Suppliers" Association="NewCADBModel.FK_Receipts_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Receipts" EntitySet="Receipts" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Components">
           <Key>
             <PropertyRef Name="IdCom" />
           </Key>
-          <Property Name="IdCom" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdCom" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" />
           <Property Name="Nazv" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
-          <NavigationProperty Name="ComponentTypes" Relationship="Self.FK_Components_ComponentTypes" FromRole="Components" ToRole="ComponentTypes" />
-          <NavigationProperty Name="Stock" Relationship="Self.FK_Components_Stock" FromRole="Components" ToRole="Stock" />
-          <NavigationProperty Name="Receipts" Relationship="Self.FK_Receipts_Components" FromRole="Components" ToRole="Receipts" />
+          <NavigationProperty Name="ComponentTypes" Relationship="NewCADBModel.FK_Components_ComponentTypes" FromRole="Components" ToRole="ComponentTypes" />
+          <NavigationProperty Name="Receipts" Relationship="NewCADBModel.FK_Receipts_Components" FromRole="Components" ToRole="Receipts" />
+          <NavigationProperty Name="Stock" Relationship="NewCADBModel.FK_Stock_Components" FromRole="Components" ToRole="Stock" />
         </EntityType>
         <EntityType Name="ComponentTypes">
           <Key>
@@ -254,7 +287,7 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           </Key>
           <Property Name="IdComponentType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Components" Relationship="Self.FK_Components_ComponentTypes" FromRole="ComponentTypes" ToRole="Components" />
+          <NavigationProperty Name="Components" Relationship="NewCADBModel.FK_Components_ComponentTypes" FromRole="ComponentTypes" ToRole="Components" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
@@ -268,8 +301,8 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <Property Name="Authority" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="Int32" />
-          <NavigationProperty Name="Assembly" Relationship="Self.FK_Assembly_Customers" FromRole="Customers" ToRole="Assembly" />
-          <NavigationProperty Name="Selling" Relationship="Self.FK_Selling_Customers" FromRole="Customers" ToRole="Selling" />
+          <NavigationProperty Name="Assembly" Relationship="NewCADBModel.FK_Assembly_Customers" FromRole="Customers" ToRole="Assembly" />
+          <NavigationProperty Name="Selling" Relationship="NewCADBModel.FK_Selling_Customers" FromRole="Customers" ToRole="Selling" />
         </EntityType>
         <EntityType Name="Receipts">
           <Key>
@@ -281,8 +314,8 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <Property Name="Quality" Type="Int32" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="ReceiptDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Components" Relationship="Self.FK_Receipts_Components" FromRole="Receipts" ToRole="Components" />
-          <NavigationProperty Name="Suppliers" Relationship="Self.FK_Receipts_Suppliers" FromRole="Receipts" ToRole="Suppliers" />
+          <NavigationProperty Name="Components" Relationship="NewCADBModel.FK_Receipts_Components" FromRole="Receipts" ToRole="Components" />
+          <NavigationProperty Name="Suppliers" Relationship="NewCADBModel.FK_Receipts_Suppliers" FromRole="Receipts" ToRole="Suppliers" />
         </EntityType>
         <EntityType Name="Selling">
           <Key>
@@ -294,15 +327,15 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <Property Name="Quality" Type="Int32" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="DateOfSale" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Customers" Relationship="Self.FK_Selling_Customers" FromRole="Selling" ToRole="Customers" />
+          <NavigationProperty Name="Customers" Relationship="NewCADBModel.FK_Selling_Customers" FromRole="Selling" ToRole="Customers" />
         </EntityType>
         <EntityType Name="Stock">
           <Key>
-            <PropertyRef Name="IdCom" />
+            <PropertyRef Name="IdStock" />
           </Key>
-          <Property Name="IdCom" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdStock" Type="Int32" Nullable="false" />
           <Property Name="InStock" Type="Int32" />
-          <NavigationProperty Name="Components" Relationship="Self.FK_Components_Stock" FromRole="Stock" ToRole="Components" />
+          <NavigationProperty Name="Components" Relationship="NewCADBModel.FK_Stock_Components" FromRole="Stock" ToRole="Components" />
         </EntityType>
         <EntityType Name="Suppliers">
           <Key>
@@ -317,7 +350,7 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <Property Name="FIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="Int32" />
-          <NavigationProperty Name="Receipts" Relationship="Self.FK_Receipts_Suppliers" FromRole="Suppliers" ToRole="Receipts" />
+          <NavigationProperty Name="Receipts" Relationship="NewCADBModel.FK_Receipts_Suppliers" FromRole="Suppliers" ToRole="Receipts" />
         </EntityType>
         <EntityType Name="Assembly">
           <Key>
@@ -341,11 +374,11 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <Property Name="Ice" Type="Int32" />
           <Property Name="Status" Type="Int32" />
           <Property Name="DateOfPayment" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Customers" Relationship="Self.FK_Assembly_Customers" FromRole="Assembly" ToRole="Customers" />
+          <NavigationProperty Name="Customers" Relationship="NewCADBModel.FK_Assembly_Customers" FromRole="Assembly" ToRole="Customers" />
         </EntityType>
         <Association Name="FK_Components_ComponentTypes">
-          <End Role="ComponentTypes" Type="Self.ComponentTypes" Multiplicity="0..1" />
-          <End Role="Components" Type="Self.Components" Multiplicity="*" />
+          <End Type="NewCADBModel.ComponentTypes" Role="ComponentTypes" Multiplicity="0..1" />
+          <End Type="NewCADBModel.Components" Role="Components" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ComponentTypes">
               <PropertyRef Name="IdComponentType" />
@@ -355,21 +388,9 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Components_Stock">
-          <End Role="Stock" Type="Self.Stock" Multiplicity="1" />
-          <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Stock">
-              <PropertyRef Name="IdCom" />
-            </Principal>
-            <Dependent Role="Components">
-              <PropertyRef Name="IdCom" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Receipts_Components">
-          <End Role="Components" Type="Self.Components" Multiplicity="0..1" />
-          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <End Type="NewCADBModel.Components" Role="Components" Multiplicity="0..1" />
+          <End Type="NewCADBModel.Receipts" Role="Receipts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Components">
               <PropertyRef Name="IdCom" />
@@ -379,9 +400,21 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Stock_Components">
+          <End Type="NewCADBModel.Components" Role="Components" Multiplicity="1" />
+          <End Type="NewCADBModel.Stock" Role="Stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Components">
+              <PropertyRef Name="IdCom" />
+            </Principal>
+            <Dependent Role="Stock">
+              <PropertyRef Name="IdStock" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Assembly_Customers">
-          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="*" />
+          <End Type="NewCADBModel.Customers" Role="Customers" Multiplicity="0..1" />
+          <End Type="NewCADBModel.Assembly" Role="Assembly" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customers">
               <PropertyRef Name="IdCustomer" />
@@ -392,8 +425,8 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Selling_Customers">
-          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
-          <End Role="Selling" Type="Self.Selling" Multiplicity="*" />
+          <End Type="NewCADBModel.Customers" Role="Customers" Multiplicity="0..1" />
+          <End Type="NewCADBModel.Selling" Role="Selling" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customers">
               <PropertyRef Name="IdCustomer" />
@@ -404,8 +437,8 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Receipts_Suppliers">
-          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="0..1" />
-          <End Role="Receipts" Type="Self.Receipts" Multiplicity="*" />
+          <End Type="NewCADBModel.Suppliers" Role="Suppliers" Multiplicity="0..1" />
+          <End Type="NewCADBModel.Receipts" Role="Receipts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Suppliers">
               <PropertyRef Name="IdSuppliers" />
@@ -415,41 +448,7 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="NewCADBContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Components" EntityType="Self.Components" />
-          <EntitySet Name="ComponentTypes" EntityType="Self.ComponentTypes" />
-          <EntitySet Name="Customers" EntityType="Self.Customers" />
-          <EntitySet Name="Receipts" EntityType="Self.Receipts" />
-          <EntitySet Name="Selling" EntityType="Self.Selling" />
-          <EntitySet Name="Stock" EntityType="Self.Stock" />
-          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" />
-          <EntitySet Name="Assembly" EntityType="Self.Assembly" />
-          <AssociationSet Name="FK_Components_ComponentTypes" Association="Self.FK_Components_ComponentTypes">
-            <End Role="ComponentTypes" EntitySet="ComponentTypes" />
-            <End Role="Components" EntitySet="Components" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Components_Stock" Association="Self.FK_Components_Stock">
-            <End Role="Stock" EntitySet="Stock" />
-            <End Role="Components" EntitySet="Components" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Receipts_Components" Association="Self.FK_Receipts_Components">
-            <End Role="Components" EntitySet="Components" />
-            <End Role="Receipts" EntitySet="Receipts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Assembly_Customers" Association="Self.FK_Assembly_Customers">
-            <End Role="Customers" EntitySet="Customers" />
-            <End Role="Assembly" EntitySet="Assembly" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Selling_Customers" Association="Self.FK_Selling_Customers">
-            <End Role="Customers" EntitySet="Customers" />
-            <End Role="Selling" EntitySet="Selling" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Receipts_Suppliers" Association="Self.FK_Receipts_Suppliers">
-            <End Role="Suppliers" EntitySet="Suppliers" />
-            <End Role="Receipts" EntitySet="Receipts" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -458,104 +457,104 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <EntitySetMapping Name="Components">
             <EntityTypeMapping TypeName="NewCADBModel.Components">
               <MappingFragment StoreEntitySet="Components">
-                <ScalarProperty Name="IdCom" ColumnName="IdCom" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Nazv" ColumnName="Nazv" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Nazv" ColumnName="Nazv" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="IdCom" ColumnName="IdCom" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ComponentTypes">
             <EntityTypeMapping TypeName="NewCADBModel.ComponentTypes">
               <MappingFragment StoreEntitySet="ComponentTypes">
-                <ScalarProperty Name="IdComponentType" ColumnName="IdComponentType" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="IdComponentType" ColumnName="IdComponentType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="NewCADBModel.Customers">
               <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
-                <ScalarProperty Name="FIO" ColumnName="FIO" />
-                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-                <ScalarProperty Name="PassportNo" ColumnName="PassportNo" />
-                <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
-                <ScalarProperty Name="Authority" ColumnName="Authority" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Authority" ColumnName="Authority" />
+                <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
+                <ScalarProperty Name="PassportNo" ColumnName="PassportNo" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Receipts">
             <EntityTypeMapping TypeName="NewCADBModel.Receipts">
               <MappingFragment StoreEntitySet="Receipts">
-                <ScalarProperty Name="IdReceipts" ColumnName="IdReceipts" />
-                <ScalarProperty Name="IdSuppliers" ColumnName="IdSuppliers" />
-                <ScalarProperty Name="IdCom" ColumnName="IdCom" />
-                <ScalarProperty Name="Quality" ColumnName="Quality" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ReceiptDate" ColumnName="ReceiptDate" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="IdCom" ColumnName="IdCom" />
+                <ScalarProperty Name="IdSuppliers" ColumnName="IdSuppliers" />
+                <ScalarProperty Name="IdReceipts" ColumnName="IdReceipts" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Selling">
             <EntityTypeMapping TypeName="NewCADBModel.Selling">
               <MappingFragment StoreEntitySet="Selling">
-                <ScalarProperty Name="IdSelling" ColumnName="IdSelling" />
-                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
-                <ScalarProperty Name="IdCom" ColumnName="IdCom" />
-                <ScalarProperty Name="Quality" ColumnName="Quality" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="DateOfSale" ColumnName="DateOfSale" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="IdCom" ColumnName="IdCom" />
+                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
+                <ScalarProperty Name="IdSelling" ColumnName="IdSelling" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Stock">
             <EntityTypeMapping TypeName="NewCADBModel.Stock">
               <MappingFragment StoreEntitySet="Stock">
-                <ScalarProperty Name="IdCom" ColumnName="IdCom" />
                 <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="IdStock" ColumnName="IdStock" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Suppliers">
             <EntityTypeMapping TypeName="NewCADBModel.Suppliers">
               <MappingFragment StoreEntitySet="Suppliers">
-                <ScalarProperty Name="IdSuppliers" ColumnName="IdSuppliers" />
-                <ScalarProperty Name="Firm" ColumnName="Firm" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="UNN" ColumnName="UNN" />
-                <ScalarProperty Name="CheckingAccount" ColumnName="CheckingAccount" />
-                <ScalarProperty Name="BankCode" ColumnName="BankCode" />
-                <ScalarProperty Name="FIO" ColumnName="FIO" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="BankCode" ColumnName="BankCode" />
+                <ScalarProperty Name="CheckingAccount" ColumnName="CheckingAccount" />
+                <ScalarProperty Name="UNN" ColumnName="UNN" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Firm" ColumnName="Firm" />
+                <ScalarProperty Name="IdSuppliers" ColumnName="IdSuppliers" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Assembly">
             <EntityTypeMapping TypeName="NewCADBModel.Assembly">
               <MappingFragment StoreEntitySet="Assembly">
-                <ScalarProperty Name="IdAssembly" ColumnName="IdAssembly" />
-                <ScalarProperty Name="IdCus" ColumnName="IdCus" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-                <ScalarProperty Name="Num" ColumnName="Num" />
-                <ScalarProperty Name="Summ" ColumnName="Summ" />
-                <ScalarProperty Name="Corpus" ColumnName="Corpus" />
-                <ScalarProperty Name="Board" ColumnName="Board" />
-                <ScalarProperty Name="CPU" ColumnName="CPU" />
-                <ScalarProperty Name="Graphic" ColumnName="Graphic" />
-                <ScalarProperty Name="OZU" ColumnName="OZU" />
-                <ScalarProperty Name="HDD" ColumnName="HDD" />
-                <ScalarProperty Name="SSD" ColumnName="SSD" />
-                <ScalarProperty Name="Power" ColumnName="Power" />
-                <ScalarProperty Name="DVD" ColumnName="DVD" />
-                <ScalarProperty Name="Audio" ColumnName="Audio" />
-                <ScalarProperty Name="Ice" ColumnName="Ice" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DateOfPayment" ColumnName="DateOfPayment" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Ice" ColumnName="Ice" />
+                <ScalarProperty Name="Audio" ColumnName="Audio" />
+                <ScalarProperty Name="DVD" ColumnName="DVD" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="SSD" ColumnName="SSD" />
+                <ScalarProperty Name="HDD" ColumnName="HDD" />
+                <ScalarProperty Name="OZU" ColumnName="OZU" />
+                <ScalarProperty Name="Graphic" ColumnName="Graphic" />
+                <ScalarProperty Name="CPU" ColumnName="CPU" />
+                <ScalarProperty Name="Board" ColumnName="Board" />
+                <ScalarProperty Name="Corpus" ColumnName="Corpus" />
+                <ScalarProperty Name="Summ" ColumnName="Summ" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="IdCus" ColumnName="IdCus" />
+                <ScalarProperty Name="IdAssembly" ColumnName="IdAssembly" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

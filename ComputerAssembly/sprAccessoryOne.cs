@@ -23,9 +23,16 @@ namespace ComputerAssembly
         string typeQuery;
         string idQuery;
         string Mode;
+        
         ComponentsModel _currentComponent;
         List<ComponentTypesModel> _componentTypesList;
 
+        int _lastComponentId = 0;
+        public int LastComponentId
+        {
+            get { return _lastComponentId; }
+            set { _lastComponentId = value; }
+        }
         public string type {
             set {
                 typeQuery = value;
@@ -118,7 +125,7 @@ namespace ComputerAssembly
                 {
                     decimal price = 0;
                     var isPrice = decimal.TryParse(tbPrice.Text, out price);
-                    int idComponent = 0;
+                    int idComponent = _lastComponentId;
                     int type = 0;
                     type = _componentTypesList.FirstOrDefault(x => x.Type == cbType.SelectedItem.ToString()).ID;
                     var flag = int.TryParse(id, out idComponent);
@@ -128,6 +135,7 @@ namespace ComputerAssembly
                     }
                     else
                     {
+                        idComponent = ++_lastComponentId;
                         ComponentsBusinessLayer.AddOrUpdateComponent(idComponent, rtbDescription.Text, price, type, tbName.Text);
                     }
                     this.Close();

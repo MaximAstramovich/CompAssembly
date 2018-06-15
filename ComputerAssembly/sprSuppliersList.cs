@@ -32,28 +32,45 @@ namespace ComputerAssembly
             tablProp();
         }
 
+        DataTable currentDataTable = new DataTable();
         public async Task loadSuppliers()
         {
             try
             {
-                dgSuppliersList.Rows.Clear();
-                dgSuppliersList.Columns.Clear();
-                dgSuppliersList.Columns.Add("id", "Номер");
-                dgSuppliersList.Columns.Add("firm", "Фирма");
-                dgSuppliersList.Columns.Add("address", "Юридический адрес");
-                dgSuppliersList.Columns.Add("unn", "УНН");
-                dgSuppliersList.Columns.Add("checkacc", "Расчетный счет");
-                dgSuppliersList.Columns.Add("bank", "Код банка");
-                dgSuppliersList.Columns.Add("fio", "ФИО представителя");
-                dgSuppliersList.Columns.Add("pos", "Должность");
-                dgSuppliersList.Columns.Add("phone", "Телефон");
-
+                currentDataTable.Rows.Clear();
+                currentDataTable.Columns.Clear();
+                currentDataTable.Columns.Add("Номер", typeof(int));
+                currentDataTable.Columns.Add("Фирма", typeof(string));
+                currentDataTable.Columns.Add("Юридический адрес", typeof(string));
+                currentDataTable.Columns.Add("УНН", typeof(int));
+                currentDataTable.Columns.Add("Расчетный счет", typeof(int));
+                currentDataTable.Columns.Add("Код банка", typeof(string));
+                currentDataTable.Columns.Add("ФИО представителя", typeof(string));
+                currentDataTable.Columns.Add("Должность", typeof(string));
+                currentDataTable.Columns.Add("Телефон", typeof(int));
                 var suppliersList = await SuppliersBusinessLayer.GetAllSuppliersListAsync();
-                foreach (var supplier in suppliersList)
+                if (suppliersList != null)
                 {
-                    dgSuppliersList.Rows.Add(supplier.IdSuppliers, supplier.Firm, supplier.Address, supplier.UNN,
-                        supplier.CheckingAccount, supplier.BankCode, supplier.FIO, supplier.Position, supplier.PhoneNumber);
+                    foreach (var supplier in suppliersList)
+                    {
+                        currentDataTable.Rows.Add(supplier.IdSuppliers, supplier.Firm, supplier.Address, supplier.UNN,
+                            supplier.CheckingAccount, supplier.BankCode, supplier.FIO, supplier.Position, supplier.PhoneNumber);
+                    }
                 }
+                DataColumn dcRowString = currentDataTable.Columns.Add("_RowString", typeof(string));
+                foreach (DataRow dataRow in currentDataTable.Rows)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < currentDataTable.Columns.Count - 1; i++)
+                    {
+                        sb.Append(dataRow[i].ToString());
+                        sb.Append("\t");
+                    }
+                    dataRow[dcRowString] = sb.ToString();
+                }
+
+                dgSuppliersList.DataSource = currentDataTable;
+                dgSuppliersList.Columns["_RowString"].Visible = false;
             }
             catch (Exception err)
             {
@@ -72,31 +89,23 @@ namespace ComputerAssembly
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string searchValue = textBox1.Text;
+
+            dgSuppliersList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             try
             {
-                dgSuppliersList.Rows.Clear();
-                dgSuppliersList.Columns.Clear();
-                dgSuppliersList.Columns.Add("id", "Номер");
-                dgSuppliersList.Columns.Add("firm", "Фирма");
-                dgSuppliersList.Columns.Add("address", "Юридический адрес");
-                dgSuppliersList.Columns.Add("unn", "УНН");
-                dgSuppliersList.Columns.Add("checkacc", "Расчетный счет");
-                dgSuppliersList.Columns.Add("bank", "Код банка");
-                dgSuppliersList.Columns.Add("fio", "ФИО представителя");
-                dgSuppliersList.Columns.Add("pos", "Должность");
-                dgSuppliersList.Columns.Add("phone", "Телефон");
-                //Con.Open();
-                //string qText = "SELECT * FROM Suppliers where IDSUP Like '%" + textBox1.Text + "%' OR Firm Like '%" + textBox1.Text + "%' OR Address Like '%" + textBox1.Text + "%' OR UNN Like '%" + textBox1.Text + "%' OR CheckingAccount Like '%" + textBox1.Text + "%' OR BankCode Like '%" + textBox1.Text + "%' OR FIO Like '%" + textBox1.Text + "%' OR Position Like '%" + textBox1.Text + "%' OR PhoneNumber Like '%" + textBox1.Text + "%';";
-                //OleDbCommand Com = new OleDbCommand(qText, Con);
-                //OleDbDataReader reader = Com.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    dgSuppliersList.Rows.Add(reader["IDSUP"], reader["Firm"], reader["Address"], reader["UNN"], reader["CheckingAccount"], reader["BankCode"], reader["FIO"], reader["Position"], reader["PhoneNumber"]);
-                //}
+                foreach (DataGridViewRow row in dgSuppliersList.Rows)
+                {
+                    if (row.Cells[2].Value.ToString().Contains(searchValue))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
             }
-            catch (Exception err)
+            catch (Exception exc)
             {
-                MessageBox.Show(err.Message);
+                MessageBox.Show(exc.Message);
             }
         }
 
@@ -162,6 +171,11 @@ namespace ComputerAssembly
                     this.Close();
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            currentDataTable.DefaultView.RowFilter = string.Format("[_RowString] LIKE '%{0}%'", textBox1.Text);
         }
     }
 }

@@ -31,14 +31,16 @@ namespace ComputerAssembly
             tablProp();
         }
 
-        public async Task loadComponents() {
-            dgComponentsList.Rows.Clear();
-            dgComponentsList.Columns.Clear();
-            dgComponentsList.Columns.Add("id", "Номер");
-            dgComponentsList.Columns.Add("type", "Тип");
-            dgComponentsList.Columns.Add("name", "Название");
-            dgComponentsList.Columns.Add("description", "Описание");
-            dgComponentsList.Columns.Add("price", "Стоимость");
+        DataTable currentDataTable = new DataTable();
+        public async Task loadComponents() 
+        {
+            currentDataTable.Rows.Clear();
+            currentDataTable.Columns.Clear();
+            currentDataTable.Columns.Add("Номер", typeof(int));
+            currentDataTable.Columns.Add("Тип", typeof(string));
+            currentDataTable.Columns.Add("Название", typeof(string));
+            currentDataTable.Columns.Add("Описание", typeof(string));
+            currentDataTable.Columns.Add("Стоимость", typeof(decimal));
             try
             {
                 var componentsList = await ComponentsBusinessLayer.GetAllComponentsListAsync();
@@ -46,9 +48,23 @@ namespace ComputerAssembly
                 {
                     foreach (var component in componentsList)
                     {
-                        dgComponentsList.Rows.Add(component.IDCOM, component.ComponentTypes.Type, component.Nazv, component.Description, component.Price);
+                        currentDataTable.Rows.Add(component.IDCOM, component.ComponentTypes.Type, component.Nazv, component.Description, component.Price);
                     }
                 }
+                DataColumn dcRowString = currentDataTable.Columns.Add("_RowString", typeof(string));
+                foreach (DataRow dataRow in currentDataTable.Rows)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < currentDataTable.Columns.Count - 1; i++)
+                    {
+                        sb.Append(dataRow[i].ToString());
+                        sb.Append("\t");
+                    }
+                    dataRow[dcRowString] = sb.ToString();
+                }
+                
+                dgComponentsList.DataSource = currentDataTable;
+                dgComponentsList.Columns["_RowString"].Visible = false;
             }
             catch (Exception err)
             {
@@ -67,16 +83,23 @@ namespace ComputerAssembly
 
         private void button1_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < dgComponentsList.RowCount; i++) 
+            string searchValue = textBox1.Text;
+
+            dgComponentsList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            try
             {
-                dgComponentsList.Rows[i].Selected = false;
-                for (int j = 0; j < dgComponentsList.ColumnCount; j++)
-                    if (dgComponentsList.Rows[i].Cells[j].Value != null)
-                        if (dgComponentsList.Rows[i].Cells[j].Value.ToString().Contains(textBox1.Text)) 
-                        {
-                            dgComponentsList.Rows[i].Selected = true; 
-                            break; 
-                        } 
+                foreach (DataGridViewRow row in dgComponentsList.Rows)
+                {
+                    if (row.Cells[2].Value.ToString().Contains(searchValue))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
             }
         }
 
@@ -85,6 +108,7 @@ namespace ComputerAssembly
             sprAccessoryOne sprAccessoryOneForm = new sprAccessoryOne();
             sprAccessoryOneForm.type = "add";
             sprAccessoryOneForm.Text = "Новый элемент";
+            sprAccessoryOneForm.LastComponentId = (int)dgComponentsList.Rows[dgComponentsList.RowCount - 1].Cells[0].Value;
             sprAccessoryOneForm.ShowDialog();
         }
 
@@ -142,6 +166,11 @@ namespace ComputerAssembly
                     this.Close();
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            currentDataTable.DefaultView.RowFilter = string.Format("[_RowString] LIKE '%{0}%'", textBox1.Text);
         }
     }
 }

@@ -24,27 +24,42 @@ namespace ComputerAssembly
             tablProp();
         }
 
+        DataTable currentDataTable = new DataTable();
         public async Task loadReceipts()
         {
             try
             {
-                dgReceiptList.Rows.Clear();
-                dgReceiptList.Columns.Clear();
-                dgReceiptList.Columns.Add("idReceipt", "Id");
-                dgReceiptList.Columns.Add("firm", "Фирма-поставщик");
-                dgReceiptList.Columns.Add("name", "Название компонента");
-                dgReceiptList.Columns.Add("quality", "Количество");
-                dgReceiptList.Columns.Add("price", "Цена за штуку");
-                dgReceiptList.Columns.Add("rdate", "Дата поставки");
-                dgReceiptList.Columns.GetFirstColumn(DataGridViewElementStates.Visible).Visible = false;
+                currentDataTable.Rows.Clear();
+                currentDataTable.Columns.Clear();
+                currentDataTable.Columns.Add("idReceipt", typeof(int));
+                currentDataTable.Columns.Add("Фирма-поставщик", typeof(string));
+                currentDataTable.Columns.Add("Название компонента", typeof(string));
+                currentDataTable.Columns.Add("Количество", typeof(int));
+                currentDataTable.Columns.Add("Цена за штуку", typeof(decimal));
+                currentDataTable.Columns.Add("Дата поставки", typeof(DateTime));
                 var receiptsList = await ReceiptsBusinessLayer.GetAllReceiptsListAsync();
                 if (receiptsList.Count != 0)
                 {
                     foreach (var receipt in receiptsList)
                     {
-                        dgReceiptList.Rows.Add(receipt.IDR, receipt.Supplier.Firm, receipt.Component.Nazv, receipt.Quality, receipt.Price, receipt.ReceiptDate);
+                        currentDataTable.Rows.Add(receipt.IDR, receipt.Supplier.Firm, receipt.Component.Nazv, receipt.Quality, receipt.Price, receipt.ReceiptDate);
                     }
                 }
+                DataColumn dcRowString = currentDataTable.Columns.Add("_RowString", typeof(string));
+                foreach (DataRow dataRow in currentDataTable.Rows)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < currentDataTable.Columns.Count - 1; i++)
+                    {
+                        sb.Append(dataRow[i].ToString());
+                        sb.Append("\t");
+                    }
+                    dataRow[dcRowString] = sb.ToString();
+                }
+
+                dgReceiptList.DataSource = currentDataTable;
+                dgReceiptList.Columns["_RowString"].Visible = false;
+                dgReceiptList.Columns["idReceipt"].Visible = false;
             }
             catch (Exception err)
             {
@@ -63,31 +78,24 @@ namespace ComputerAssembly
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string searchValue = textBox1.Text;
+
+            dgReceiptList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             try
             {
-                //dgReceiptList.Rows.Clear();
-                //dgReceiptList.Columns.Clear();
-                //dgReceiptList.Columns.Add("idsup", "ID поставщика");
-                //dgReceiptList.Columns.Add("idcom", "ID компонента");
-                //dgReceiptList.Columns.Add("quality", "Количество");
-                //dgReceiptList.Columns.Add("rdate", "Дата поставки");
-                //Con.Open();
-                //string qText = "SELECT * FROM Receipts where IDSUP Like '%" + textBox1.Text + "%' OR IDCOM Like '%" + textBox1.Text + "%' OR Qulity Like '%" + textBox1.Text + "%' OR ReceiptDate Like '%" + textBox1.Text + "%';";
-                //OleDbCommand Com = new OleDbCommand(qText, Con);
-                //OleDbDataReader reader = Com.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    dgReceiptList.Rows.Add(reader["IDSUP"], reader["IDCOM"], reader["Quality"], reader["ReceiptDate"], reader["PhoneNumber"]);
-                //}
+                foreach (DataGridViewRow row in dgReceiptList.Rows)
+                {
+                    if (row.Cells[2].Value.ToString().Contains(searchValue))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
             }
-            catch (Exception err)
+            catch (Exception exc)
             {
-                MessageBox.Show(err.Message);
+                MessageBox.Show(exc.Message);
             }
-            //finally
-            //{
-            //    Con.Close();
-            //}
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -130,6 +138,11 @@ namespace ComputerAssembly
         private void отменаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            currentDataTable.DefaultView.RowFilter = string.Format("[_RowString] LIKE '%{0}%'", textBox1.Text);
         }
     }
 }

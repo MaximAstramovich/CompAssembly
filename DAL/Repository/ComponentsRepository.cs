@@ -10,29 +10,16 @@ namespace DAL.Repository
 {
     public class ComponentsRepository : AbstractRepository, IModelRepository<ComponentsModel, Components>
     {
-        Components ToEntity(ComponentsModel source, bool isIdIncluded = true)
+        Components ToEntity(ComponentsModel source)
         {
-            if (isIdIncluded)
+            return new Components()
             {
-                return new Components()
-                {
-                    Description = source.Description,
-                    IdCom = source.IDCOM,
-                    Nazv = source.Nazv,
-                    Price = source.Price,
-                    Type = source.Type
-                };
-            }
-            else
-            {
-                return new Components()
-                {
-                    Description = source.Description,
-                    Nazv = source.Nazv,
-                    Price = source.Price,
-                    Type = source.Type
-                };
-            }
+                Description = source.Description,
+                IdCom = source.IDCOM,
+                Nazv = source.Nazv,
+                Price = source.Price,
+                Type = source.Type
+            };
         }
 
         ComponentsModel ToObject(Components source)
@@ -48,8 +35,15 @@ namespace DAL.Repository
         }
         public void Add(ComponentsModel item, bool isIdIncluded = false)
         {
-            var entity = this.ToEntity(item, isIdIncluded);
+            var entity = this.ToEntity(item);
+            var stockEntity = new Stock
+            {
+                IdStock = entity.IdCom,
+                InStock = 1,
+                Components = entity
+            };
             caContext.Components.Add(entity);
+            caContext.Stock.Add(stockEntity);
             SaveChanges();
         }
 
@@ -158,7 +152,7 @@ namespace DAL.Repository
             var stock = caContext.Components.Find(idCom).Stock;
             return new StockModel()
             {
-                IDCOM = stock.IdCom,
+                IdStock = stock.IdStock,
                 InStock = stock.InStock
             };
         }

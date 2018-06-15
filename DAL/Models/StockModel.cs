@@ -8,7 +8,7 @@ namespace DAL.Models
 {
     public class StockModel
     {
-        public int IDCOM { get; set; }
+        public int IdStock { get; set; }
         public int? InStock { get; set; }
     }
 }

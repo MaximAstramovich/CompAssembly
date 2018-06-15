@@ -70,7 +70,7 @@ namespace BL
             }
             else
             {
-                componentsRepository.Add(component, false);
+                componentsRepository.Add(component);
             }
         }
     }
