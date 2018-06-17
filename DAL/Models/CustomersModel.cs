@@ -16,5 +16,8 @@ namespace DAL.Models
         public string Authority { get; set; }
         public string Address { get; set; }
         public int? PhoneNumber { get; set; }
+
+        public List<AssemblyModel> Assembly { get; set; }
+        public List<SellingModel> Selling { get; set; }
     }
 }

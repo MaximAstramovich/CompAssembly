@@ -101,16 +101,29 @@ namespace DAL.Repository
                 var modelsList = new List<SellingModel>();
                 foreach (var entity in caContext.Selling.Select(x => x))
                 {
-                    modelsList.Add(ToObject(entity));
+                    var sell = ToObject(entity);
+                    sell.Customers = GetCustomerBySellingId(sell.IDS);
+                    modelsList.Add(sell);
                 }
 
                 return modelsList;
             }
         }
 
-        public Customers GetCustomerBySellingId(int idSelling)
+        public CustomersModel GetCustomerBySellingId(int idSelling)
         {
-            return caContext.Selling.Find(idSelling).Customers;
+            var customer = caContext.Selling.Find(idSelling).Customers;
+            return new CustomersModel
+            {
+                Address = customer.Address,
+                Authority = customer.Authority,
+                DateOfBirth = customer.DateOfBirth,
+                DateOfIssue = customer.DateOfIssue,
+                FIO = customer.FIO,
+                IDCUS = customer.IdCustomer,
+                PassportNo = customer.PassportNo,
+                PhoneNumber = customer.PhoneNumber
+            };
         }
 
         public void SaveChanges()

@@ -136,6 +136,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\ExtensionsClass.cs" />
     <Compile Include="FormReference.cs">
       <SubType>Form</SubType>
     </Compile>

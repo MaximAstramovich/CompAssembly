@@ -152,6 +152,7 @@ namespace ComputerAssembly
                 AssemblyOne main = this.Owner as AssemblyOne;
                 if (main != null)
                 {
+                    main.IdCustomer = (int)dgCustomerList.CurrentRow.Cells[0].Value;
                     main.Customer = dgCustomerList.CurrentRow.Cells[1].Value.ToString();
                     this.Close();
                 }

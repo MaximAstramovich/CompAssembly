@@ -8,27 +8,40 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using DAL.Models;
 
 namespace ComputerAssembly
 {
-    public partial class AssemblyOne : Form
+    public partial class AssemblyOne : BaseForm
     {
-        OleDbConnection Con = new OleDbConnection();
         public AssemblyOne()
         {
             InitializeComponent();
-            Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
+            assemblyNumbers = new List<int?>();
         }
 
         string typeQuery;
         string idQuery;
+        int _idAssembly;
+        public int IdAssembly
+        {
+            get { return _idAssembly; }
+            set { _idAssembly = value; }
+        }
+        int _idCustomer;
+        public int IdCustomer
+        {
+            get { return _idCustomer; }
+            set { _idCustomer = value; }
+        }
+        public List<int?> assemblyNumbers { get; set; }
 
         public string Customer 
         {
             set { tbCustomer.Text = value; }
             get { return tbCustomer.Text; }
         }
-        Dictionary <string, string> arr = new Dictionary<string,string>();
+        Dictionary <int, string> arr = new Dictionary<int, string>();
 
         public string Type {
             set { typeQuery = value; }
@@ -40,14 +53,13 @@ namespace ComputerAssembly
             get { return idQuery; }
         }
 
-        private void AssemblyOne_Load(object sender, EventArgs e)
+        private async void AssemblyOne_Load(object sender, EventArgs e)
         {
-            tbNumber.Text = getNumber().ToString();
-            loadComponents();
+             await loadComponents();
             if (this.typeQuery == "edit")
             {
                 loadAssembly();
-                itogSumm();
+                lSumma.Text = itogSumm().ToString();
             }
         }
 
@@ -57,258 +69,231 @@ namespace ComputerAssembly
             OleDbCommand Com = new OleDbCommand();
         }
 
-        private int getNumber() { 
-            Con.Open();
-            Int32 number = 0;           
-            try {
-                string qText = "SELECT MAX(a.Num) FROM Assembly a";
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                number = Convert.ToInt32(Com.ExecuteScalar());  
-            }
-            catch (Exception err) {
-                MessageBox.Show(err.Message);
-            }
-            finally {
-                Con.Close();
-            }
-            return number + 1;
-        }
-
         private void loadAssembly()
         {
-            string qText = "SELECT a.* FROM Assembly a WHERE a.Num = @num";
             try
             {
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                Com.Parameters.AddWithValue("@num", this.idQuery);
-                Con.Open();
-                OleDbDataReader reader = Com.ExecuteReader();
-                string Corpus = "";
-                string Board = "";
-                string CPU = "";
-                string Graphic = "";
-                string OZU = "";
-                string HDD = "";
-                string SSD = "";
-                string Power = "";
-                string DVD = "";
-                string Audio = "";
-                string Ice = "";
-                string CustomerC = "";
-                while (reader.Read())
-                {
-                    Corpus = getComponentById(reader["Corpus"].ToString());
-                    Board = getComponentById(reader["Board"].ToString());
-                    CPU = getComponentById(reader["CPU"].ToString());
-                    Graphic = getComponentById(reader["Graphic"].ToString());
-                    OZU = getComponentById(reader["OZU"].ToString());
-                    HDD = getComponentById(reader["HDD"].ToString());
-                    SSD = getComponentById(reader["SSD"].ToString());
-                    Power = getComponentById(reader["Power"].ToString());
-                    DVD = getComponentById(reader["DVD"].ToString());
-                    Audio = getComponentById(reader["Audio"].ToString());
-                    Ice = getComponentById(reader["Ice"].ToString());
-                    CustomerC = getCustomerById(reader["IDCUS"].ToString());      
-                }
-                Con.Close();
-                cbCorpus.Text = Corpus;
-                cbBoard.Text = Board;
-                cbCPU.Text = CPU;
-                cbGraphic.Text = Graphic;
-                cbOZU.Text = OZU;
-                cbHDD.Text = HDD;
-                cbSSD.Text = SSD;
-                cbPower.Text = Power;
-                cbDVD.Text = DVD;
-                cbAudio.Text = Audio;
-                cbIce.Text = Ice;
-                tbCustomer.Text = CustomerC;
+                var assembly = AssemblyBusinessLayer.FindAssemblyById(_idAssembly);
+                cbCorpus.SelectedItem = GetSelectedItem(cbCorpus.Items, assembly.Corpus);
+                cbBoard.SelectedItem = GetSelectedItem(cbBoard.Items, assembly.Board);
+                cbCPU.SelectedItem = GetSelectedItem(cbCPU.Items, assembly.CPU);
+                cbGraphic.SelectedItem = GetSelectedItem(cbGraphic.Items, assembly.Graphic);
+                cbOZU.SelectedItem = GetSelectedItem(cbOZU.Items, assembly.OZU);
+                cbHDD.SelectedItem = GetSelectedItem(cbHDD.Items, assembly.HDD);
+                cbSSD.SelectedItem = GetSelectedItem(cbSSD.Items, assembly.SSD);
+                cbPower.SelectedItem = GetSelectedItem(cbPower.Items, assembly.Power);
+                cbDVD.SelectedItem = GetSelectedItem(cbDVD.Items, assembly.DVD);
+                cbAudio.SelectedItem = GetSelectedItem(cbAudio.Items, assembly.Audio);
+                cbIce.SelectedItem = GetSelectedItem(cbIce.Items, assembly.Ice);
+                tbCustomer.Text = assembly.Customers.FIO;
+                _idCustomer = assembly.Customers.IDCUS;
+                tbNumber.Text = assembly.Num.ToString();
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                Con.Close();
             }   
         }
 
-        private void loadComponents() {
-            arr.Add("1", "cbCorpus");
-            arr.Add("2", "cbBoard");
-            arr.Add("3", "cbCPU");
-            arr.Add("4", "cbGraphic");
-            arr.Add("5", "cbOZU");
-            arr.Add("6", "cbHDD");
-            arr.Add("7", "cbSSD");
-            arr.Add("8", "cbPower");
-            arr.Add("9", "cbDVD");
-            arr.Add("10", "cbAudio");
-            arr.Add("11", "cbIce");           
-            Con.Open();
-            foreach(KeyValuePair<string, string> type in arr){               
-                string qText = "SELECT c.Nazv FROM Components c WHERE c.Type = " + type.Key;
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = Com.ExecuteReader();
-                while (reader.Read())
+        private ComponentsModel GetSelectedItem(System.Windows.Forms.ComboBox.ObjectCollection items, int? idComponent)
+        {
+            if (idComponent != null)
+            {
+                foreach (ComponentsModel item in items)
                 {
-                    switch (type.Value) {
-                        case "cbCorpus":
-                            cbCorpus.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbBoard":
-                            cbBoard.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbCPU":
-                            cbCPU.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbGraphic":
-                            cbGraphic.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbOZU":
-                            cbOZU.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbHDD":
-                            cbHDD.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbSSD":
-                            cbSSD.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbPower":
-                            cbPower.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbDVD":
-                            cbDVD.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbAudio":
-                            cbAudio.Items.Add(reader["Nazv"]);
-                            break;
-                        case "cbIce":
-                            cbIce.Items.Add(reader["Nazv"]);
-                            break;
-                    }                  
+                    if (item.IDCOM == idComponent)
+                    {
+                        return item;
+                    }
                 }
             }
-            Con.Close();
+            return new ComponentsModel();
         }
 
-        private int Summ(string naim) 
+        private async Task<bool> loadComponents() 
         {
-            string qText = "SELECT c.Price FROM Components c WHERE c.Nazv = @naim";
-            OleDbCommand Com = new OleDbCommand();
-            Com.Parameters.AddWithValue("@naim", naim);
-            Com.CommandText = qText;
-            Com.Connection = Con;
-            Con.Open();
-                int price = Convert.ToInt32(Com.ExecuteScalar());
-            Con.Close();            
-            return price;
+            arr.Add(1, "cbCorpus");
+            arr.Add(2, "cbBoard");
+            arr.Add(3, "cbCPU");
+            arr.Add(4, "cbGraphic");
+            arr.Add(5, "cbOZU");
+            arr.Add(6, "cbHDD");
+            arr.Add(7, "cbSSD");
+            arr.Add(8, "cbPower");
+            arr.Add(9, "cbDVD");
+            arr.Add(10, "cbAudio");
+            arr.Add(11, "cbIce");
+            foreach(KeyValuePair<int, string> type in arr)
+            {
+                var componentsList = await AssemblyBusinessLayer.GetAllComponentsListAsync();
+                if (componentsList != null)
+                {
+                    switch (type.Value)
+                    {
+                        case "cbCorpus":
+                            var typeCorpusList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeCorpusList)
+                            {
+                                cbCorpus.Items.Add(item);
+                            }
+                            break;
+                        case "cbBoard":
+                            var typeBoardList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeBoardList)
+                            {
+                                cbBoard.Items.Add(item);
+                            }
+                            break;
+                        case "cbCPU":
+                            var typeCPUList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeCPUList)
+                            {
+                                cbCPU.Items.Add(item);
+                            }
+                            break;
+                        case "cbGraphic":
+                            var typeGraphicList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeGraphicList)
+                            {
+                                cbGraphic.Items.Add(item);
+                            }
+                            break;
+                        case "cbOZU":
+                            var typeOZUList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeOZUList)
+                            {
+                                cbOZU.Items.Add(item);
+                            }
+                            break;
+                        case "cbHDD":
+                            var typeHDDList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeHDDList)
+                            {
+                                cbHDD.Items.Add(item);
+                            }
+                            break;
+                        case "cbSSD":
+                            var typeSSDList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeSSDList)
+                            {
+                                cbSSD.Items.Add(item);
+                            }
+                            break;
+                        case "cbPower":
+                            var typePowerList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typePowerList)
+                            {
+                                cbPower.Items.Add(item);
+                            }
+                            break;
+                        case "cbDVD":
+                            var typeDVDList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeDVDList)
+                            {
+                                cbDVD.Items.Add(item);
+                            }
+                            break;
+                        case "cbAudio":
+                            var typeAudioList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeAudioList)
+                            {
+                                cbAudio.Items.Add(item);
+                            }
+                            break;
+                        case "cbIce":
+                            var typeIceList = componentsList.Where(x => x.Type == type.Key);
+                            foreach (var item in typeIceList)
+                            {
+                                cbIce.Items.Add(item);
+                            }
+                            break;
+                    }
+                }
+            }
+            return true;
         }
-
-        private string getComponentById(string id) 
-        {
-            string qText = "SELECT c.Nazv FROM Components c WHERE IDCOM = @id";
-            OleDbCommand Com = new OleDbCommand(qText, Con);
-            Com.Parameters.AddWithValue("@id", id);            
-            string naim = Com.ExecuteScalar().ToString();
-            return naim;
-        }
-
-        private string getCustomerById(string naim) 
-        {
-            string qText = "SELECT c.FIO FROM Customers c WHERE c.IDCUS = @id";
-            OleDbCommand Com = new OleDbCommand(qText, Con);
-            Com.Parameters.AddWithValue("@id", naim);
-            string customer = Com.ExecuteScalar().ToString();
-            return customer;
-        }
-
-        private int getIdComponent(string naim)
-        {
-            string qText = "SELECT c.IDCOM FROM Components c WHERE c.Nazv = @naim";
-            OleDbCommand Com = new OleDbCommand();
-            Com.Parameters.AddWithValue("@naim", naim);
-            Com.CommandText = qText;
-            Com.Connection = Con;
-            Con.Open();
-            int id = Convert.ToInt32(Com.ExecuteScalar());
-            Con.Close();
-            return id;
-        }
-
-        private int getIdCustomer(string naim)
-        {
-            string qText = "SELECT c.IDCUS FROM Customers c WHERE c.FIO = @naim";
-            OleDbCommand Com = new OleDbCommand();
-            Com.Parameters.AddWithValue("@naim", naim);
-            Com.CommandText = qText;
-            Com.Connection = Con;
-            Con.Open();
-            int id = (int)Com.ExecuteScalar();
-            Con.Close();
-            return id;
-        }   
 
         private void cbCorpus_TextChanged(object sender, EventArgs e)
         {
-            lPriceCorpus.Text = Summ(cbCorpus.Text).ToString();
+            lPriceCorpus.Text = ((ComponentsModel)(cbCorpus.SelectedItem)).Price.ToString();
+            cbCorpus.BackColor = ((ComponentsModel)(cbCorpus.SelectedItem)).Stock.InStock < 1 ? cbCorpus.BackColor = Color.Red : cbCorpus.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbBoard_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceBoard.Text = Summ(cbBoard.Text).ToString();
+            lPriceBoard.Text = ((ComponentsModel)(cbBoard.SelectedItem)).Price.ToString();
+            cbBoard.BackColor = ((ComponentsModel)(cbBoard.SelectedItem)).Stock.InStock < 1 ? cbBoard.BackColor = Color.Red : cbBoard.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbCPU_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceCPU.Text = Summ(cbCPU.Text).ToString();
+            lPriceCPU.Text = ((ComponentsModel)(cbCPU.SelectedItem)).Price.ToString();
+            cbCPU.BackColor = ((ComponentsModel)(cbCPU.SelectedItem)).Stock.InStock < 1 ? cbCPU.BackColor = Color.Red : cbCPU.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbGraphic_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceVideo.Text = Summ(cbGraphic.Text).ToString();
+            lPriceVideo.Text = ((ComponentsModel)(cbGraphic.SelectedItem)).Price.ToString();
+            cbGraphic.BackColor = ((ComponentsModel)(cbGraphic.SelectedItem)).Stock.InStock < 1 ? cbGraphic.BackColor = Color.Red : cbGraphic.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbOZU_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceOZU.Text = Summ(cbOZU.Text).ToString();
+            lPriceOZU.Text = ((ComponentsModel)(cbOZU.SelectedItem)).Price.ToString();
+            cbOZU.BackColor = ((ComponentsModel)(cbOZU.SelectedItem)).Stock.InStock < 1 ? cbOZU.BackColor = Color.Red : cbOZU.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbHDD_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceHDD.Text = Summ(cbHDD.Text).ToString();
+            lPriceHDD.Text = ((ComponentsModel)(cbHDD.SelectedItem)).Price.ToString();
+            cbHDD.BackColor = ((ComponentsModel)(cbHDD.SelectedItem)).Stock.InStock < 1 ? cbHDD.BackColor = Color.Red : cbHDD.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbSSD_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceSSD.Text = Summ(cbSSD.Text).ToString();
+            lPriceSSD.Text = ((ComponentsModel)(cbSSD.SelectedItem)).Price.ToString();
+            cbSSD.BackColor = ((ComponentsModel)(cbSSD.SelectedItem)).Stock.InStock < 1 ? cbSSD.BackColor = Color.Red : cbSSD.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbPower_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPricePower.Text = Summ(cbPower.Text).ToString();
+            lPricePower.Text = ((ComponentsModel)(cbPower.SelectedItem)).Price.ToString();
+            cbPower.BackColor = ((ComponentsModel)(cbPower.SelectedItem)).Stock.InStock < 1 ? cbPower.BackColor = Color.Red : cbPower.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbDVD_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceDVD.Text = Summ(cbDVD.Text).ToString();
+            lPriceDVD.Text = ((ComponentsModel)(cbDVD.SelectedItem)).Price.ToString();
+            cbDVD.BackColor = ((ComponentsModel)(cbDVD.SelectedItem)).Stock.InStock < 1 ? cbDVD.BackColor = Color.Red : cbDVD.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbAudio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceAudio.Text = Summ(cbAudio.Text).ToString();
+            lPriceAudio.Text = ((ComponentsModel)(cbAudio.SelectedItem)).Price.ToString();
+            cbAudio.BackColor = ((ComponentsModel)(cbAudio.SelectedItem)).Stock.InStock < 1 ? cbAudio.BackColor = Color.Red : cbAudio.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
         private void cbIce_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lPriceIce.Text = Summ(cbIce.Text).ToString();
+            lPriceIce.Text = ((ComponentsModel)(cbIce.SelectedItem)).Price.ToString();
+            cbIce.BackColor = ((ComponentsModel)(cbIce.SelectedItem)).Stock.InStock < 1 ? cbIce.BackColor = Color.Red : cbIce.BackColor = Color.White;
+            lSumma.Text = itogSumm().ToString();
         }
 
-        private int itogSumm()
+        private decimal itogSumm()
         {
-            int p = Convert.ToInt32(lPriceCorpus.Text) + Convert.ToInt32(lPriceBoard.Text) + Convert.ToInt32(lPriceCPU.Text) + Convert.ToInt32(lPriceVideo.Text) + Convert.ToInt32(lPriceOZU.Text) + Convert.ToInt32(lPriceHDD.Text) + Convert.ToInt32(lPriceSSD.Text) + Convert.ToInt32(lPricePower.Text) + Convert.ToInt32(lPriceDVD.Text) + Convert.ToInt32(lPriceAudio.Text) + Convert.ToInt32(lPriceIce.Text);
-                return p;      
+            decimal p = Convert.ToDecimal(lPriceCorpus.Text) + Convert.ToDecimal(lPriceBoard.Text) + Convert.ToDecimal(lPriceCPU.Text) + Convert.ToDecimal(lPriceVideo.Text) + Convert.ToDecimal(lPriceOZU.Text) + Convert.ToDecimal(lPriceHDD.Text) + Convert.ToDecimal(lPriceSSD.Text) + Convert.ToDecimal(lPricePower.Text) + Convert.ToDecimal(lPriceDVD.Text) + Convert.ToDecimal(lPriceAudio.Text) + Convert.ToDecimal(lPriceIce.Text);
+            return p;      
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -327,6 +312,7 @@ namespace ComputerAssembly
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveAssembly();
+            this.Close();
         }
 
         private void отменаToolStripMenuItem_Click(object sender, EventArgs e)
@@ -338,47 +324,39 @@ namespace ComputerAssembly
         {
             try
             {
-                OleDbCommand Com = new OleDbCommand();
-                string qText = "";
-                if (this.typeQuery == "edit")
+                if (_idAssembly > 0)
                 {
-                    qText = "UPDATE Assembly SET IDCUS = @Customer, OrderDate = @OrderDate, Num = @Number, Summ = @Summ, Corpus = @Corpus, Board = @Board, CPU = @CPU, " +
-                        " Graphic = @Graphic, OZU = @OZU, HDD = @HDD, SSD = @SSD, Power = @Power, DVD = @DVD, Audio = @Audio, Ice = @Ice";
+                    AssemblyBusinessLayer.AddOrUpdateAssembly(_idAssembly, ((ComponentsModel)(cbAudio.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbBoard.SelectedItem)).IDCOM, ((ComponentsModel)(cbCorpus.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbCPU.SelectedItem)).IDCOM, null, ((ComponentsModel)(cbDVD.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbGraphic.SelectedItem)).IDCOM, ((ComponentsModel)(cbHDD.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbIce.SelectedItem)).IDCOM, _idCustomer, int.Parse(tbNumber.Text),
+                        DateTime.Today, ((ComponentsModel)(cbOZU.SelectedItem)).IDCOM, ((ComponentsModel)(cbPower.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbSSD.SelectedItem)).IDCOM, 0, decimal.Parse(lSumma.Text));
                 }
-                else {
-                    qText = "INSERT INTO Assembly (IDCUS, OrderDate, Num, Summ, Corpus, Board, CPU, Graphic, OZU, HDD, SSD, Power, DVD, Audio, Ice) " +
-                " VALUES (@Customer, @OrderDate, @Number, @Summ, @Corpus, @Board, @CPU, @Graphic, @OZU, @HDD, @SSD, @Power, @DVD, @Audio, @Ice)";
-                }                
-                Com.Parameters.AddWithValue("@Customer", (int)getIdCustomer(tbCustomer.Text));
-                Com.Parameters.AddWithValue("@OrderDate", Convert.ToDateTime(DateTime.Today));
-                Com.Parameters.AddWithValue("@Number", tbNumber.Text);
-                Com.Parameters.AddWithValue("@Summ", (int)itogSumm());
-                Com.Parameters.AddWithValue("@Corpus", (int)getIdComponent(cbCorpus.Text));
-                Com.Parameters.AddWithValue("@Board", (int)getIdComponent(cbBoard.Text));
-                Com.Parameters.AddWithValue("@CPU", (int)getIdComponent(cbCPU.Text));
-                Com.Parameters.AddWithValue("@Graphic", (int)getIdComponent(cbGraphic.Text));
-                Com.Parameters.AddWithValue("@OZU", (int)getIdComponent(cbOZU.Text));
-                Com.Parameters.AddWithValue("@HDD", (int)getIdComponent(cbHDD.Text));
-                Com.Parameters.AddWithValue("@SSD", (int)getIdComponent(cbSSD.Text));
-                Com.Parameters.AddWithValue("@Power", (int)getIdComponent(cbPower.Text));
-                Com.Parameters.AddWithValue("@DVD", (int)getIdComponent(cbDVD.Text));
-                Com.Parameters.AddWithValue("@Audio", (int)getIdComponent(cbAudio.Text));
-                Com.Parameters.AddWithValue("@Ice", (int)getIdComponent(cbIce.Text));
-                Com.CommandText = qText;
-                Com.Connection = Con;
-                Con.Open();
-                Com.ExecuteNonQuery();
-                Con.Close();
+                else
+                {
+                    AssemblyBusinessLayer.AddOrUpdateAssembly(_idAssembly, ((ComponentsModel)(cbAudio.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbBoard.SelectedItem)).IDCOM, ((ComponentsModel)(cbCorpus.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbCPU.SelectedItem)).IDCOM, null, ((ComponentsModel)(cbDVD.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbGraphic.SelectedItem)).IDCOM, ((ComponentsModel)(cbHDD.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbIce.SelectedItem)).IDCOM, _idCustomer, int.Parse(tbNumber.Text),
+                        DateTime.Today, ((ComponentsModel)(cbOZU.SelectedItem)).IDCOM, ((ComponentsModel)(cbPower.SelectedItem)).IDCOM,
+                        ((ComponentsModel)(cbSSD.SelectedItem)).IDCOM, 0, decimal.Parse(lSumma.Text));
+                }
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-            }
-
-            finally 
-            {
-                Con.Close();
             }       
-        }   
+        }
+
+        private void tbNumber_TextChanged(object sender, EventArgs e)
+        {
+            int number = 0;
+            int.TryParse(tbNumber.Text, out number);
+            var flag = assemblyNumbers.Contains(number);
+            tbNumber.BackColor = !flag ? Color.White : Color.Red;
+        }
     }
 }

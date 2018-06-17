@@ -137,11 +137,30 @@ namespace DAL.Repository
                 var modelsList = new List<AssemblyModel>();
                 foreach (var entity in caContext.Assembly.Select(x => x))
                 {
-                    modelsList.Add(ToObject(entity));
+                    var assembly = ToObject(entity);
+                    assembly.Customers = GetCustomerByAssemblyId(assembly.IdAssembly);
+                    modelsList.Add(assembly);
                 }
 
                 return modelsList;
             }
+        }
+
+        public CustomersModel GetCustomerByAssemblyId(int idAssembly)
+        {
+            var source = caContext.Assembly.Find(idAssembly).Customers;
+            var customer = new CustomersModel()
+            {
+                Address = source.Address,
+                Authority = source.Authority,
+                DateOfBirth = source.DateOfBirth,
+                DateOfIssue = source.DateOfIssue,
+                FIO = source.FIO,
+                IDCUS = source.IdCustomer,
+                PassportNo = source.PassportNo,
+                PhoneNumber = source.PhoneNumber
+            };
+            return customer;
         }
 
         public void SaveChanges()

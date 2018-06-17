@@ -122,23 +122,66 @@ namespace DAL.Repository
                 var modelsList = new List<CustomersModel>();
                 foreach (var entity in caContext.Customers.Select(x => x))
                 {
-                    modelsList.Add(ToObject(entity));
+                    var customer = ToObject(entity);
+                    customer.Assembly = GetAllAssembliesByCustomerId(customer.IDCUS);
+                    customer.Selling = GetAllSellingsByCustomerId(customer.IDCUS);
+                    modelsList.Add(customer);
                 }
 
                 return modelsList;
             }
         }
 
-        public List<Assembly> GetAllAssembliesByCustomerId(int idCustomer)
+        public List<AssemblyModel> GetAllAssembliesByCustomerId(int idCustomer)
         {
-            var customer = caContext.Customers.Find(idCustomer);
-            return customer.Assembly.ToList();
+            var source = caContext.Customers.Find(idCustomer).Assembly.Where(x => x.IdCus == idCustomer);
+            List<AssemblyModel> assemblyList = new List<AssemblyModel>();
+            foreach (var item in source)
+            {
+                var assembly = new AssemblyModel()
+                {
+                    Audio = item.Audio,
+                    Board = item.Board,
+                    Corpus = item.Corpus,
+                    CPU = item.CPU,
+                    DateOfPayment = item.DateOfPayment,
+                    DVD = item.DVD,
+                    Graphic = item.Graphic,
+                    HDD = item.HDD,
+                    Ice = item.Ice,
+                    IDCUS = item.IdCus,
+                    Num = item.Num,
+                    OrderDate = item.OrderDate,
+                    OZU = item.OZU,
+                    Power = item.Power,
+                    SSD = item.SSD,
+                    Status = item.Status,
+                    Summ = item.Summ,
+                    IdAssembly = item.IdAssembly
+                };
+                assemblyList.Add(assembly);
+            }
+            return assemblyList;
         }
 
-        public List<Selling> GetAllSellingsByCustomerId(int idCustomer)
+        public List<SellingModel> GetAllSellingsByCustomerId(int idCustomer)
         {
-            var customer = caContext.Customers.Find(idCustomer);
-            return customer.Selling.ToList();
+            var source = caContext.Customers.Find(idCustomer).Selling.Where(x => x.IdCustomer == idCustomer);
+            var sellingList = new List<SellingModel>();
+            foreach (var item in source)
+            {
+                var sell = new SellingModel()
+                {
+                    IDS = item.IdSelling,
+                    IDCOM = item.IdCom,
+                    IDCUS = item.IdCustomer,
+                    Price = item.Price,
+                    Quality = item.Quality,
+                    DateOfSale = item.DateOfSale
+                };
+                sellingList.Add(sell);
+            }
+            return sellingList;
         }
 
         public void SaveChanges()

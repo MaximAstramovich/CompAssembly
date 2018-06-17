@@ -101,9 +101,9 @@ namespace DAL.Repository
 
         public List<ComponentsModel> GetAllComponentsByComponentTypeId(int idComponentType)
         {
-            var componentTypes = caContext.ComponentTypes.Find(idComponentType).Components;
+            var components = caContext.ComponentTypes.Find(idComponentType).Components;
             List<ComponentsModel> componentsList = new List<ComponentsModel>();
-            foreach (var item in componentTypes)
+            foreach (var item in components)
             {
                 var component = new ComponentsModel()
                 {
@@ -111,7 +111,12 @@ namespace DAL.Repository
                     IDCOM = item.IdCom,
                     Nazv = item.Nazv,
                     Price = item.Price,
-                    Type = item.Type
+                    Type = item.Type,
+                    Stock = new StockModel()
+                    {
+                        IdStock = item.Stock.IdStock,
+                        InStock = item.Stock.InStock
+                    }
                 };
                 componentsList.Add(component);
             }

@@ -8,52 +8,71 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using DAL.Models;
 
 namespace ComputerAssembly
 {
-    public partial class AssemblyList : Form
+    public partial class AssemblyList : BaseForm
     {
-        OleDbConnection Con = new OleDbConnection();
         public AssemblyList()
         {
             InitializeComponent();
-            Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
+            _assemblyNumbers = new List<int?>();
+            _assemblyList = new List<AssemblyModel>();
         }
 
-        private void AssemblyList_Load(object sender, EventArgs e)
+        List<AssemblyModel> _assemblyList;
+        List<int?> _assemblyNumbers { get; set; } 
+
+        private async void AssemblyList_Load(object sender, EventArgs e)
         {
-            loadAssembly();
+            await loadAssembly();
             tablProp();
         }
 
-        private void loadAssembly()
+        DataTable currentDataTable = new DataTable();
+        private async Task loadAssembly()
         {
             try
             {
-                Con.Open();
-                dgAssembly.Rows.Clear();
-                dgAssembly.Columns.Clear();
-                dgAssembly.Columns.Add("customers", "Клиент");
-                dgAssembly.Columns.Add("number", "Номер сборки");
-                dgAssembly.Columns.Add("OrderDate", "Дата сборки");
-                dgAssembly.Columns.Add("Summ", "Сумма");
-                dgAssembly.Columns.Add("status", "Статус");
-                dgAssembly.Columns.Add("DateOfPayment", "Дата выдачи");
-                string qText = "SELECT a.OrderDate, a.Num, a.Summ, a.Status,a.DateOfPayment, c.FIO FROM Assembly a LEFT JOIN Customers c ON a.IDCUS = c.IDCUS ORDER BY a.OrderDate ";
-                OleDbCommand Com = new OleDbCommand(qText, Con);
-                OleDbDataReader reader = Com.ExecuteReader();
-                while (reader.Read())
+                currentDataTable.Rows.Clear();
+                currentDataTable.Columns.Clear();
+                currentDataTable.Columns.Add("id", typeof(int));
+                currentDataTable.Columns.Add("Клиент", typeof(string));
+                currentDataTable.Columns.Add("Номер сборки", typeof(int));
+                currentDataTable.Columns.Add("Дата сборки", typeof(DateTime));
+                currentDataTable.Columns.Add("Сумма", typeof(decimal));
+                currentDataTable.Columns.Add("Статус", typeof(string));
+                currentDataTable.Columns.Add("Дата выдачи", typeof(DateTime));
+                _assemblyList = await AssemblyBusinessLayer.GetAllAssemblyListAsync();
+                _assemblyNumbers.AddRange(_assemblyList.Select(x => x.Num));
+                if (_assemblyList.Count != 0)
                 {
-                    dgAssembly.Rows.Add(reader["FIO"], reader["Num"], reader["OrderDate"], reader["Summ"], (int)reader["Status"] == 0 ? "Не выдано" : "Выдано", reader["DateOfPayment"]);
+                    foreach (var assembly in _assemblyList)
+                    {
+                        string currentStatus = assembly.Status != null ? assembly.Status == 0 ? "Не выдано" : "Выдано" : "Нет данных";
+                        currentDataTable.Rows.Add(assembly.IdAssembly, assembly.Customers.FIO, assembly.Num, assembly.OrderDate, assembly.Summ, currentStatus, assembly.DateOfPayment);
+                    }
                 }
+                DataColumn dcRowString = currentDataTable.Columns.Add("_RowString", typeof(string));
+                foreach (DataRow dataRow in currentDataTable.Rows)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < currentDataTable.Columns.Count - 1; i++)
+                    {
+                        sb.Append(dataRow[i].ToString());
+                        sb.Append("\t");
+                    }
+                    dataRow[dcRowString] = sb.ToString();
+                }
+
+                dgAssembly.DataSource = currentDataTable;
+                dgAssembly.Columns["_RowString"].Visible = false;
+                dgAssembly.Columns["id"].Visible = false;
             }
             catch (Exception err)
             {
                 MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                Con.Close();
             }
         }
 
@@ -69,35 +88,53 @@ namespace ComputerAssembly
 
         private void button1_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < dgAssembly.RowCount; i++)
+            string searchValue = textBox1.Text;
+
+            dgAssembly.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            try
             {
-                dgAssembly.Rows[i].Selected = false;
-                for (int j = 0; j < dgAssembly.ColumnCount; j++)
-                    if (dgAssembly.Rows[i].Cells[j].Value != null)
-                        if (dgAssembly.Rows[i].Cells[j].Value.ToString().ToLower().Contains(textBox1.Text.ToLower()))
-                        {
-                            dgAssembly.Rows[i].Selected = true;
-                            break;
-                        }
-                if (textBox1.Text == "") dgAssembly.Rows[i].Selected = false;
+                foreach (DataGridViewRow row in dgAssembly.Rows)
+                {
+                    if (row.Cells[2].Value.ToString().Contains(searchValue))
+                    {
+                        row.Selected = true;
+                        break;
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
             }
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AssemblyOne AssemblyOneForm = new AssemblyOne();
+            AssemblyOneForm.assemblyNumbers = _assemblyNumbers;
             AssemblyOneForm.Show();
         }
 
-        private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string num = dgAssembly.CurrentRow.Cells[1].Value.ToString();
-            deleteElement(num);
+            DialogResult dR = MessageBox.Show(
+                             "Вы действительно желаете удалить запись?",
+                             "Программа",
+                             MessageBoxButtons.OKCancel,
+                             MessageBoxIcon.Warning
+                         );
+            if (dR == DialogResult.OK)
+            {
+                AssemblyBusinessLayer.Remove((int)dgAssembly.CurrentRow.Cells[0].Value);
+                await loadAssembly();
+            }
         }
 
         private void редактироватьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AssemblyOne AssemblyOneForm = new AssemblyOne();
+            AssemblyOneForm.IdAssembly = (int)dgAssembly.CurrentRow.Cells[0].Value;
+            AssemblyOneForm.assemblyNumbers = _assemblyNumbers;
             AssemblyOneForm.ID = dgAssembly.CurrentRow.Cells[1].Value.ToString();
             AssemblyOneForm.Type = "edit";
             AssemblyOneForm.Show();
@@ -105,7 +142,7 @@ namespace ComputerAssembly
 
         private void выдатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string status = dgAssembly.CurrentRow.Cells[4].Value.ToString();
+            string status = dgAssembly.CurrentRow.Cells[5].Value.ToString();
             if (status == "Выдано")
             {
                 MessageBox.Show("Сборка уже выдана владельцу");
@@ -125,9 +162,9 @@ namespace ComputerAssembly
             }
         }
 
-        private void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void обновитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            loadAssembly();
+            await loadAssembly();
         }
 
         private void отменаToolStripMenuItem_Click(object sender, EventArgs e)
@@ -135,46 +172,82 @@ namespace ComputerAssembly
             this.Close();
         }
 
-        private void deleteElement(string num)
+        private async void giveOut()
         {
-            string qText = "DELETE FROM Assembly a WHERE a.Num = @num";
-            OleDbCommand Com = new OleDbCommand(qText, Con);
-            Com.Parameters.AddWithValue("@num", num);
-            DialogResult dR = MessageBox.Show(
-                             "Вы действительно желаете удалить запись?",
-                             "Программа",
-                             MessageBoxButtons.OKCancel,
-                             MessageBoxIcon.Warning
-                         );
-            if (dR == DialogResult.OK)
+            var stockList = AssemblyBusinessLayer.GetStockList();
+            var selectedAssembly = _assemblyList.FirstOrDefault(x => x.IdAssembly == (int)dgAssembly.CurrentRow.Cells[0].Value);
+            selectedAssembly.DateOfPayment = DateTime.Today;
+            selectedAssembly.Status = 1;
+            AssemblyBusinessLayer.AddOrUpdateAssembly(selectedAssembly.IdAssembly, (int)selectedAssembly.Audio, (int)selectedAssembly.Board,
+                (int)selectedAssembly.Corpus, (int)selectedAssembly.CPU, selectedAssembly.DateOfPayment, (int)selectedAssembly.DVD,
+                (int)selectedAssembly.Graphic, (int)selectedAssembly.HDD, (int)selectedAssembly.Ice, (int)selectedAssembly.IDCUS,
+                (int)selectedAssembly.Num, (DateTime)selectedAssembly.OrderDate, (int)selectedAssembly.OZU, (int)selectedAssembly.Power,
+                (int)selectedAssembly.SSD, (int)selectedAssembly.Status, (decimal)selectedAssembly.Summ);
+            AssemblyBusinessLayer.AddSell(0, 0, selectedAssembly.IDCUS, selectedAssembly.Summ, 1, selectedAssembly.DateOfPayment.ToString());
+            foreach (var item in stockList)
             {
-                this.Con.Open();
-                Com.ExecuteNonQuery();
-                this.Con.Close();
-                loadAssembly();
+                if (item.IdStock == selectedAssembly.Audio)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.Board)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.Corpus)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.CPU)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.DVD)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.Graphic)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.HDD)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.Ice)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.OZU)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.Power)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
+                if (item.IdStock == selectedAssembly.SSD)
+                {
+                    int count = item.InStock >= 1 ? (int)item.InStock - 1 : 0;
+                    AssemblyBusinessLayer.UpdateStock(item.IdStock, count);
+                }
             }
+            await loadAssembly();
         }
 
-        private void giveOut()
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            string num = dgAssembly.CurrentRow.Cells[1].Value.ToString();
-            string qTextUpdate = "UPDATE Assembly a SET a.Status = 1, a.DateOfPayment = @dat";
-            OleDbCommand ComUpdate = new OleDbCommand(qTextUpdate, Con);
-            ComUpdate.Parameters.AddWithValue("@dat", DateTime.Today);
-            try
-            {
-                this.Con.Open();
-                ComUpdate.ExecuteNonQuery();
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                this.Con.Close();
-            }
-            loadAssembly();
+            currentDataTable.DefaultView.RowFilter = string.Format("[_RowString] LIKE '%{0}%'", textBox1.Text);
         }
     }
 }

@@ -26,5 +26,7 @@ namespace DAL.Models
         public int? Ice { get; set; }
         public int? Status { get; set; }
         public System.DateTime? DateOfPayment { get; set; }
+
+        public CustomersModel Customers { get; set; }
     }
 }

@@ -53,8 +53,7 @@
             this.отменаToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(922, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(693, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -62,7 +61,7 @@
             // 
             this.добавитьToolStripMenuItem.Image = global::ComputerAssembly.Properties.Resources.add;
             this.добавитьToolStripMenuItem.Name = "добавитьToolStripMenuItem";
-            this.добавитьToolStripMenuItem.Size = new System.Drawing.Size(104, 24);
+            this.добавитьToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
             this.добавитьToolStripMenuItem.Text = "Добавить";
             this.добавитьToolStripMenuItem.Click += new System.EventHandler(this.добавитьToolStripMenuItem_Click);
             // 
@@ -70,7 +69,7 @@
             // 
             this.удалитьToolStripMenuItem.Image = global::ComputerAssembly.Properties.Resources.delete;
             this.удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
-            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(93, 24);
+            this.удалитьToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.удалитьToolStripMenuItem.Text = "Удалить";
             this.удалитьToolStripMenuItem.Click += new System.EventHandler(this.удалитьToolStripMenuItem_Click);
             // 
@@ -78,7 +77,7 @@
             // 
             this.редактироватьToolStripMenuItem.Image = global::ComputerAssembly.Properties.Resources.kwrite;
             this.редактироватьToolStripMenuItem.Name = "редактироватьToolStripMenuItem";
-            this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(139, 24);
+            this.редактироватьToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
             this.редактироватьToolStripMenuItem.Text = "Редактировать";
             this.редактироватьToolStripMenuItem.Click += new System.EventHandler(this.редактироватьToolStripMenuItem_Click);
             // 
@@ -86,7 +85,7 @@
             // 
             this.выдатьToolStripMenuItem.Image = global::ComputerAssembly.Properties.Resources.package_up;
             this.выдатьToolStripMenuItem.Name = "выдатьToolStripMenuItem";
-            this.выдатьToolStripMenuItem.Size = new System.Drawing.Size(87, 24);
+            this.выдатьToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
             this.выдатьToolStripMenuItem.Text = "Выдать";
             this.выдатьToolStripMenuItem.Click += new System.EventHandler(this.выдатьToolStripMenuItem_Click);
             // 
@@ -94,7 +93,7 @@
             // 
             this.обновитьToolStripMenuItem.Image = global::ComputerAssembly.Properties.Resources.Refresh;
             this.обновитьToolStripMenuItem.Name = "обновитьToolStripMenuItem";
-            this.обновитьToolStripMenuItem.Size = new System.Drawing.Size(106, 24);
+            this.обновитьToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
             this.обновитьToolStripMenuItem.Text = "Обновить";
             this.обновитьToolStripMenuItem.Click += new System.EventHandler(this.обновитьToolStripMenuItem_Click);
             // 
@@ -102,7 +101,7 @@
             // 
             this.отменаToolStripMenuItem.Image = global::ComputerAssembly.Properties.Resources.back1;
             this.отменаToolStripMenuItem.Name = "отменаToolStripMenuItem";
-            this.отменаToolStripMenuItem.Size = new System.Drawing.Size(90, 24);
+            this.отменаToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.отменаToolStripMenuItem.Text = "Отмена";
             this.отменаToolStripMenuItem.Click += new System.EventHandler(this.отменаToolStripMenuItem_Click);
             // 
@@ -112,45 +111,46 @@
             this.dgAssembly.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedHeaders;
             this.dgAssembly.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgAssembly.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgAssembly.Location = new System.Drawing.Point(0, 28);
-            this.dgAssembly.Margin = new System.Windows.Forms.Padding(4);
+            this.dgAssembly.Location = new System.Drawing.Point(0, 24);
             this.dgAssembly.Name = "dgAssembly";
             this.dgAssembly.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgAssembly.Size = new System.Drawing.Size(922, 420);
+            this.dgAssembly.Size = new System.Drawing.Size(693, 347);
             this.dgAssembly.TabIndex = 0;
             // 
             // button1
             // 
             this.button1.BackgroundImage = global::ComputerAssembly.Properties.Resources.find;
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.Location = new System.Drawing.Point(878, 2);
+            this.button1.Location = new System.Drawing.Point(658, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(32, 23);
+            this.button1.Size = new System.Drawing.Size(24, 19);
             this.button1.TabIndex = 5;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(712, 2);
+            this.textBox1.Location = new System.Drawing.Point(534, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(160, 22);
+            this.textBox1.Size = new System.Drawing.Size(121, 20);
             this.textBox1.TabIndex = 4;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // AssemblyList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(922, 448);
+            this.ClientSize = new System.Drawing.Size(693, 371);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.dgAssembly);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximumSize = new System.Drawing.Size(940, 495);
-            this.MinimumSize = new System.Drawing.Size(940, 495);
+            this.MaximumSize = new System.Drawing.Size(709, 409);
+            this.MinimumSize = new System.Drawing.Size(709, 409);
             this.Name = "AssemblyList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Сборки";

@@ -17,6 +17,7 @@ namespace ComputerAssembly
         public SuppliersBLL SuppliersBusinessLayer;
         public ReceiptsBLL ReceiptsBusinessLayer;
         public ComponentsBLL ComponentsBusinessLayer;
+        public AssemblyBLL AssemblyBusinessLayer;
         public BaseForm()
         {
             InitializeComponent();
@@ -24,6 +25,7 @@ namespace ComputerAssembly
             SuppliersBusinessLayer = new SuppliersBLL();
             ReceiptsBusinessLayer = new ReceiptsBLL();
             ComponentsBusinessLayer = new ComponentsBLL();
+            AssemblyBusinessLayer = new AssemblyBLL();
         }
     }
 }

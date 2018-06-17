@@ -5,8 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="NewCADBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Assembly">
           <Key>
             <PropertyRef Name="IdAssembly" />
@@ -176,6 +174,7 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="NewCADBModelStoreContainer">
+          <EntitySet Name="Assembly" EntityType="Self.Assembly" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Components" EntityType="Self.Components" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ComponentTypes" EntityType="Self.ComponentTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
@@ -183,28 +182,6 @@ warning 6002: The table/view 'NewCADB.dbo.Assembly' does not have a primary key 
           <EntitySet Name="Selling" EntityType="Self.Selling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Stock" EntityType="Self.Stock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Assembly" EntityType="Self.Assembly" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Assembly].[IdAssembly] AS [IdAssembly], 
-    [Assembly].[IdCus] AS [IdCus], 
-    [Assembly].[OrderDate] AS [OrderDate], 
-    [Assembly].[Num] AS [Num], 
-    [Assembly].[Summ] AS [Summ], 
-    [Assembly].[Corpus] AS [Corpus], 
-    [Assembly].[Board] AS [Board], 
-    [Assembly].[CPU] AS [CPU], 
-    [Assembly].[Graphic] AS [Graphic], 
-    [Assembly].[OZU] AS [OZU], 
-    [Assembly].[HDD] AS [HDD], 
-    [Assembly].[SSD] AS [SSD], 
-    [Assembly].[Power] AS [Power], 
-    [Assembly].[DVD] AS [DVD], 
-    [Assembly].[Audio] AS [Audio], 
-    [Assembly].[Ice] AS [Ice], 
-    [Assembly].[Status] AS [Status], 
-    [Assembly].[DateOfPayment] AS [DateOfPayment]
-    FROM [dbo].[Assembly] AS [Assembly]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Assembly_Customers" Association="Self.FK_Assembly_Customers">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Assembly" EntitySet="Assembly" />

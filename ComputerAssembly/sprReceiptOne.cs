@@ -14,11 +14,9 @@ namespace ComputerAssembly
 {
     public partial class sprReceiptOne : BaseForm
     {
-        //OleDbConnection Con = new OleDbConnection();
         public sprReceiptOne()
         {
             InitializeComponent();
-            //Con.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=DB.mdb;Persist Security Info=False;";
         }
 
         string typeQuery;
@@ -96,24 +94,6 @@ namespace ComputerAssembly
         {
             try
             {
-                //Con.Open();
-                //string qText = "SELECT * FROM Receipts WHERE IDR = @id";
-                //OleDbCommand Com = new OleDbCommand();
-                //Com.Parameters.AddWithValue("@id", this.idQuery);
-                //Com.CommandText = qText;
-                //OleDbDataReader reader = Com.ExecuteReader();
-                //string IDSUP = "";
-                //string IDCOM = "";
-                //while (reader.Read())
-                //{
-                //    IDSUP = getSuppliersById(reader["IDSUP"].ToString());
-                //    IDCOM = getComponentById(reader["IDCOM"].ToString());
-                //}
-                //Con.Close();
-                //tbFIO.Text = IDSUP;
-                //tbCom.Text = IDCOM;
-                //tbQual.Text = reader["Quality"].ToString();
-                //dtR.Text = reader["ReceiptDate"].ToString();
                 var receipt = ReceiptsBusinessLayer.FindReceiptById(idReceipt);
                 _currentComponent = receipt.Component;
                 _currentSupplier = receipt.Supplier;
@@ -129,10 +109,6 @@ namespace ComputerAssembly
             {
                 MessageBox.Show(err.Message);
             }
-            //finally
-            //{
-            //    Con.Close();
-            //}
         }
 
         public void UpdateSupplierFioField()
@@ -145,50 +121,6 @@ namespace ComputerAssembly
         {
             tbCom.Text = _currentComponent.Nazv;
         }
-
-        //private string getComponentById(string id)
-        //{
-        //    string qText = "SELECT c.Nazv FROM Components c WHERE IDCOM = @id";
-        //    OleDbCommand Com = new OleDbCommand(qText, Con);
-        //    Com.Parameters.AddWithValue("@id", id);
-        //    string naim = Com.ExecuteScalar().ToString();
-        //    return naim;
-        //}
-
-        //private string getSuppliersById(string naim)
-        //{
-        //    //string qText = "SELECT c.FIO FROM Suppliers c WHERE c.IDSUP = @id";
-        //    //OleDbCommand Com = new OleDbCommand(qText, Con);
-        //    //Com.Parameters.AddWithValue("@id", naim);
-        //    //string customer = Com.ExecuteScalar().ToString();
-        //    //return customer;
-        //}
-
-        //private int getIdComponent(string naim)
-        //{
-        //    //string qText = "SELECT c.IDCOM FROM Components c WHERE c.Nazv = @naim";
-        //    //OleDbCommand Com = new OleDbCommand();
-        //    //Com.Parameters.AddWithValue("@naim", naim);
-        //    //Com.CommandText = qText;
-        //    //Com.Connection = Con;
-        //    //Con.Open();
-        //    //int id = Convert.ToInt32(Com.ExecuteScalar());
-        //    //Con.Close();
-        //    //return id;
-        //}
-
-        //private int getIdSuppliers(string naim)
-        //{
-        //    string qText = "SELECT c.IDSUP FROM Suppliers c WHERE c.FIO = @naim";
-        //    OleDbCommand Com = new OleDbCommand();
-        //    Com.Parameters.AddWithValue("@naim", naim);
-        //    Com.CommandText = qText;
-        //    Com.Connection = Con;
-        //    Con.Open();
-        //    int id = (int)Com.ExecuteScalar();
-        //    Con.Close();
-        //    return id;
-        //}
 
         private void button1_Click(object sender, EventArgs e)
         {

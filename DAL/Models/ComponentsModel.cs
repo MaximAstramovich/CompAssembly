@@ -17,5 +17,10 @@ namespace DAL.Models
         public virtual ComponentTypesModel ComponentTypes { get; set; }
         public virtual StockModel Stock { get; set; }
         public virtual List<ReceiptsModel> Receipts { get; set; }
+
+        public override string ToString()
+        {
+            return this.Nazv;
+        }
     }
 }
