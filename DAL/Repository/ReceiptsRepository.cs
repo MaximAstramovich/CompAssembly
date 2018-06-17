@@ -42,7 +42,7 @@ namespace DAL.Repository
             caContext.Receipts.Add(entity);
             if (stockEntity != null)
             {
-                stockEntity.InStock = item.Quality;
+                stockEntity.InStock = stockEntity.InStock + item.Quality;
             }
             SaveChanges();
         }
@@ -88,7 +88,7 @@ namespace DAL.Repository
                 entity.Quality = item.Quality;
                 if (stockEntity != null)
                 {
-                    stockEntity.InStock = item.Quality;
+                    stockEntity.InStock = stockEntity.InStock + item.Quality;
                 }
                 entity.ReceiptDate = item.ReceiptDate;
                 SaveChanges();
@@ -115,7 +115,7 @@ namespace DAL.Repository
                     var receipt = ToObject(entity);
                     receipt.Supplier = GetSupplierByReceiptId(receipt.IDR);
                     receipt.Component = GetComponentByReceiptId(receipt.IDR);
-                    receipt.Quality = receipt.Component.Stock.InStock;
+                    //receipt.Quality = receipt.Component.Stock.InStock;
                     modelsList.Add(receipt);
                 }
 

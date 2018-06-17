@@ -97,6 +97,19 @@ namespace DAL.Repository
             }
         }
 
+        public ComponentsModel GetComponentByStockId(int idStock)
+        {
+            var component = caContext.Stock.Find(idStock).Components;
+            return new ComponentsModel()
+            {
+                Description = component.Description,
+                IDCOM = component.IdCom,
+                Nazv = component.Nazv,
+                Price = component.Price,
+                Type = component.Type
+            };
+        }
+
         public void SaveChanges()
         {
             caContext.SaveChanges();

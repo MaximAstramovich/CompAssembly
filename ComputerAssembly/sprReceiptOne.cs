@@ -150,7 +150,7 @@ namespace ComputerAssembly
             }
             else
             {
-                count = (int)_currentComponent.Stock.InStock + count;
+                //count = (int)_currentComponent.Stock.InStock + count;
                 ReceiptsBusinessLayer.AddOrUpdateReceipt(_idReceipt, _currentComponent.IDCOM,
                     _currentSupplier.IdSuppliers, (decimal)_currentComponent.Price, count, dtR.Text);
             }

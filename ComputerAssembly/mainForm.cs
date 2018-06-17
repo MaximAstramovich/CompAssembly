@@ -81,5 +81,11 @@ namespace ComputerAssembly
             AboutBox AboutBox = new AboutBox();
             AboutBox.Show();
         }
+
+        private void ведомостьДвиженияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var statementForm = new StatementReport();
+            statementForm.Show();
+        }
     }
 }
